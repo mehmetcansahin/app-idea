@@ -1,1 +1,6 @@
 .DS_Store
+# Global gitignore .claude/'u tumden disliyor; bu projede slash komutlari
+# (research agent'in parcasi) repo icerigidir. Sadece commands/ izlenir.
+!.claude/
+.claude/*
+!.claude/commands/
