@@ -14,6 +14,7 @@
 | v3.1 | 2026-03-12 | Gercek veri dogrulamasi + Triangle Rule + veri kalite etiketleri |
 | v3.1.1 | 2026-06-01 | Regulasyon faktoru phases.md + prompt-templates.md'ye senkronize edildi (K1'e 4. kriter, K3'e 4. faktor); Faz 5 override listesi tum dosyalarda esitlendi; scoring-model.md tek yetkili kaynak ilan edildi |
 | v3.2 | 2026-06-01 | Differential dis-kaynak arastirmasindan 7 ekleme: Dagitim Fizibilitesi/keyword difficulty (#1), Faz 5.5 build-oncesi dogrulama [Walling 2/20/200 + Mom Test + fake-door] (#5), Mom Test kalite kurali/RF-16 (#2), adlandirilmis-icgoru + SISP/RF-17 (#3), Sales Safari watering-hole kesfi/Kural 7 (#4), Zamanlama yasam-dongusu etiketi (#6), Apple first-party talep sinyali (#7) |
+| v3.2.1 | 2026-06-11 | Senkronizasyon + yapi: CLAUDE.md'ye Faz 5.5 pipeline adimi + 06-prebuild-plan.md cikti dosyasi eklendi; report-template v3.2'ye yukseltildi (Durum/Guven, 1.3 Dagitim Fizibilitesi, 5.2 Faz 5.5 plani, yasam-dongusu, adlandirilmis icgoru); Deep cikti dosyalari 07-11 olarak yeniden numaralandi; financial-model (Deep adim 9 sablonu) ve launch-playbook (GO sonrasi) pipeline'a baglandi; "15 tehlike isareti" → 17 duzeltildi; output/INDEX.md scoreboard + Durum takibi; .claude/commands/ kisayollari; git versiyon kontrolu baslatildi |
 
 ## Temel Ilkeler
 
@@ -53,7 +54,7 @@
 | `tools-and-data-sources.md` | Arac guvenilirlik matrisi | Kaynak secerken |
 | `financial-model-template.md` | Bottom-up gelir modeli | Faz 9 (deep mode) |
 | `launch-playbook.md` | Lansman stratejisi | Post-arastirma |
-| `patterns/red-flags.md` | 15 tehlike isareti | Tum fazlarda kontrol |
+| `patterns/red-flags.md` | 17 tehlike isareti (RF-1 … RF-17) | Tum fazlarda kontrol |
 | `patterns/green-flags.md` | 15 basari isareti | Tum fazlarda kontrol |
 
 ## Ogrenilen Dersler (Gercek Arastirmadan)

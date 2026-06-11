@@ -11,6 +11,9 @@
 3. Pipeline calistirilir — her faz bir oncekinin ciktisini kullanir
 4. Sonuclar `output/{tarih}-{konu}/` klasorune kaydedilir
 5. Final rapor (`REPORT.md`) kullaniciya sunulur
+6. `output/INDEX.md` scoreboard guncellenir (yeni satir; ayni konu yeniden analiz edildiyse eski satirin Durum'u "ARSIV" yapilir)
+
+Kisayol komutlari: `/quick-scan`, `/standard`, `/deep`, `/compare` (bkz. `.claude/commands/`).
 
 ## Calisma Modlari
 
@@ -27,10 +30,11 @@
    - **Early termination:** K1 KALDI ise → puanlama tamamla ama raporda "ELENDIR (K1 fail)" yaz, MVP/detay bolumlerini atla
    - **Early termination:** K3 < 0.5 ise → raporda "Fizibilite cok dusuk — detay analiz gereksiz" notu ekle
 4. → `REPORT.md` (1-2 sayfa fizibilite raporu)
+   - Karar GO/SARTLI GO ise: Sonraki Adimlar'a Faz 5.5 build-oncesi dogrulama onerisi ekle (Quick'te opsiyonel — bkz. `methodology/pre-build-validation.md`)
 
 **Minimum rakip sayisi:** 5
 **Rapor bolumleri:** Yonetici Ozeti, Pazar Analizi, Rakip Analizi, Puanlama, Risk, Sonraki Adimlar, Kaynaklar
-**Raporda ATLANACAK bolumler:** Dogrulama (#5), MVP Onerisi (#7), ASO (#8) — bunlar Standard+ icin
+**Raporda ATLANACAK bolumler:** Dogrulama (#5, 5.2 Faz 5.5 plani dahil), MVP Onerisi (#7), ASO (#8), Dagitim Fizibilitesi tam bolumu (1.3 — Quick'te sadece puanlama icinde kisa uygulanir) — bunlar Standard+ icin
 
 **Cikti:** Tek dosya — `output/{tarih}-{konu}/REPORT.md`
 
@@ -53,51 +57,49 @@
    - **Early termination:** K1 KALDI ise → puanlama tamamla ama "ELENDIR (K1 fail)" yaz
    - **Early termination:** K3 < 0.5 ise → raporda notu ekle, MVP detayini kisalt
 5. Pazar dogrulama (4 kontrol: rating, indie gelir, goc sinyali, menopoz testi)
-6. → `REPORT.md` + faz ciktilari
+6. **Faz 5.5 build-oncesi dogrulama PLANI** — karar GO/SARTLI GO ise ZORUNLU (bkz. `methodology/pre-build-validation.md`): landing/fake-door kopyasi + Mom-Test gorusme kilavuzu + ONCEDEN yazilmis esikler → `06-prebuild-plan.md`. Faz 5.5 insan-aksiyonudur; rapor "Durum: FAZ 5.5 BEKLIYOR" ile biter.
+7. → `REPORT.md` + faz ciktilari
 
 **Minimum rakip sayisi:** 10
-**Rapor bolumleri:** TUM bolumler (#1-#9) + cross-report karsilastirma (onceki analizler varsa)
+**Rapor bolumleri:** TUM bolumler (#1-#9, ASO #8 haric) + cross-report karsilastirma (onceki analizler varsa). Karar GO/SARTLI GO ise 5.2 Faz 5.5 plani zorunlu.
 **Review mining minimum:** Her rakip icin 10+ kotu yorum, toplam 20+ yorum
 
-**Cikti (ZORUNLU yapi):**
+**Cikti (ZORUNLU yapi — dosya adlari AYNEN boyle):**
 ```
 output/{tarih}-{konu}/
 ├── REPORT.md
 └── phases/
-    ├── 01-market-scan.md
-    ├── 02-competitor-analysis.md
-    ├── 03-review-mining.md
-    ├── 04-scoring.md
-    └── 05-validation.md
+    ├── 01-market-scan.md          # kanonik Faz 3
+    ├── 02-competitor-analysis.md  # kanonik Faz 4 (adim 1-2, 4-8)
+    ├── 03-review-mining.md        # kanonik Faz 4 (adim 3)
+    ├── 04-scoring.md              # kanonik Faz 5
+    ├── 05-validation.md           # kanonik Faz 7
+    └── 06-prebuild-plan.md        # kanonik Faz 5.5 — sadece GO/SARTLI GO ise
 ```
-**Not:** `phases/` klasoru Standard modda ZORUNLUDUR. Sadece REPORT.md uretmek yeterli degil.
+**Not:** `phases/` klasoru Standard modda ZORUNLUDUR. Sadece REPORT.md uretmek yeterli degil. Review mining verisi 02'ye gomulmez; ayri dosya olarak yazilir. "Kanonik Faz" = `methodology/phases.md` numaralandirmasi.
 
 ### 3. Deep (~8-12 saat)
 **Ne zaman:** "Gelistirmeye baslamadan once her seyi bilmek istiyorum"
 
-**Pipeline:** Standard pipeline + asagidakiler:
+**Pipeline:** Standard pipeline (adim 1-6) + asagidakiler:
 7. Ozellik karsilastirma matrisi (temel/gelismis/benzersiz/eksik)
 8. ASO keyword arastirmasi (6+ sorgu, rakip ASO analizi + reklam kreatif aci analizi [Faz 4 Adim 8 verisinden])
-9. Finansal model (3 senaryo: konservatif/realistik/iyimser)
-10. Proje brief + MVP scope + Moat analizi
-11. Seytan'in avukati (varsayim tablosu, menopoz testi, en kotu senaryolar)
-12. → `REPORT.md` + tam faz ciktilari
+9. Finansal model (3 senaryo: konservatif/realistik/iyimser) — **sablon:** `methodology/financial-model-template.md`
+10. Proje brief + MVP scope + Moat analizi (kanonik Faz 9)
+11. Seytan'in avukati (varsayim tablosu, menopoz testi, en kotu senaryolar) (kanonik Faz 10)
+12. → `REPORT.md` + tam faz ciktilari. Karar GO ise Sonraki Adimlar'a lansman yonlendirmesi: `methodology/launch-playbook.md`
 
-**Cikti:**
+**Cikti (ZORUNLU yapi — dosya adlari AYNEN boyle):**
 ```
 output/{tarih}-{konu}/
 ├── REPORT.md
 ├── phases/
-│   ├── 01-market-scan.md
-│   ├── 02-competitor-analysis.md
-│   ├── 03-review-mining.md
-│   ├── 04-scoring.md
-│   ├── 05-validation.md
-│   ├── 06-feature-matrix.md
-│   ├── 07-aso-research.md
-│   ├── 08-financial-model.md
-│   ├── 09-project-brief.md
-│   └── 10-devils-advocate.md
+│   ├── 01-market-scan.md … 06-prebuild-plan.md   # Standard ile AYNI (yukarida)
+│   ├── 07-feature-matrix.md
+│   ├── 08-aso-research.md
+│   ├── 09-financial-model.md      # sablon: financial-model-template.md
+│   ├── 10-project-brief.md        # kanonik Faz 9
+│   └── 11-devils-advocate.md      # kanonik Faz 10
 └── data/
     └── raw-search-results.md
 ```
@@ -150,6 +152,8 @@ Puanlama sonrasi ZORUNLU kontrol:
 | Beyan edilen niyet/iltifat tek delil | O kriter (Talep/Gelir) MAX 3 |
 | Rekabet 4-5 ama adlandirilmis icgoru yok | Rekabet puani MAX 3 |
 | Keyword difficulty yuksek + wedge yok | Rekabet puani MAX 2 |
+
+**Yetkili kaynak:** Bu tablo OZETTIR. Tam ve yetkili liste (ankorlar, formuller, Dagitim Fizibilitesi dahil): `methodology/scoring-model.md`. Celiski durumunda scoring-model.md esas alinir.
 
 ### 4. Menopoz Testi
 Pazar raporu buldugunda MUTLAKA uygula:
@@ -204,11 +208,11 @@ methodology/
 ├── data-collection-protocol.md  # Faz bazli sorgu sablonlari (WebSearch/WebFetch)
 ├── prompt-templates.md          # Her faz icin hazir prompt'lar
 ├── tools-and-data-sources.md    # Arac guvenilirlik matrisi + Claude yetenekleri
-├── financial-model-template.md  # Bottom-up gelir modeli + benchmark'lar
-├── launch-playbook.md           # Lansman stratejisi
+├── financial-model-template.md  # Bottom-up gelir modeli + benchmark'lar (Deep adim 9 sablonu)
+├── launch-playbook.md           # Lansman stratejisi (GO karari SONRASI — rapor Sonraki Adimlar'dan yonlendirilir)
 └── patterns/
-    ├── red-flags.md             # 15 tehlike isareti
-    └── green-flags.md           # 15 basari isareti
+    ├── red-flags.md             # 17 tehlike isareti (RF-1 … RF-17)
+    └── green-flags.md           # 15 basari isareti (GF-1 … GF-15)
 ```
 
 ### Sablonlar
@@ -217,10 +221,16 @@ templates/
 └── report-template.md           # Final rapor formati
 ```
 
+### Komutlar
+```
+.claude/commands/                # /quick-scan, /standard, /deep, /compare
+```
+
 ### Ciktilar
 ```
-output/                          # Her arastirma icin ayri klasor
-└── {YYYY-MM-DD}-{konu}/
+output/
+├── INDEX.md                     # Scoreboard: tum analizlerin skor/karar/durum ozeti (her rapor sonrasi guncellenir)
+└── {YYYY-MM-DD}-{konu}/         # Her arastirma icin ayri klasor
     ├── REPORT.md
     ├── phases/
     └── data/
@@ -246,16 +256,16 @@ Agent tool ile paralel calistirilabilecek arastirma gruplari:
 [PARALEL] 2. App Store tarama | Google Trends | Reddit sentiment
 [PARALEL] 3. Review mining | Gelir kaniti | Fiyat matrisi | Reklam istihbarati
 [SERI]    4. Puanlama (K1 fail → early termination, K3 < 0.5 → kisalt)
-[SERI]    5. Dogrulama + Rapor + Cross-report karsilastirma
+[SERI]    5. Dogrulama + Faz 5.5 plani (GO/SARTLI GO ise) + Rapor + Cross-report + INDEX guncelle
 ```
 
 ### Deep
 ```
-Standard pipeline +
-[PARALEL] 6. Ozellik matrisi | ASO arastirmasi | Finansal model
-[SERI]    7. Proje brief + MVP (6'ya bagimli)
+Standard pipeline (1-5) +
+[PARALEL] 6. Ozellik matrisi | ASO arastirmasi | Finansal model (sablon: financial-model-template.md)
+[SERI]    7. Proje brief + MVP + Moat (6'ya bagimli)
 [SERI]    8. Seytan'in avukati (tum verilere bagimli)
-[SERI]    9. Final rapor
+[SERI]    9. Final rapor + INDEX guncelle (GO ise launch-playbook yonlendirmesi)
 ```
 
 ---
@@ -284,3 +294,4 @@ Analiz sonucunda MVP onerisi yaparken su default stack'i kullan (kullanici farkl
 - **Gelir tahminlerinde %50 hata payi:** Sensor Tower/data.ai rakamlari tahmin. Yarilayip hala mantikli mi kontrol et.
 - **Survivorship bias:** IndieHackers'ta sadece basarili insanlar paylasim yapar.
 - **"Rakip yok" = "Pazar yok":** App Store'da rakip bulamiyorsan, pazar yoktur.
+- **Arastirma bitince is bitmez:** GO/SARTLI GO cikan fikir once Faz 5.5 davranis dogrulamasindan gecer (`pre-build-validation.md`); dogrulanan fikir icin lansman plani `launch-playbook.md`'den baslar. Rapor Durum alani (`FAZ 5.5 BEKLIYOR` → `DOGRULANDI`/`TERK`) INDEX.md'de takip edilir.

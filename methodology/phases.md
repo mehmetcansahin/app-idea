@@ -108,6 +108,7 @@
 **Gate:** GO icin guven >=%70 + en az 1 gercek davranis sinyali (sadece "kullanirim/begendim" YETMEZ -> RF-16)
 **Basarisizlik:** Sadece beyan -> Talep/Gelir override (MAX 3); problem hic dogrulanamadi -> SISP (RF-17), Faz 8'e/1'e don
 **Not:** Quick Scan'de opsiyonel; Standard/Deep'te GO adayi icin ZORUNLU. En gec Faz 9 oncesi tamamlanmali.
+**Cikti dosyasi (Standard/Deep):** `phases/06-prebuild-plan.md` -- Claude'un teslim ettigi plan (landing kopyasi + gorusme kilavuzu + ONCEDEN yazilmis esikler); rapor Durum'u "FAZ 5.5 BEKLIYOR" olur.
 
 ---
 
@@ -195,3 +196,11 @@
 
 **Gate:** Olumcul kusur yok
 **Basarisizlik:** Pivot (ayni pazar farkli aci) veya Kill (Faz 1'e don)
+
+---
+
+## Faz 10 Sonrasi: Lansman
+
+GO karari + Faz 5.5 DOGRULANDI ise arastirma biter, uygulama basla(tila)bilir.
+Lansman stratejisi (pre-launch, ASO, kanal plani, metrikler) icin: `launch-playbook.md`
+Finansal hedef takibi icin Faz 9'da kurulan model (`financial-model-template.md`) kullanilir.

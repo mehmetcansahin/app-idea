@@ -725,8 +725,9 @@ WebSearch: "[LIDER APP] price increase OR shutdown OR acquired 2025 2026"
 
 **Sorgu 3 — Yeni iOS API'leri:**
 ```
-WebSearch: "iOS 19 new API features [KATEGORI]"
-WebSearch: "WWDC 2025 [KATEGORI] related announcements"
+WebSearch: "iOS [GUNCEL_SURUM] new API features [KATEGORI]"
+WebSearch: "WWDC [GUNCEL_YIL] [KATEGORI] related announcements"
+(GUNCEL_SURUM/GUNCEL_YIL: arastirma tarihindeki en yeni iOS major surumu ve son WWDC yili ile doldur)
 ```
 
 **Sorgu 4 — Regulasyon/trend degisimi:**
