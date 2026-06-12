@@ -85,7 +85,7 @@ output/{tarih}-{konu}/
 7. Ozellik karsilastirma matrisi (temel/gelismis/benzersiz/eksik)
 8. ASO keyword arastirmasi (6+ sorgu, rakip ASO analizi + reklam kreatif aci analizi [Faz 4 Adim 8 verisinden])
 9. Finansal model (3 senaryo: konservatif/realistik/iyimser) — **sablon:** `methodology/financial-model-template.md`
-10. Proje brief + MVP scope + Moat analizi (kanonik Faz 9)
+10. Proje brief + MVP scope + Moat analizi (kanonik Faz 9). Faz 5.5 henuz insan tarafindan yurutulmediyse brief DOGRULAMAYA KOSULLU TASLAKTIR — nihai GO karari Faz 5.5 sonucuna baglidir (Durum: FAZ 5.5 BEKLIYOR).
 11. Seytan'in avukati (varsayim tablosu, menopoz testi, en kotu senaryolar) (kanonik Faz 10)
 12. → `REPORT.md` + tam faz ciktilari. Karar GO ise Sonraki Adimlar'a lansman yonlendirmesi: `methodology/launch-playbook.md`
 
@@ -94,7 +94,7 @@ output/{tarih}-{konu}/
 output/{tarih}-{konu}/
 ├── REPORT.md
 ├── phases/
-│   ├── 01-market-scan.md … 06-prebuild-plan.md   # Standard ile AYNI (yukarida)
+│   ├── 01-market-scan.md … 06-prebuild-plan.md   # Standard ile AYNI (06 sadece GO/SARTLI GO ise)
 │   ├── 07-feature-matrix.md
 │   ├── 08-aso-research.md
 │   ├── 09-financial-model.md      # sablon: financial-model-template.md
@@ -240,32 +240,32 @@ output/
 
 ## Paralellestirme Stratejisi
 
-Agent tool ile paralel calistirilabilecek arastirma gruplari:
+Agent tool ile paralel calistirilabilecek arastirma gruplari. Gruplar HARF ile etiketlidir
+(yukaridaki mod pipeline adim numaralariyla [1-12] karistirilmamasi icin):
 
 ### Quick Scan
 ```
-[SERI]    1. Girdi analizi + disambiguation (konu belirsizse)
-[PARALEL] 2a. App Store lider tespiti
-           2b. Google Trends kontrol
-[SERI]    3. Puanlama (K1 fail → early termination, K3 < 0.5 → kisalt) + Rapor
+[SERI]    A. Girdi analizi + disambiguation (konu belirsizse)
+[PARALEL] B. App Store lider tespiti | Google Trends kontrol
+[SERI]    C. Puanlama (K1 fail → early termination, K3 < 0.5 → kisalt) + Rapor
 ```
 
 ### Standard
 ```
-[SERI]    1. Girdi analizi + disambiguation + use case segmentasyonu
-[PARALEL] 2. App Store tarama | Google Trends | Reddit sentiment
-[PARALEL] 3. Review mining | Gelir kaniti | Fiyat matrisi | Reklam istihbarati
-[SERI]    4. Puanlama (K1 fail → early termination, K3 < 0.5 → kisalt)
-[SERI]    5. Dogrulama + Faz 5.5 plani (GO/SARTLI GO ise) + Rapor + Cross-report + INDEX guncelle
+[SERI]    A. Girdi analizi + disambiguation + use case segmentasyonu
+[PARALEL] B. App Store tarama | Google Trends | Reddit sentiment
+[PARALEL] C. Review mining | Gelir kaniti | Fiyat matrisi | Reklam istihbarati
+[SERI]    D. Puanlama (K1 fail → early termination, K3 < 0.5 → kisalt)
+[SERI]    E. Dogrulama + Faz 5.5 plani (GO/SARTLI GO ise) + Rapor + Cross-report + INDEX guncelle
 ```
 
 ### Deep
 ```
-Standard pipeline (1-5) +
-[PARALEL] 6. Ozellik matrisi | ASO arastirmasi | Finansal model (sablon: financial-model-template.md)
-[SERI]    7. Proje brief + MVP + Moat (6'ya bagimli)
-[SERI]    8. Seytan'in avukati (tum verilere bagimli)
-[SERI]    9. Final rapor + INDEX guncelle (GO ise launch-playbook yonlendirmesi)
+Standard gruplari (A-E) +
+[PARALEL] F. Ozellik matrisi | ASO arastirmasi | Finansal model (sablon: financial-model-template.md)
+[SERI]    G. Proje brief + MVP + Moat (F'ye bagimli)
+[SERI]    H. Seytan'in avukati (tum verilere bagimli)
+[SERI]    I. Final rapor + INDEX guncelle (GO ise launch-playbook yonlendirmesi)
 ```
 
 ---

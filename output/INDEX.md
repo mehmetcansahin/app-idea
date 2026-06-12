@@ -26,5 +26,6 @@
 
 ## Tarihsel Notlar
 
+- Debt Payoff skor farki: Eski raporun (2026-03-12) icindeki yeniden puanlama (59 → 47.2) yalnizca Gelir duzeltmesini (3→2, OxbowSoft indie degil) icerir. Guncel analiz (2026-06-01) ek olarak Zamanlama'yi da duzeltir (3→2, yasam-dongusu kurali: Regular/duz): 64 → 59 → 56. **Gecerli skor: 44.8.**
 - 2026-03-12 People Finder: Standard mod ama `phases/` klasoru uretilmemis (v3.2.1 oncesi calisma; yapi kurali sonradan netlestirildi).
 - 2026-06-01 Debt Payoff: `phases/` dosya adlari eski sema (03-scoring, 04-faz5.5-validation; review-mining ayri dosya degil). v3.2.1 itibariyle zorunlu adlandirma: 01-market-scan … 06-prebuild-plan.

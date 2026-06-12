@@ -2,7 +2,7 @@
 
 > Tarih: [TARIH]
 > Mod: Quick Scan / Standard / Deep
-> Metodoloji: v3.2 (10 Faz + Faz 5.5, 3 Katmanli Puanlama + Dagitim Fizibilitesi)
+> Metodoloji: v3.2 — sablon rev. v3.2.1 (10 Faz + Faz 5.5, 3 Katmanli Puanlama + Dagitim Fizibilitesi)
 
 ---
 
