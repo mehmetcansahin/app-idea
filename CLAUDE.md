@@ -145,7 +145,7 @@ Puanlama sonrasi ZORUNLU kontrol:
 |-------|-------|
 | Lider rating < 500 | Katman 1 FAIL → ELEN |
 | Regulasyon engeli indie icin asilmaz | Katman 1 FAIL → ELEN |
-| Indie gelir kaniti yok | Gelir puani MAX 2 |
+| Indie gelir kaniti yok | Gelir puani MAX 2 (B5 istisnasi: Acquire/Flippa/Starter Story komparasyonu ima edilen MRR'a cevrilip ankora eslesirse override kalkar — bkz. scoring-model.md) |
 | Top 5 hepsi 4.7+ yildiz | Rekabet puani MAX 2 |
 | Apple/Google yerlesik cozum var | Rekabet puani MAX 1 |
 | Veri/network/regulasyon moat | Rekabet puanini 1 dusur (moat duzeltmesi) |
@@ -165,6 +165,7 @@ trends.google.com interaktif grafigi WebFetch ile okunamaz. Bunun yerine:
 - `WebSearch: "[keyword] app" trend popularity growth 2024 2025 2026` ile dolayli veri topla
 - Makale ve raporlardan trend yonu cikar
 - Etiket: TAHMINI (dogrudan Trends verisi degil, dolayli cikarim)
+- TELAFI (B1): tarayici/insan erisimi varsa Glimpse (Trends'i mutlak hacme cevirir) + Exploding Topics (breakout/buyume %) kullan → Yasam-Dongusu (#10) icin daha guvenilir, KESIN'e yakin etiket. Detay: `methodology/tools-and-data-sources.md` (Bolum 2/5).
 
 ### 6. "Bulunamadi" da Veridir
 | Bulunamayan | Sonuc |
@@ -180,7 +181,7 @@ Beyan edilen niyet ve iltifat veri DEGILDIR; sadece spesifik gecmis davranis say
 Yuksek Rekabet (4-5) icin rakiplerin kacirdigi SPESIFIK icgoruyu adlandir; ciplak "bosluk var" yetmez (yoksa MAX 3). Cozum-once secilmis fikir (SISP) bir UYARI'dir. "Rakip yok = pazar yok"un keskin hali: kazanan sinyal = rakipler VAR + adlandirilmis kacirilmis icgoru. Detay: red-flags RF-17.
 
 ### 9. Dagitim Fizibilitesi (Kesfedilebilirlik)
-Pazar buyuk olsa da app KESFEDILEMEZSE olmaz. Keyword difficulty'yi (0-100) hedef keyword'lerde rank alan top-10 uygulamanin rating sayilarindan tahmin et (paid arac gerekmez). Yuksek difficulty + farklilasma wedge'i yok → Rekabet MAX 2. Detay: `methodology/scoring-model.md` (Dagitim Fizibilitesi).
+Pazar buyuk olsa da app KESFEDILEMEZSE olmaz. Keyword difficulty'yi (0-100) hedef keyword'lerde rank alan top-10 uygulamanin rating sayilarindan tahmin et (paid arac gerekmez). EK VERI (B3): tarayici/insan erisimi varsa SearchAds.com (Mobile Action, ucretsiz plan) Apple popularity'sini yuzeye cikarir → tahmini GUCLENDIRIR (ama Ekim 2025 bozulmasi gecerli, <35 bastiriliyor, tek-kaynak DEGIL). Yuksek difficulty + farklilasma wedge'i yok → Rekabet MAX 2. Detay: `methodology/scoring-model.md` (Dagitim Fizibilitesi).
 
 ### 10. Yasam-Dongusu (Zamanlama)
 Zamanlama puanindan once trendi siniflandir: Asama (Exploding/Regular/Peaked) + Buyume sekli (Ustel/Sabit/Duragan), mutlak hacimden bagimsiz. PEAKED (zirve yapmis fad) yuksek zamanlama puani ALAMAZ. Etiket TAHMINI.
@@ -194,6 +195,12 @@ FB Ad Library, Google Ads Transparency Center ve TikTok Creative Center WebFetch
 - Harcama TUTARI hicbir kaynakta yok (tahmin = DUSUK). Apple Search Ads kutuphanesi yok = kor nokta, raporda not et.
 - Reklam harcamasi indie gelir kaniti DEGILDIR; "indie gelir yok → Gelir MAX 2" kurali degismez.
 Detay: `methodology/data-collection-protocol.md` (Faz 4 Adim 8), `methodology/tools-and-data-sources.md` (Bolum 4.5).
+
+### 12. JTBD Forces (Goc Analizi)
+Goc sinyalini (Faz 4/7) ham sayma; NEDEN goculdugunu coz: goc ancak Push (mevcuttan iten aci) + Pull (yeniye ceken vaat) > Anxiety (gecis korkusu) + Habit (aliskanlik) ise GERCEK'tir. Aksi halde "fantezi goc" (RF-7). Detay: `methodology/data-collection-protocol.md` (Faz 4 Adim 4 kayit formati).
+
+### 13. Riskiest Assumption Test (RAT) — Faz 5.5
+Faz 5.5'te otomatik talebi degil, EN RISKLI varsayimi test et. Varsayimlari (Talep/Odeme/Teknik/Retention/Regulasyon/Dagitim) etki x belirsizlik ile sirala; en riskliyi uygun yontemle (landing/on-satis/spike/concierge/uzman-gorusme/ASO-testi) once dogrula. Cogu tuketici app'inde en riskli = Talep. Detay: `methodology/pre-build-validation.md` (Adim 0).
 
 ---
 
@@ -291,7 +298,7 @@ Analiz sonucunda MVP onerisi yaparken su default stack'i kullan (kullanici farkl
 
 - **Confirmation bias'tan kacin:** Bir fikri begenmek veri degil. Puanlar objektif ankorlara dayali olmali.
 - **Scope creep:** MVP onerisinde max 3-4 ekran, 3 ana ozellik. "V1'de olmayacaklar" listesi zorunlu.
-- **Gelir tahminlerinde %50 hata payi:** Sensor Tower/data.ai rakamlari tahmin. Yarilayip hala mantikli mi kontrol et.
+- **Gelir tahminlerinde %50 hata payi:** Sensor Tower (eski data.ai dahil) rakamlari tahmin. Yarilayip hala mantikli mi kontrol et.
 - **Survivorship bias:** IndieHackers'ta sadece basarili insanlar paylasim yapar.
 - **"Rakip yok" = "Pazar yok":** App Store'da rakip bulamiyorsan, pazar yoktur.
 - **Arastirma bitince is bitmez:** GO/SARTLI GO cikan fikir once Faz 5.5 davranis dogrulamasindan gecer (`pre-build-validation.md`); dogrulanan fikir icin lansman plani `launch-playbook.md`'den baslar. Rapor Durum alani (`FAZ 5.5 BEKLIYOR` → `DOGRULANDI`/`TERK`) INDEX.md'de takip edilir.

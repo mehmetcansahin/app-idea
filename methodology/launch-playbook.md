@@ -325,6 +325,18 @@ Pre-launch'tan post-launch analizine kadar her adim.
 | App Store rating sayisi | 10+ | 30+ | 100+ |
 | Ortalama rating | 4.0+ | 4.5+ | 4.8+ |
 
+### PMF Sinyali — Sean Ellis %40 Testi (Ay 1+)
+
+Metriklerin yaninda tek standart PMF olcusu ekle. Yeterli aktif kullanici olunca (Ay 1-2) anket gonder:
+
+> **Soru:** "[Uygulama]'yi artik kullanamasan ne hissederdin?"
+> Secenekler: Cok uzulurdum / Biraz uzulurdum / Uzulmezdim / Zaten kullanmiyorum
+
+- **Esik:** "Cok uzulurdum" >= **%40** = PMF sinyali (Sean Ellis benchmark'i, ~100 startupta dogrulanmis).
+- **Kimlere:** Sadece NITELIKLI kullanicilar — cekirdek ozelligi yasamis, son donemde >=2 kez kullanmis olanlar. Ham signup'lari ve churn olanlari HARIC tut.
+- **Ornek buyuklugu:** >=40 yanit hedefle (az yanit = gurultu).
+- **Aksiyon:** <%40 ise "Cok uzulurdum" diyen kohortu segmentle (onlari ne ceken?), urunu o cekirdege daralt. Bu, Davranis sinyali (RF-16 uyumlu) — beyani degil, gercek kullanimi olcer.
+
 ### Ay 3 Kontrol Noktasi (KRITIK KARAR)
 
 | Durum | MRR | Retention (D30) | Aksiyon |
@@ -353,6 +365,10 @@ Asagidaki 4 soruyu cevapla:
 4. **Kullanicilar oneriyor mu?** (App Store rating 4.5+ ve yorum sayisi artiyor)
    - Evet → organik buyume devam edecek
    - Hayir → urun deneyimini iyilestir
+
+5. **PMF sinyali var mi?** (Sean Ellis: "Cok uzulurdum" >= %40)
+   - Evet → gercek PMF, buyumeye guvenle yatirim yap
+   - Hayir → cekirdek kohorta daralt, %40'a cikana kadar buyume harcamasini ertele
 
 ---
 
@@ -711,7 +727,7 @@ Lansman oncesinde bu checklist'i doldur. Her "evet" = 1 puan.
 
 ### Ucretli Araclar (Buyudukce)
 - **ASO:** AppTweak ($69/ay), ASOTools ($49/ay)
-- **Market Data:** Sensor Tower, data.ai
+- **Market Data:** Sensor Tower (eski data.ai dahil), AppFigures, AppMagic
 - **A/B Test:** SplitMetrics ($100+/ay)
 - **Email (buyudukce):** ConvertKit, Beehiiv
 - **Design:** Figma Pro ($12/ay), Rotato ($49)

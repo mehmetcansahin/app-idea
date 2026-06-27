@@ -2,7 +2,7 @@
 
 > Tarih: [TARIH]
 > Mod: Quick Scan / Standard / Deep
-> Metodoloji: v3.2 — sablon rev. v3.2.1 (10 Faz + Faz 5.5, 3 Katmanli Puanlama + Dagitim Fizibilitesi)
+> Metodoloji: v3.3 - sablon rev. v3.3 (10 Faz + Faz 5.5, 3 Katmanli Puanlama + Dagitim Fizibilitesi + JTBD/Lean Canvas/PMF)
 
 ---
 
@@ -76,6 +76,11 @@
 
 **Adlandirilmis Icgoru (Rekabet 4-5 icin ZORUNLU):** [Rakiplerin kacirdigi SPESIFIK icgoru tek cumleyle — neden onlar yapmamis/yapamamis. Adlandirilamiyorsa Rekabet MAX 3.]
 
+**Goc Dinamigi (JTBD Forces) ⚐ STANDARD+:** [Kullanicilar mevcut cozumden NEDEN ayriliyor/ayrilmiyor? Push (iten aci) + Pull (ceken vaat) vs Anxiety (gecis korkusu) + Habit (aliskanlik). Push+Pull > Anxiety+Habit ise goc gercek; degilse fantezi (RF-7).]
+
+### 2x2 Stratejik Konumlandirma ⚐ DEEP
+[Kullanici-degeri 2 ekseni (or. Basitlik <-> Guc) + rakiplerin yerlesimi + bos pozisyon/wedge. Bos ceyrek ancak adlandirilmis icgoruyle firsattir.]
+
 ### Fiyat Karsilastirmasi
 | Metrik | Deger |
 |--------|-------|
@@ -127,7 +132,12 @@
 
 *Bulunamadiysa: "X farkli sorgu yapildi, indie gelir kaniti BULUNAMADI"*
 
+**Satin-alma/exit komparasyonu (B5):** [Acquire.com/Flippa ilani veya Starter Story medyani varsa: ima edilen MRR = satis fiyati / carpan. Ankora (>=$1K/ay) eslesiyorsa "Gelir MAX 2" override'ini kaldirir. Tek/zayif komparasyon = TAHMINI, MAX 3.]
+
 **Reklam longevity sinyali:** [2+ rakip 6+ aydir kesintisiz reklam donduruyorsa belirt — parasallasma DAVRANIS kaniti; indie gelir kaniti DEGILDIR, "Gelir MAX 2" kuralini degistirmez]
+
+### Quantified Value Prop ⚐ STANDARD+
+[Status quo'ya gore degeri SAYISALLASTIR: "X saat / $Y / Z adim tasarruf". Fiyatlandirma ve Talep argumanini besler.]
 
 ### Fiyat Modeli Onerisi
 | Plan | Fiyat | Icerik |
@@ -185,6 +195,17 @@
 ---
 
 ## 7. MVP Onerisi ⚐ STANDARD+
+
+### Lean Canvas (1 sayfa) ⚐ DEEP
+| Problem | Musteri Segmenti | UVP | Cozum | Kanallar |
+|---------|------------------|-----|-------|----------|
+| [top 3 problem] | [hedef kitle] | [essiz deger onerisi] | [top 3 ozellik] | [ASO/Reddit/PH...] |
+
+| Gelir Akisi | Maliyet Yapisi | Anahtar Metrikler | Haksiz Avantaj (= Moat) |
+|-------------|----------------|-------------------|-------------------------|
+| [fiyat modeli] | [Apple %, altyapi, UA] | [aktivasyon/retention/MRR] | [veri/network/gecis...] |
+
+*Bos kalan blok = kapatilmasi gereken arastirma boslugu.*
 
 ### Ekranlar (Max 4)
 | # | Ekran | Ne Yapar |
@@ -252,7 +273,7 @@
 
 ---
 
-*Bu rapor App Idea Research Agent v3.2 metodolojisi ile olusturulmustur.*
+*Bu rapor App Idea Research Agent v3.3 metodolojisi ile olusturulmustur.*
 
 ---
 

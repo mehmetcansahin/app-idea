@@ -149,6 +149,8 @@ Cikti formati (her cluster icin):
 - UX kalitesi: Dusuk/Orta/Yuksek
 - Fiyat boslugu var mi: Evet/Hayir - aciklama
 - Giris firsati: Var/Yok - neden
+- A6 (2x2 konumlandirma, DEEP): kullanici-degeri 2 ekseni + rakip yerlesimi + bos pozisyon/wedge
+- A3 (JTBD Forces): goc Push+Pull vs Anxiety+Habit — goc gercek mi fantezi mi (RF-7)
 
 **Reklam Istihbarati:**
 - Reklam veren rakip sayisi: [N] / [toplam rakip]
@@ -217,7 +219,7 @@ Zamanlama (%15):
 
 ZORUNLU OVERRIDE KURALLARI:
 - Lider rating < 2K → UYARI: "Mikro pazar — dikkatli ilerle"
-- Indie gelir kaniti yoksa → Gelir Kaniti skoru MAX 2
+- Indie gelir kaniti yoksa → Gelir Kaniti skoru MAX 2 (B5 istisnasi: Acquire/Flippa/Starter Story komparasyonu ima edilen MRR'a [satis fiyati / carpan] cevrilip ankora eslesirse override kalkar; tek/zayif komparasyon hala MAX 3)
 - Top 5 hepsi 4.7+ yildiz → Rekabet Boslugu skoru MAX 2
 - Apple/Google yerlesik alternatifi varsa → Rekabet Boslugu skoru MAX 1
 - DUSUK etiketli veriye dayanan kriter → O kriter skoru MAX 3
@@ -286,6 +288,7 @@ GATE: En az 3 cluster'in Final Skoru 45+ olmali.
 ```
 [FIKIR] icin build-oncesi dogrulama paketi uret:
 
+0. EN RISKLI VARSAYIM (RAT): Varsayimlari (Talep/Odeme/Teknik/Retention/Regulasyon/Dagitim) etki x belirsizlik ile sirala. EN riskliyi sec ve testi ona gore belirle (Talep→landing+gorusme; Odeme→on-satis; Teknik→spike; Retention→concierge; Regulasyon→uzman gorusme; Dagitim→ASO testi). Cogu tuketici app'inde Talep'tir; asagidaki paket o durum icindir.
 1. LANDING PAGE METNI (fake-door): baslik (<=10 kelime), alt baslik, 3 FAYDA maddesi, tek CTA. Konumlandirma Faz 9 taslagindan tureyecek. Ozellik degil fayda yaz.
 2. ONCEDEN-YAZILAN ESIK: "Su trafik kaynagindan X ziyaretcinin %Y'si email/CTA birakirsa GO." (Esik sonradan DEGISTIRILEMEZ — pre-registration.)
 3. MOM-TEST GORUSME KILAVUZU: 5-7 soru, HEPSI gecmis davranis odakli ("son kez ne zaman... ne yaptin... ne odedin"). Fikri sunan/hipotetik soru ("kullanir miydin") YASAK.
@@ -357,10 +360,12 @@ Her fikir icin 4 dogrulama kontrolu:
 2. INDIE GELIR KANITI
    - IndieHackers, Reddit, Twitter #buildinpublic'te bu kategoride indie dev'in gelir paylasimi var mi?
    - Var → ne kadar? Yok → "Kanitlanamamis"
+   - B5: Acquire.com/Flippa ilani veya Starter Story medyani da ara. Varsa ima edilen MRR = satis fiyati / carpan; ankora (>=$1K/ay) eslesirse "Gelir MAX 2" override kalkar (survivorship'i dengeler).
 
 3. KULLANICI GOC SINYALI
    - Reddit'te "[lider uygulama] alternative", "leaving [uygulama]" gibi tartismalar var mi?
    - Lider uygulamada fiyat artisi/kalite dususu var mi?
+   - A3 (JTBD Forces): goc NEDEN oluyor? Push (iten aci) + Pull (ceken vaat) > Anxiety (gecis korkusu) + Habit (aliskanlik) ise GERCEK; degilse fantezi goc (RF-7).
 
 4. PAZAR RAPORU vs GERCEK
    - Pazar buyuklugu raporlari ne diyor?
@@ -451,6 +456,23 @@ GATE: Net #1 kazanan veya max 2 finalist olmali.
 **Benim farkim (tek cumle):**
 **Neden simdi?**
 **Final Skor (3 katmanli):**
+
+## Lean Canvas (1 sayfa, 9 blok)
+| Blok | Icerik |
+|------|--------|
+| Problem (top 3) | ... |
+| Musteri Segmenti | ... |
+| UVP (essiz deger onerisi) | ... |
+| Cozum (top 3 ozellik) | ... |
+| Kanallar | ... (ASO/Reddit/PH/SEO) |
+| Gelir Akisi | ... (fiyat modeli) |
+| Maliyet Yapisi | ... (Apple kesintisi, altyapi, UA) |
+| Anahtar Metrikler | ... (aktivasyon/retention/MRR) |
+| Haksiz Avantaj (= Moat) | ... |
+Bos kalan blok = kapatilmasi gereken arastirma boslugu olarak isaretle.
+
+## Quantified Value Prop
+Status quo'ya gore degeri SAYISALLASTIR: "[X saat] / [$Y] / [Z adim] tasarruf veya kazanc". Kaynak/varsayim belirt.
 
 ## MVP Scope
 

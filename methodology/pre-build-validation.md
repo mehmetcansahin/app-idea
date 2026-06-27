@@ -35,6 +35,36 @@ Her fazda kararina bir guven % ata ve raporda goster:
 
 ---
 
+## Adim 0: En Riskli Varsayim (RAT) — NE test edilecek?
+
+> Lean Startup ilkesi: 20 saati en pahaliya patlayacak BELIRSIZLIGE harca, otomatik talebe degil.
+> Bu metodoloji eskiden Faz 5.5'te HEP talebi test ediyordu; cogu tuketici app'i icin dogru, ama
+> her zaman degil. Once en riskli varsayimi bul.
+
+1. **Varsayimlari listele** (fikre gore 4-6 tane), ornek kategoriler:
+   - **Talep:** Bu problemi yasayan yeterince insan bu cozumu istiyor mu?
+   - **Odeme-niyeti:** Isteyenlerin yeterli kismi PARA oder mi?
+   - **Teknik-fizibilite:** Cekirdek ozellik indie kaynaklarla yapilabilir mi? (API/ML/donanim sinirlari)
+   - **Retention:** Bir kez kullanan geri doner mi? (or. saglik app'leri ~%94/90gun churn — RF-12)
+   - **Regulasyon:** Indie bu alanda yasal olarak yayinlayabilir mi? (RF-15)
+   - **Dagitim:** Kesfedilebilir mi? (yuksek keyword difficulty + wedge yok = RF, Dagitim Fizibilitesi)
+2. **Her varsayimi (Etki x Belirsizlik) ile puanla** (1-3 x 1-3). En yuksek carpim = EN RISKLI VARSAYIM.
+3. **En riskliyi ONCE test et.** Tur -> yontem eslestirmesi:
+
+| En riskli varsayim | Uygun test (20 saat) |
+|--------------------|----------------------|
+| Talep | Landing page / fake-door (asagida A) + Mom-Test gorusmeleri (asagida B) |
+| Odeme-niyeti | On-satis / on-siparis (gercek Stripe linki), sahte fiyat butonu -> "satin al" tiklamasi |
+| Teknik-fizibilite | Teknik spike / kagit prototip — cekirdek ozelligi 1-2 gunde dogrula |
+| Retention | Concierge / Wizard-of-Oz — degeri elle teslim et, geri donus var mi gor |
+| Regulasyon | Masa-basi + 1 uzman/avukat gorusmesi (kod yok) — engel asilabilir mi |
+| Dagitim | ASO/keyword testi: SearchAds.com gercek popularity + kucuk reklamda CTR |
+
+**Kural:** Cogu durumda en riskli = Talep, ve asagidaki A+B testleri uygulanir. Farkliysa yontemi
+yukaridaki tablodan sec ama AYNI disiplin gecerli: esigi ONCEDEN yaz, davranis sinyali ara, beyani sayma.
+
+---
+
 ## 20-Saat Basamak: Iki Paralel Test
 
 ### A) Landing Page / Fake-Door Testi

@@ -80,7 +80,7 @@ Bu isaretlerden ne kadar cok varsa, basari olasiligi o kadar yuksek.
 - **Gercek ornek:** Finans uygulamalarinda CPA $15-30 arasi ama LTV $80-200. Bir kullanici ortalama 18 ay abone kalir x $8/ay = $144 LTV. Saglik uygulamalarinda CPA $5-10 ama LTV $25-60 (churn yuzunden daha dusuk).
 - **Neden guclu:** Yuksek LTV = surdurulebilir buyume. Para kazandikca daha fazla reklam verebilirsin. "Flywheel" etkisi.
 - **Aksiyon:**
-  - Kategorinin ortalama LTV'sini arastir (SensorTower, data.ai raporlari)
+  - Kategorinin ortalama LTV'sini arastir (Sensor Tower [eski data.ai dahil], RevenueCat benchmark)
   - LTV:CPA oranini hesapla. 3:1+ = sagliklı, 5:1+ = mukemmel
   - Ilk 3 ayda organik buyumeye odaklan, sonra paid acquisition baslat
   - Retention artiran ozellikler LTV'yi dogrudan arttirir

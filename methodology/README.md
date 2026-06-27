@@ -1,4 +1,4 @@
-# App Arastirma Metodolojisi v3.2
+# App Arastirma Metodolojisi v3.3
 
 > 10 fazli, veri odakli, sistematik app fikri degerlendirme metodolojisi.
 > Menopoz tracker hatasından (890 rating'li "milyar dolarlik pazar") ve 20+ uygulama
@@ -15,6 +15,7 @@
 | v3.1.1 | 2026-06-01 | Regulasyon faktoru phases.md + prompt-templates.md'ye senkronize edildi (K1'e 4. kriter, K3'e 4. faktor); Faz 5 override listesi tum dosyalarda esitlendi; scoring-model.md tek yetkili kaynak ilan edildi |
 | v3.2 | 2026-06-01 | Differential dis-kaynak arastirmasindan 7 ekleme: Dagitim Fizibilitesi/keyword difficulty (#1), Faz 5.5 build-oncesi dogrulama [Walling 2/20/200 + Mom Test + fake-door] (#5), Mom Test kalite kurali/RF-16 (#2), adlandirilmis-icgoru + SISP/RF-17 (#3), Sales Safari watering-hole kesfi/Kural 7 (#4), Zamanlama yasam-dongusu etiketi (#6), Apple first-party talep sinyali (#7) |
 | v3.2.1 | 2026-06-11 | Senkronizasyon + yapi: CLAUDE.md'ye Faz 5.5 pipeline adimi + 06-prebuild-plan.md cikti dosyasi eklendi; report-template v3.2'ye yukseltildi (Durum/Guven, 1.3 Dagitim Fizibilitesi, 5.2 Faz 5.5 plani, yasam-dongusu, adlandirilmis icgoru); Deep cikti dosyalari 07-11 olarak yeniden numaralandi; financial-model (Deep adim 9 sablonu) ve launch-playbook (GO sonrasi) pipeline'a baglandi; "15 tehlike isareti" → 17 duzeltildi; output/INDEX.md scoreboard + Durum takibi; .claude/commands/ kisayollari; git versiyon kontrolu baslatildi |
+| v3.3 | 2026-06-26 | Akran-grubu karsilastirmasindan eklemeler. KAVRAMLAR: Lean Canvas + Quantified Value Prop (Faz 9), Riskiest Assumption Test/RAT (Faz 5.5 Adim 0), JTBD Forces of Progress (Faz 4/7 goc analizi), Sean Ellis %40 PMF testi (launch post), 2x2 stratejik konumlandirma (Faz 4 Adim 6.5). ARACLAR (referans + pipeline): Glimpse/Exploding Topics (Trends kor noktasi), SearchAds.com/AppTweak (keyword difficulty, Apple popularity - Eki 2025 bozulmasi gecerli), F5Bot/Syften (Reddit otomasyonu), Acquire.com/Flippa/Starter Story (gelir kaniti), AppFigures/AppMagic (indie app intel), IdeaBrowser/ValidatorAI (capraz-kontrol), AnswerThePublic, Meta audience size. DAVRANIS: B5 satin-alma komparasyonu ima edilen MRR'a cevrilince "Gelir MAX 2" override'ini kaldirabilir; A2 pre-build artik en riskli varsayimi once test eder. DUZELTME: data.ai 2024'te Sensor Tower'a katildi; GummySearch (Kas 2025 kapandi) kullanilmaz. Append-only: faz dosya adlari + kalite kurali numaralari degismedi |
 
 ## Temel Ilkeler
 

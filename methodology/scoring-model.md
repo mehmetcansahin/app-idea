@@ -54,6 +54,11 @@ Puanlamada kullanilacak "lider", kullanicinin giris yapacagi segmentte ayni kull
 
 **Reklam Longevity Destekleyici Sinyali:** Ad library'de (bkz. `tools-and-data-sources.md` 4.5) 2+ rakibin 6+ aydir kesintisiz donen reklami varsa, bu "pazar parasallasiyor" yonunde DAVRANIS kanitidir (Mom Test uyumlu) — raporda belirt ve Faz 7 gelir dogrulamasini derinlestirme gerekcesi say. Ancak sirket olcegindeki reklam harcamasi INDIE gelir kaniti DEGILDIR: "indie gelir kaniti yok → MAX 2" kurali aynen gecerli kalir; bu sinyal yalnizca 2 puanin guvenini artirir.
 
+**Satin-alma/Exit Komparasyonu Kanit Olarak (B5):** IndieHackers/Twitter survivorship-biaslidir. Acquire.com/Flippa ve Starter Story gelir kanitina KATKI yapabilir — ama once ima edilen aylik gelire cevir VE kanit turunu ayir:
+- **Ima edilen aylik gelir = satis fiyati / carpan.** Carpan AYLIK ise dogrudan (or. $48K / 36x aylik kar ≈ $1.3K/ay). Carpan YILLIK ise once 12'ye bol (or. $48K / 3x yillik = $16K/yil ÷ 12 ≈ $1.3K/ay). Carpan gelir mi kar mi oldugunu belirt; KAR carpanindan cikan rakami GELIR ankoruna dogrudan sayma.
+- **Kanit turu (Mom Test ile uyumlu):** KAPANMIS satis (gerceklesen islem) = DAVRANIS → ankora gore puanlanabilir. CANLI/satilmamis ILAN (asking price + satici-beyani gelir) = IDDIA → TAHMINI, o kriter MAX 3 (kac ilan olursa olsun; RF-16).
+- **Ankor + sayim kapisi:** rakami yukaridaki Gelir Kaniti olcegine gore puanla; olcek bagimsiz-kaynak SAYISINI da sart kosar (skor 4 = 2+ bagimsiz, skor 5 = 3+ bagimsiz). Tek komparasyon bu sayilari yakalamaz.
+
 ### Rekabet Boslugu (%20, max 20 puan)
 
 | Skor | Tanim | Objektif Ankor |
@@ -105,7 +110,7 @@ Puanlama sonrasi bu kontrolleri MUTLAKA uygula:
 | Kosul | Kural | Aciklama |
 |-------|-------|----------|
 | Lider rating < 2K | UYARI ekle | Mikro pazar — dikkatli ilerle |
-| Indie gelir kaniti yok | Gelir MAX 2 | Kimse kazanmiyorsa risk yuksek |
+| Indie gelir kaniti yok | Gelir MAX 2 | Kimse kazanmiyorsa risk yuksek. ISTISNA (B5): KAPANMIS satis komparasyonu (davranis) ima edilen aylik gelire cevrilip ankora ($1K+/ay) eslesirse override KALKAR. Canli/satilmamis ilan (iddia) = TAHMINI, hala MAX 3. |
 | Top 5 hepsi 4.7+ | Rekabet MAX 2 | Memnun kullaniciyi cekmek cok zor |
 | Apple/Google yerlesik alternatif | Rekabet MAX 1 | Yerlesik cozumle yarisma zor |
 | DUSUK etiketli veri | O kriter MAX 3 | Dusuk guvenilirlik → dusuk puan |

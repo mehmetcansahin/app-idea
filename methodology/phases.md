@@ -63,9 +63,10 @@
 1. Tam rakip listesi (min 5, ideal 10)
 2. Her rakip icin tam metadata (App Store WebFetch)
 3. Kotu yorum analizi (1-2 yildiz, min 10-20 yorum/rakip)
-4. Reddit sentiment (min 3 farkli sorgu)
+4. Reddit sentiment (min 3 farkli sorgu) + JTBD Forces mercegi (A3): goc neden oluyor — Push+Pull vs Anxiety+Habit
 5. Fiyat karsilastirma matrisi
 6. Ozellik karsilastirma matrisi
+   - 6.5 (A6): 2x2 stratejik konumlandirma — kullanici-degeri eksenlerinde bos pozisyon/wedge ara (Deep'te zorunlu)
 7. Google Play cross-check
 8. Reklam istihbarati (FB Ad Library keyword + top rakip advertiser, Google ATC; browser yoksa WebSearch fallback)
 
@@ -97,13 +98,14 @@
 
 ## Faz 5.5: Build-Oncesi Talep Dogrulama (Opsiyonel-Onerilen)
 
-**Amac:** Kod yazmadan once talebi DAVRANISLA test et (landing page/fake-door + Mom-Test gorusmeleri)
+**Amac:** Kod yazmadan once EN RISKLI varsayimi DAVRANISLA test et (cogu fikirde talep; landing page/fake-door + Mom-Test gorusmeleri)
 **Girdi:** Faz 5'ten GO/SARTLI-GO cikan aday(lar)
 **Cikti:** Davranis-bazli go/no-go + guven %; puanlama duzeltmeleri
 **Detay:** `pre-build-validation.md`
 **Sure:** ~20 saat (INSAN-aksiyonu; Claude landing kopyasi/gorusme kilavuzu yazar)
 
-**Walling 2/20/200:** 2sa eleme (Faz 1-5) -> 20sa talep testi (bu faz) -> 200sa MVP (Faz 9)
+**Adim 0 (A2 — Riskiest Assumption Test):** Test tasarlamadan once varsayimlari (Talep, Odeme-niyeti, Teknik, Retention, Regulasyon, Dagitim) etki x belirsizlik ile sirala; EN riskliyi once test et. Cogu tuketici app'inde bu TALEP'tir (asagidaki testler), ama farkliysa yontemi ona gore sec (`pre-build-validation.md` Adim 0).
+**Walling 2/20/200:** 2sa eleme (Faz 1-5) -> 20sa (en riskli varsayim) testi (bu faz) -> 200sa MVP (Faz 9)
 
 **Gate:** GO icin guven >=%70 + en az 1 gercek davranis sinyali (sadece "kullanirim/begendim" YETMEZ -> RF-16)
 **Basarisizlik:** Sadece beyan -> Talep/Gelir override (MAX 3); problem hic dogrulanamadi -> SISP (RF-17), Faz 8'e/1'e don
@@ -134,8 +136,8 @@
 
 **4 Dogrulama:**
 1. Gercek rating kontrolu (App Store'dan teyit)
-2. Indie gelir kaniti (min 4 farkli sorgu)
-3. Kullanici goc sinyali (min 4 farkli sorgu)
+2. Indie gelir kaniti (min 4 farkli sorgu; B5: Acquire/Flippa/Starter Story komparasyonu dahil)
+3. Kullanici goc sinyali (min 4 farkli sorgu) + JTBD Forces yorumu (A3): goc Push+Pull > Anxiety+Habit ise GERCEK, degilse fantezi (RF-7)
 4. Pazar raporu cross-check + Menopoz Testi
 
 **Gate:** Min 2/5 GECTI
@@ -164,13 +166,19 @@
 
 **Amac:** Kazanan icin eksiksiz proje dokumani
 **Girdi:** Faz 8'den secilen finalist + tum onceki faz verileri
-**Cikti:** Proje brief, MVP scope (max 4 ekran, 3 ozellik), Moat analizi, monetizasyon, ASO taslagi
+**Cikti:** Lean Canvas (1 sayfa), Quantified Value Prop, Proje brief, MVP scope (max 4 ekran, 3 ozellik), Moat analizi, monetizasyon, ASO taslagi
+
+**Lean Canvas (A1) — 9 blok, tek sayfa:** Problem | Musteri Segmenti | UVP (essiz deger onerisi) | Cozum | Kanallar | Gelir Akisi | Maliyet Yapisi | Anahtar Metrikler | Haksiz Avantaj (= Moat). Dagik parcalari (UVP, Anahtar Metrikler, Haksiz Avantaj su an ortuktu) tek gorsele toplar. Bos kalan blok = arastirma boslugu.
+
+**Quantified Value Prop (A5):** "Status quo'ya gore X saat / $Y / Z adim tasarruf" — degeri musterinin terimleriyle SAYISALLASTIR. Fiyatlandirma ve Talep argumanini besler.
 
 **Moat turleri (0-3 puan):** Veri avantaji | Gecis maliyeti | Network etkisi | Hiz avantaji | Ekosistem kilit
 - <5: Zayif moat | 5-10: Orta moat | 10+: Guclu moat
+- (Lean Canvas'taki "Haksiz Avantaj" blogu ile ayni; tutarli doldur.)
 
-**Gate:** Tum alanlar dolu, Moat dahil
+**Gate:** Tum alanlar dolu, Lean Canvas + Moat dahil
 **Basarisizlik:** Tamamla, eksik bolum birakma
+**Cikti dosyasi (Deep):** Lean Canvas + Quantified VP, `phases/10-project-brief.md` icine gomulu (yeni numarali dosya YOK).
 
 ---
 
@@ -186,6 +194,8 @@
 3. Farklilasma yeterli mi? (baskasi zaten yapti mi?)
 4. Teknik olarak yapabilir miyiz? (API sinirlamalari?)
 5. Zamanlama dogru mu? (buyuk rakip giriyor mu?)
+
+**A2 baglantisi:** Bu varsayimlari etki x belirsizlik ile sirala; EN riskli olan(lar) Faz 5.5 Adim 0'da (RAT) davranisla test edilmis olmali. Faz 5.5 atlandiysa (Quick'te opsiyonel) en riskli varsayim hala test edilmemis sayilir → bu durumda Go vermeden once test sart. Test edilmemis yuksek-risk varsayim = olumcul kusur adayi.
 
 **Go/No-Go kontrol listesi:**
 - [ ] Olumcul kusur yok

@@ -23,7 +23,7 @@
 | Arac | Ne Verir | Guvenilirlik | Sinirlamalar |
 |---|---|---|---|
 | AppFollow (free tier) | Review monitoring, basit analytics, rating takibi | ⚠️ Orta | Sinirli uygulama sayisi. Ucretsiz planda 1-2 uygulama takip edilebilir. |
-| AppMagic (free tier) | Indirme tahminleri, kategori siralamasi, basit rakip karsilastirma | ⚠️ Orta | 3. parti tahmin modeli. Rakamlar kesin degil, yonlendirici. |
+| AppMagic (free tier) | Indirme/gelir tahminleri, kategori siralamasi, basit rakip karsilastirma, SOFT-LAUNCH dedektoru (yeni/test-asamasi uygulamalari yakalar) | ⚠️ Orta | 3. parti tahmin modeli. Rakamlar kesin degil, yonlendirici. Soft-launch dedektoru benzersiz erken sinyal: bir rakip belirli pazarlarda sessizce test ediyorsa gorunur. |
 | SimilarWeb (free tier) | Web trafik verileri, genel kullanim istatistikleri | ⚠️ Orta | Mobil uygulama verileri cok sinirli. Web-first arac. |
 | Sensor Tower (free) | Sinirli keyword data, basit siralama bilgisi | ⚠️ Orta | Cogu degerli veri paywall arkasinda. Free tier neredeyse islevsiz. |
 | AppFigures (free tier) | Basit ASO verileri, keyword oneriler | ⚠️ Orta | Cok sinirli. Ucretli plana yonlendirmek icin tasarlanmis. |
@@ -34,15 +34,15 @@
 | Arac | Fiyat Araligi | Ne Verir | Guvenilirlik |
 |---|---|---|---|
 | Sensor Tower (paid) | $$$ (enterprise, yillik sozlesme) | Indirme tahmini, gelir tahmini, keyword data, kategori analizi, reklam istihbarati | ⚠️ Orta-Yuksek (hepsi tahmin modeli) |
-| data.ai (eski adi App Annie) | $$$ (enterprise, yillik sozlesme) | En kapsamli pazar verisi, indirme/gelir tahmini, kullanim metrikleri, demografi | ⚠️ Orta-Yuksek (tahmin modeli) |
-| AppTweak | ~$69/ay baslangic | ASO, keyword difficulty, rakip takip, A/B test onerisi | ⚠️ Orta |
-| Mobile Action | ~$59/ay baslangic | ASO, keyword explorer, rakip analizi, siralama takibi | ⚠️ Orta |
-| Appfigures (paid) | ~$29/ay baslangic | ASO analytics, keyword takip, review monitoring | ⚠️ Orta |
+| data.ai (eski adi App Annie) | — (artik ayri urun DEGIL) | ⚠️ GUNCEL DURUM: Mart 2024'te Sensor Tower'a katildi. Standalone data.ai/App Annie urunu kapandi; verisi Sensor Tower catisi altinda sunuluyor. Tek saglayici olarak Sensor Tower satirina bakin. | (Sensor Tower'a bakin) |
+| AppTweak | ~$69/ay baslangic | ASO, keyword difficulty, rakip takip, A/B test onerisi. iOS difficulty/volume icin Apple Search popularity'sini (modellenmemis) verir; difficulty/KEI dogrudan (Bolum 2; Eki 2025 bozulmasi gecerli). | ⚠️ Orta |
+| Mobile Action | ~$59/ay baslangic | ASO, keyword explorer, rakip analizi, siralama takibi. UCRETSIZ urunu SearchAds.com Apple Search popularity + ASA bid/impression-share verir (Bolum 2; Ekim 2025 bozulmasi gecerli). | ⚠️ Orta |
+| Appfigures (paid) | ~$29/ay baslangic | ASO analytics, keyword takip, review monitoring. Ayrica indie-uygun indirme/gelir tahmini + Apple Ads istihbarati (Sensor Tower'a gore cok daha ucuz). NOT: indirme/gelir tahmini PAID tier'da; free tier sadece 1 uygulama ASO. | ⚠️ Orta |
 | RevenueCat | Ucretsiz (kendi uygulamani icin) | Gercek gelir verisi, churn, subscription analytics | ✅ Yuksek (SADECE kendi uygulamanin verisi) |
 | Adapty | Ucretsiz baslangic | Subscription analytics, paywall A/B test | ✅ Yuksek (SADECE kendi uygulamanin verisi) |
 | Superwall | Ucretsiz baslangic | Paywall optimizasyonu, A/B test | ✅ Yuksek (SADECE kendi uygulamanin verisi) |
 
-**ONEMLI NOT:** Sensor Tower ve data.ai gibi araclarin verdigi indirme/gelir rakamlari TAHMIN'dir. Gercek veri degil. Bu araclarin kendi modelleri vardir ve hata payi %30-50 arasinda olabilir. Ozellikle niche uygulamalarda hata payi daha da yuksektir.
+**ONEMLI NOT:** Sensor Tower (ve ona katilan eski data.ai/App Annie) gibi araclarin verdigi indirme/gelir rakamlari TAHMIN'dir. Gercek veri degil. Bu araclarin kendi modelleri vardir ve hata payi %30-50 arasinda olabilir. Ozellikle niche uygulamalarda hata payi daha da yuksektir. Indie butcesi icin Sensor Tower enterprise fiyati (yaklasik $25-40K/yil) genelde erisilemez; AppFigures (ucuz paid tier) / AppMagic ayni siniftan (tahmini) veriyi cok daha uygun verir. (AppFigures'ta indirme/gelir tahmini paid; free tier ASO-only.)
 
 ---
 
@@ -50,10 +50,14 @@
 
 | Kaynak | Ne Verir | Guvenilirlik | Not |
 |---|---|---|---|
-| Apple Search Ads (ucretsiz hesap) | Keyword popularity (1-5 skala), onerilen teklif fiyatlari | ⚠️ Orta | Eylul 2025'te sistem degisti. Eski veriler ve rehberler artik guvenilmez. Yeni sistemi ogrenip ona gore degerlendirilmeli. |
+| Apple Search Ads (ucretsiz hesap) | Keyword popularity (1-5 skala), onerilen teklif fiyatlari | ⚠️ Orta | Eylul 2025'te sistem degisti (~%77 dusus, <35 hacmi bastiriyor). Eski veriler ve rehberler artik guvenilmez; tek-kaynak yasak. Kismi telafi: SearchAds.com (asagi) ayni Apple popularity'sini + bid/impression-share yuzeye cikarir (ayni bozulma gecerli, KESIN degil). |
+| SearchAds.com (Mobile Action, ucretsiz plan var) | ASA keyword popularity skoru + bid/impression-share | ⚠️ Orta (Apple popularity'si ama Ekim 2025 bozulmasi GECERLI) | B3: keyword difficulty'yi "top-10 rating tahmini" yerine Apple popularity'siyle besler → TAHMINI'yi GUCLENDIRIR ama tek-kaynak DEGIL (<35 hacmi bastiriliyor; ASA satirina bak). Popularity skoru ucretsiz tier'da olmayabilir — dogrula. |
 | App Store Search Suggest | Autocomplete onerileri, iliskili arama terimleri | ✅ Yuksek | Gercek kullanici davranisina dayali. Kullanicilarin gercekten ne aradigini gosterir. |
-| Google Trends | Arama trendi karsilastirma, mevsimsellik, bolgesel ilgi | ✅ Yuksek | WEB aramasi verisi — mobil uygulama aramasi degil. Ama genel ilgi seviyesini gosterir. |
+| Google Trends | Arama trendi karsilastirma, mevsimsellik, bolgesel ilgi | ✅ Yuksek | WEB aramasi verisi — mobil uygulama aramasi degil. Ama genel ilgi seviyesini gosterir. NOT: interaktif grafik WebFetch ile okunamaz (Bolum 5) → Glimpse ile telafi. |
+| Glimpse (Google Trends eklentisi) | Google Trends'e MUTLAK hacim, YoY buyume %, TikTok/Reddit kanal dagilimi, forecast ekler | ✅ Yuksek-Orta | B1: Trends'in "okunamaz/sadece goreli" kor noktasini kapatir. Freemium. Mutlak hacim sayesinde "ilgi var ama hacim yok" tuzaklarini ayirir. |
+| Exploding Topics | Yukselen/breakout konular + buyume % + mutlak hacim (mainstream'den ONCE) | ✅ Yuksek-Orta | B1: Yasam-dongusu (Kalite Kurali #10) icin Exploding/Regular/Peaked siniflamasini besler. Freemium (Semrush'a ait). |
 | Google Keyword Planner | Aylik arama hacmi (web), rekabet seviyesi | ✅ Yuksek | Mobil degil ama bir konuya ilgi olup olmadiginin guclu gostergesi. |
+| AnswerThePublic | Autocomplete'ten soru/edat kaliplari = ham ifade talebi | ⚠️ Orta | B7: Insanlarin problemi NASIL ifade ettigini (web aramasi) gosterir; App Store aramasina tamamlayici talep sinyali. Free 3/gun. |
 | Keyword Tool (keywordtool.io, free) | App Store keyword onerileri | ⚠️ Dusuk-Orta | Tahmini veriler. Free tier'da hacim gostermez. |
 | ASO araclari (AppTweak, MobileAction) | Keyword difficulty, search volume tahmini, siralama sansi | ⚠️ Orta | Hepsi tahmin modeli. Farkli araclar farkli rakamlar verebilir. |
 | Rakip uygulamalarin description'lari | Hedefledikleri keywordler | ✅ Yuksek | Rakip ne yaziyorsa o keyword'e onem veriyor demektir. Ucretsiz, herkese acik. |
@@ -61,9 +65,9 @@
 
 **PRATIK ONERI:** En iyi keyword arastirmasi kombinasyonu:
 1. App Store Search Suggest ile baslayip gercek aramalari gorun
-2. Google Trends ile ilgi seviyesini dogrulayin
+2. Google Trends + Glimpse ile ilgi seviyesini VE mutlak hacmi dogrulayin (Glimpse goreli grafigi okunabilir mutlak sayiya cevirir)
 3. Rakip description'larindan keyword cikartin
-4. Apple Search Ads ile popularity kontrol edin
+4. SearchAds.com (ucretsiz) ile gercek popularity + keyword difficulty kontrol edin
 
 ---
 
@@ -72,6 +76,9 @@
 | Kaynak | Ne Verir | Guvenilirlik | Nasil Kullanilir |
 |---|---|---|---|
 | Reddit (subreddit arama) | Gercek kullanici sikayetleri, goc sinyalleri, ozellik talepleri, memnuniyetsizlik | ✅ Yuksek | `[uygulama adi] alternative` veya `leaving [uygulama]` veya `hate [uygulama]` seklinde ara. r/apps, r/iphone, niche subreddit'ler. |
+| F5Bot (UCRETSIZ) | Reddit/HN/Lobsters'ta keyword gecince e-posta uyarisi (gercek-zamana yakin) | ✅ Yuksek | B4: Manuel 3-sorgu yerine surekli izleme; sikayet/"goc" sinyalini kacirmadan toplar → veri yakalamayi yukseltir. Kurulum: keyword'leri bir kez gir. |
+| Syften | 18+ toplulukta (Reddit/HN/X/SE/GitHub/IH) AI-filtreli gercek-zamanli keyword uyarisi | ⚠️ Orta | B4: F5Bot'un ucretli/daha akilli alternatifi (~$30/ay, 14-gun deneme). Genis kapsamli izleme isteyen icin. |
+| NOT: GummySearch | (kullanma) | ❌ | Reddit Data API lisansini kaybetti, 30 Kas 2025'te yeni/ucretsiz erisime kapandi. Toolkit'e EKLEME; yerine F5Bot/Syften. |
 | Twitter/X | Build in public verileri, kullanici tepkileri, anlik duyarlilik | ⚠️ Orta | `#buildinpublic` hashtag'i, uygulama adi ile arama. Ses getiren sikayetler ozellikle degerli. |
 | Product Hunt | Yeni uygulama lansmanlari, upvote sayilari, erken kullanici yorumlari | ✅ Yuksek | Kategori bazli arama. Upvote sayisi ilgi gostergesi. Yorumlar kalite gostergesi. |
 | IndieHackers | Indie gelistirici gelir raporlari, basari/basarisizlik hikayeleri | ✅ Yuksek | Gelir kaniti icin en iyi kaynak. Gelistiriciler gercek rakamlarini paylasir. |
@@ -82,6 +89,8 @@
 | Discord serverlari | Topluluk tartismalari, gercek zamanli feedback | ⚠️ Orta | Niche topluluklarin nerede aktif oldugunu bulmak gerekir. |
 | App Store 1-2 yildiz review'lar | Spesifik sikayet kaliplari, eksik ozellikler | ✅ Yuksek | En degerli pazar arastirmasi verilerinden biri. Ne eksik, ne kirik, ne sinir bozucu. |
 | App Store 4-5 yildiz review'lar | Kullanicilarin en cok sevdigi ozellikler | ✅ Yuksek | Must-have ozellikleri anlamak icin. |
+| IdeaBrowser (Greg Isenberg) | Gunluk "Idea of the Day": arama hacmi/buyume/pain/fizibilite skorlama + "Greg's Picks" | ⚠️ Orta | B6: Rakip AI fikir-dogrulama araci. Capraz-kontrol + puanlama modeli ilhami olarak kullan; kendi puanlamanin yerine GECMEZ. Free 1/gun + paid. |
+| ValidatorAI | AI fikir skoru + rakip/musteri analizi + "Hesitation Index" | ⚠️ Orta | B6: Hizli ikinci-goz capraz-kontrol. Cikti dogrulanmali (etiket TAHMINI). Free cekirdek. |
 
 ---
 
@@ -92,9 +101,12 @@
 | Kaynak | Ne Verir | Guvenilirlik | UYARI |
 |---|---|---|---|
 | Sensor Tower (gelir tahmini) | Aylik gelir tahmini (USD) | ⚠️ DUSUK | 3. parti MODEL, gercek veri degil. %50+ hata payi olabilir. Kucuk uygulamalarda tamamen yanlis olabilir. |
-| data.ai (gelir tahmini) | Aylik/yillik gelir tahmini | ⚠️ DUSUK | Ayni sorun — model bazli tahmin. Enterprise fiyat odeyip de yanlis veri alabilirsiniz. |
+| data.ai (gelir tahmini) | — | ⚠️ KAPANDI | Mart 2024'te Sensor Tower'a katildi; ayri data.ai gelir tahmini urunu yok. Sensor Tower satirina bakin. |
 | App Store "Top Grossing" listesi | Siralama (1, 2, 3...) | ⚠️ Orta | Siralama gorursun, rakam gormezsin. Siralamanin gelire donusumu bilinmez. |
-| IndieHackers gelir raporlari | Gercek gelir rakami (dev kendisi bildiriyor) | ✅ YUKSEK | Gelistirici kendi raporluyorsa en guvenilir kaynak. Ama herkes paylasmaz. |
+| IndieHackers gelir raporlari | Gercek gelir rakami (dev kendisi bildiriyor) | ✅ YUKSEK | Gelistirici kendi raporluyorsa en guvenilir kaynak. Ama herkes paylasmaz. SURVIVORSHIP BIAS: sadece kazananlar paylasir → tek basina yeterli degil, Acquire/Flippa/Starter Story ile dengele. |
+| Acquire.com (eski MicroAcquire, ~Oca 2023) | Satistaki uygulama/SaaS ilanlari: istenen fiyat + satici-beyani gelir/kar | ⚠️ Orta (cogu ILAN = iddia; sadece KAPANMIS satis = davranis) | B5: Survivorship'i dengeler. ILAN/asking price iddiadir (TAHMINI, MAX 3); yalnizca kapanmis/gerceklesen satis davranis sayilir. Browse ucretsiz. "Ima edilen MRR = fiyat / carpan" (carpan aylik/yillik ayrimina dikkat — scoring-model.md). |
+| Flippa | Canli ilanlar: istenen fiyat, gelir/kar carpanlari, yas | ⚠️ Orta (satici-beyani / ilan = iddia) | B5: Piyasa carpanlari + gelir araliklari. Ilan satici-beyanidir → TAHMINI; sadece kapanmis satis davranis. Coklu bagimsiz komparasyon daha guclu. Browse ucretsiz. |
+| Starter Story | Binlerce (4.000+) gercek-gelirli isletme orneği DB'si, kategori bazli ozetler | ✅ Orta-Yuksek | B5: Kategori gelir referansi icin daha az survivor-biasli (gercek case study'ler). (~$495/yil; ozet veriler genelde acik makalelerde.) |
 | Twitter #buildinpublic | Gelir screenshot'lari, MRR paylasimi | ⚠️ Orta | Dogrulanmasi zor ama genelde dogru. Basarili olanlarin paylasma egilimi daha yuksek (survivorship bias). |
 | RevenueCat blog / benchmark | Benchmark verileri, ortalama churn, conversion rate'ler | ✅ Yuksek | Kendi platformlarindaki aggregate veriler. Industri ortalamalari icin en guvenilir. |
 | Superwall blog / benchmark | Paywall conversion rate verileri | ✅ Yuksek | Kendi musterilerinden aggregate veri. |
@@ -105,10 +117,11 @@
 
 **GUVENILIRLIK SIRASI (gelir icin):**
 1. Gelistiricinin kendisinin paylastigi gercek rakam (IndieHackers, blog, Twitter)
-2. RevenueCat/Superwall benchmark verileri (industri ortalamalari)
-3. App Store rating sayisindan ters muhendislik (kaba tahmin: rating x 100 = indirme, conversion %2-5)
-4. Sensor Tower / data.ai tahminleri (son care)
-5. Pazar arastirma raporlari (neredeyse hicbir zaman guvenilir degil)
+2. Acquire.com/Flippa KAPANMIS satis komparasyonu + Starter Story kategori ornekleri (canli ilan = iddia/TAHMINI; survivorship'i dengeler)
+3. RevenueCat/Superwall benchmark verileri (industri ortalamalari)
+4. App Store rating sayisindan ters muhendislik (kaba tahmin: rating x 100 = indirme, conversion %2-5)
+5. Sensor Tower tahminleri (eski data.ai dahil; son care)
+6. Pazar arastirma raporlari (neredeyse hicbir zaman guvenilir degil)
 
 ---
 
@@ -138,6 +151,8 @@
 3. **Mesaj acilari:** Kullanilan ve KULLANILMAYAN acilar → adlandirilmis icgoru + ASO/positioning girdisi
 4. **Sessizlik:** Hicbir rakip reklam vermiyorsa paid UA dogrulanmamis demektir — bu da veridir ("bulunamadi da veridir" kurali)
 
+**Bonus — Ucretsiz on-TAM proxy (B8):** Meta Ads Manager "Estimated Audience Size" (reklam vermeden, sadece hesap ile) hedef persona icin ULASILABILIR kitle buyuklugunu verir. Pazar raporlarinin "$XB" tahminlerine (Menopoz Testi riski) karsi, build-oncesi somut bir tavan/zemin sayisi saglar. Etiket: TAHMINI (Meta'nin kendi reach modeli). Ayni mantik TikTok/Google icin de calisir.
+
 ---
 
 ## 5. CLAUDE / AI YETENEKLERI
@@ -151,12 +166,12 @@
 | Reddit thread okuma | ✅ Var (web fetch) | Spesifik URL verilirse thread icerik okunabilir. Arama sonuclari uzerinden de gidilebilir. |
 | Product Hunt sayfasi okuma | ✅ Var (web fetch) | Urun sayfalari, upvote sayisi, yorumlar okunabilir. |
 | IndieHackers profili okuma | ✅ Var (web fetch) | Gelir raporlari, gelistirici profilleri okunabilir. |
-| Google Trends karsilastirma | ⚠️ Sinirli | Web uzerinden erisim mumkun ama interaktif grafikleri tam okuyamayabilir. |
+| Google Trends karsilastirma | ⚠️ Sinirli | Interaktif grafik WebFetch ile tam okunamaz. TELAFI: Glimpse eklentisi grafigi mutlak hacme cevirir; Exploding Topics breakout/buyume % verir. Bunlar tarayicida/insan eliyle okunup raporda KESIN'e yakin etiketle aktarilabilir (yalnizca WebSearch cikarimi ise TAHMINI). |
 | Gercek zamanli indirme verisi | ❌ Yok | Hicbir 3. parti API entegrasyonu yok. Bu veri Apple tarafindan gizli tutulur. |
 | Gercek zamanli gelir verisi | ❌ Yok | Mumkun degil. Bu veri tamamen gizlidir. Sadece gelistiricinin kendisi bilir. |
 | App Store icerisinde arama | ⚠️ Sinirli | Web uzerinden dolaylidir. Native App Store arama kadar kapsamli ve dogru degil. |
 | Gecmis veri / trend analizi | ❌ Yok | Anlik snapshot alinabilir ama gecmis verilere erisim yok. "3 ay once rating kacti?" sorusuna cevap verilemez. |
-| Keyword difficulty skoru | ❌ Yok | Apple API'ye dogrudan erisim yok. ASO araclarina erisim yok. |
+| Keyword difficulty skoru | ⚠️ Kismi | Apple API'ye dogrudan erisim yok. TELAFI: SearchAds.com (Mobile Action, ucretsiz plan) Apple Search popularity'sini yuzeye cikarir; insan eliyle okunup difficulty tahminini (top-10 rating yontemi) GUCLENDIRIR — ama Ekim 2025 bozulmasi gecerli (<35 bastiriliyor), tek-kaynak degil. AppTweak (paid) difficulty/KEI dogrudan verir. |
 | Kategori siralama gecmisi | ❌ Yok | Anlik siralama gorulur, gecmis trend gorulmez. |
 | Reklam istihbarati (ad library) | ⚠️ Kismi | Browser otomasyonu ile FB Ad Library (keyword+advertiser) ve Google ATC (sadece advertiser) okunur: kreatifler, baslama tarihleri, aktif reklam sayilari. WebFetch ile OKUNAMAZ. Harcama TUTARI hicbir kaynakta gorunmez. Bkz. Bolum 4.5. |
 | Bulk veri toplama | ⚠️ Sinirli | Tek tek sayfa okuyabilir ama 100 uygulamayi otomatik taramak pratik degil. |
@@ -170,10 +185,10 @@
 - Ad library taramasi (browser otomasyonu bagliysa): rakip kreatifleri, baslama tarihleri, aktif reklam sayilari (Bolum 4.5)
 - Toplanan tum verileri yapilandirilmis sekilde analiz etme ve puanlama
 
-**CLAUDE ILE YAPILAMAYACAKLAR:**
+**CLAUDE ILE YAPILAMAYACAKLAR (otomatik/dogrudan):**
 - Kesin indirme/gelir rakami verme
-- Gecmis trend analizi
-- Keyword difficulty skoru hesaplama
+- Gecmis trend analizi (interaktif Trends grafigi — ama Glimpse ile insan eliyle telafi edilebilir)
+- Keyword difficulty skorunu OTOMATIK hesaplama (insan SearchAds.com'dan gercek popularity'yi getirirse kullanilir — Bolum 2)
 - Bulk uygulama taramasi
 - Reklam harcama TUTARI gorme (kreatif/longevity GORULUR — Bolum 4.5; tutar hicbir kaynakta yok)
 
@@ -189,10 +204,12 @@
 | In-app purchase listesi | App Store (direkt) | ✅ Kesin | - |
 | Son guncelleme tarihi | App Store (direkt) | ✅ Kesin | - |
 | Uygulamanin yasam durumu | Guncelleme sikligi + rating trend | ✅ Yuksek | Reddit'te kullanici yorumlari |
-| Aylik indirme sayisi | data.ai / Sensor Tower | ⚠️ Tahmin (%30-50 hata) | AppMagic, Google Play indirme araligi (Android icin) |
-| Aylik gelir | IndieHackers (dev raporu) | ✅ (varsa) | Sensor Tower (tahmin, dusuk guvenilirlik) |
-| Keyword hacmi / popularity | Apple Search Ads | ⚠️ Orta (2025 degisimi) | Google Trends (dolayli), App Store Search Suggest |
-| Keyword difficulty | ASO araclari (AppTweak, vb.) | ⚠️ Dusuk-Orta | Rakip rating sayisindan ters muhendislik |
+| Aylik indirme sayisi | AppFigures / AppMagic / Sensor Tower | ⚠️ Tahmin (%30-50 hata) | Google Play indirme araligi (Android icin). (data.ai 2024'te Sensor Tower'a katildi.) |
+| Aylik gelir | IndieHackers (dev raporu) | ✅ (varsa) | Acquire.com/Flippa ilan carpani, Starter Story medyani, Sensor Tower (tahmin) |
+| Satin-alma/exit komparasyonu | Acquire.com / Flippa ilanlari | ⚠️ Orta (satici-beyani) | Starter Story kategori medyani |
+| Keyword hacmi / popularity | SearchAds.com (gercek Apple popularity, ucretsiz) | ✅ Yuksek | Apple Search Ads (2025 degisimi), App Store Search Suggest |
+| Keyword difficulty | SearchAds.com / AppTweak | ⚠️ Orta | Rakip rating sayisindan ters muhendislik (kaba) |
+| Trend yonu + mutlak hacim | Glimpse (Trends + mutlak) / Exploding Topics | ⚠️ Orta | Google Trends (sadece goreli, dolayli) |
 | Pazar buyuklugu | Birden fazla kaynak karsilastirmasi | ⚠️ Dusuk | App Store rating ile cross-check |
 | Kullanici memnuniyetsizligi | Reddit + App Store 1-2 star reviews | ✅ Yuksek | Twitter, AlternativeTo, forums |
 | Kullanici goc sinyali | Reddit ("alternative" aramalari) | ✅ Yuksek | AlternativeTo, Google Trends karsilastirma |
@@ -268,7 +285,7 @@ Her arastirma fazi icin hangi araclarin kullanilacagi:
 | Google Trends | Arastirma basinda + mevsim kontrolu | Trendler degisir, mevsimsellik onemli |
 | Reddit | Her arastirma basinda | Yeni thread'ler surekli acilir |
 | Ad library (FB/Google ATC) | Her arastirma basinda | Aktif reklamlar ve kreatifler surekli degisir; anlik goruntu |
-| Sensor Tower / data.ai | Ayda 1 (ucretli planla) | Tahminler guncellenir |
+| Sensor Tower / AppFigures / AppMagic | Ayda 1 | Tahminler guncellenir (eski data.ai artik Sensor Tower icinde) |
 | IndieHackers | Ceyreklik | Gelir raporlari genelde aylik/ceyreklik paylasilir |
 | Pazar arastirma raporlari | Yilda 1 (varsa) | Nadiren guncellenir, nadiren guvenilir |
 
@@ -284,7 +301,7 @@ Her arastirma fazi icin hangi araclarin kullanilacagi:
 - RevenueCat/Superwall benchmark verileri
 
 **Tuz ile alinmasi gereken veriler:**
-- Sensor Tower / data.ai indirme ve gelir tahminleri
+- Sensor Tower (eski data.ai dahil) / AppFigures / AppMagic indirme ve gelir tahminleri
 - ASO araclarinin keyword difficulty skorlari
 - Apple Search Ads popularity skorlari (2025 sonrasi degisim)
 - Twitter'daki gelir paylasimi (dogrulanmasi zor)

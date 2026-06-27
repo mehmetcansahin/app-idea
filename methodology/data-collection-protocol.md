@@ -16,7 +16,7 @@
 Hicbir kritik iddia tek kaynaga dayanmamali. Her kritik veri noktasi icin **minimum 2 bagimsiz kaynak** gerekli.
 
 Ornek:
-- "Alarmy 500K rating" → App Store sayfasindan dogrudan oku (1. kaynak) + SensorTower/data.ai ile cross-check (2. kaynak)
+- "Alarmy 500K rating" → App Store sayfasindan dogrudan oku (1. kaynak) + Sensor Tower/AppFigures ile cross-check (2. kaynak)
 - "Jurnal pazari buyuyor" → Grand View Research raporu (1. kaynak) + App Store'da yeni uygulama sayisinin artisi (2. kaynak)
 
 Ucgen kurali uygulanamayan durumlar:
@@ -175,6 +175,11 @@ WebSearch: "[KEYWORD] app" trend popularity growth
 WebSearch: "[KEYWORD]" search interest over time
 ```
 
+**Mutlak hacim + breakout (B1 — Trends kor noktasi telafisi):** WebSearch ile gelen Trends verisi yalnizca GORELI ve TAHMINI'dir. Tarayici/insan erisimi varsa:
+- **Glimpse** (Google Trends eklentisi): goreli grafigi MUTLAK arama hacmine + YoY buyume %'sine cevirir. "Ilgi var ama hacim yok" tuzagini (Menopoz Testi mantigi) ayirir.
+- **Exploding Topics:** konunun breakout/yukselis durumunu + buyume %'sini verir → Yasam-Dongusu siniflamasini (Exploding/Regular/Peaked, CLAUDE.md Kalite Kurali #10) dogrudan besler.
+- Etiket: insan eliyle Glimpse/Exploding Topics'ten okunduysa KESIN'e yakin; yalnizca WebSearch cikarimi ise TAHMINI.
+
 ---
 
 #### Adim 5: Apple First-Party Talep Sinyali (Ucgen Kurali)
@@ -182,7 +187,7 @@ WebSearch: "[KEYWORD]" search interest over time
 Lider rating'i TEK Talep sinyali olarak kullanma. Ikinci, first-party bir Apple sinyali ekle:
 
 - **App Store Search Suggest (autocomplete):** Ana keyword'u arama kutusuna yazip onerilen tamamlamalari kaydet. Kullanicilarin GERCEKTEN arattigi terimleri gosterir. Claude WebSearch ile dolayli erisilir.
-- **Apple Search Ads keyword popularity (5-100):** Varsa (ucretsiz ASA hesabi veya AppFigures ucretsiz arac) skoru al. Apple'in kendi verisi -- Sensor Tower/data.ai gibi modellenmis degil.
+- **Apple Search Ads keyword popularity (5-100):** Varsa (ucretsiz ASA hesabi, SearchAds.com veya AppFigures ucretsiz arac) skoru al. Apple'in kendi verisi -- Sensor Tower gibi modellenmis degil.
 
 **UYARI:** Apple bu sinyali ~Ekim 2025'te bozdu (yaklasik 35 altini bastiriyor, ~%77 dusus). Dusuk-hacim/niche'te zayif. Etiket TAHMINI; tek-kaynak kullanma.
 
@@ -193,10 +198,11 @@ Lider rating'i TEK Talep sinyali olarak kullanma. Ikinci, first-party bir Apple 
 Talep kadar KESFEDILEBILIRLIGI de olc (bkz. scoring-model.md "Dagitim Fizibilitesi"):
 
 - **Difficulty (0-100):** Hedef keyword'de rank alan top-10 uygulamanin rating sayilarina bak (Adim 1-3'te zaten topladin). Top-10 rating'leri yuksek = difficulty yuksek; dusuk-rating/eski/terk-edilmis uygulamalar = difficulty dusuk.
+- **EK VERI yolu (B3, tercih edilen):** Tarayici/insan erisimi varsa SearchAds.com (Mobile Action, ucretsiz plan) Apple Search popularity'sini yuzeye cikarir; AppTweak (paid) difficulty/KEI dogrudan dondurur. Bu durumda rating-tahminini bu veriyle GUCLENDIR → ama Ekim 2025 bozulmasi gecerli (<35 bastiriliyor, tek-kaynak degil); etiket KESIN degil, "guclendirilmis TAHMINI".
 - **Opportunity = Hacim x0.4 + (100 - Difficulty) x0.3 + Relevance x0.3** (40/30/30, ayarlanabilir).
-- **Kural (AppFigures):** Sadece top-10'un minimum rating esigini yakalayip asabilecegin keyword'leri hedefle.
+- **Kural:** Sadece top-10'un minimum rating/popularity esigini yakalayip asabilecegin keyword'leri hedefle.
 
-Kayit: her ana keyword icin difficulty (dusuk/orta/yuksek) + en az 3 dusuk-difficulty alternatif keyword.
+Kayit: her ana keyword icin difficulty (dusuk/orta/yuksek), kaynak (rating-tahmini / SearchAds.com-popularity) + en az 3 dusuk-difficulty alternatif keyword.
 
 ---
 
@@ -380,12 +386,18 @@ WebSearch: "switched from [APP ADI] reddit"
 WebSearch: "leaving [APP ADI] reddit"
 ```
 
+**Olcekleme — surekli izleme (B4, opsiyonel ama veri yakalamayi yukseltir):** Manuel 4-sorgu anlik bir snapshot'tir; ~%30 yakalama riski var. Daha genis kapsama icin keyword-uyari araclari kur:
+- **F5Bot (UCRETSIZ):** rakip adi + "alternative to [APP]" + sikayet keyword'lerini gir → Reddit/HN'de gecince e-posta gelir.
+- **Syften (~$30/ay):** 18+ toplulukta AI-filtreli, daha genis kapsam.
+- (GummySearch KULLANMA — Reddit API lisansini kaybetti, Kas 2025 kapandi.)
+
 **Her sonuc icin not al:**
 - [ ] Kac kisi alternatif ariyor? (tahmini sayi)
 - [ ] En sik tekrarlanan sikayet ne?
 - [ ] "Switched to [BASKA APP]" ifadeleri var mi? Hangi uygulamaya geciyorlar?
 - [ ] Fiyat sikayeti var mi? Ne kadar pahali bulduklar?
 - [ ] Hangi ozellik en cok isteniyor ama yok?
+- [ ] JTBD Forces (A3): goc NEDEN oluyor? Push (mevcuttan iten aci) + Pull (yeniye ceken vaat) vs Anxiety (yeniden korku) + Habit (eskiye aliskanlik). Goc ancak Push+Pull > Anxiety+Habit ise gercektir.
 
 **Kayit formati:**
 ```
@@ -397,6 +409,12 @@ En sik sikayet: [tema]
 Goc yonu: [hangi uygulamaya geciyorlar]
 En cok istenen eksik ozellik: [ozellik]
 Fiyat algisi: UCUZ / MAKUL / PAHALI / COK PAHALI
+JTBD Forces (goc dinamigi):
+  Push (mevcuttan iten):   [aci / sikayet]
+  Pull (yeniye ceken):     [vaat / ozellik]
+  Anxiety (gecis korkusu): [veri kaybi, ogrenme, fiyat...]
+  Habit (eskiye baglilik): [aliskanlik, switching cost...]
+  Net: Push+Pull > Anxiety+Habit MI? → goc GERCEK / FANTEZI (RF-7)
 ```
 
 ---
@@ -452,6 +470,26 @@ Tum rakipleri tek tabloda karsilastir:
 - **Gelismis:** Premium/pro katmaninda sunulan ozellikler
 - **Benzersiz:** Sadece 1-2 uygulamada olan farklilik ozellikleri
 - **Eksik:** Hicbir uygulamada olmayan ama kullanicilarin istedigi ozellikler (Adim 3-4'ten)
+
+**Adim 6.5: 2x2 Stratejik Konumlandirma (A6)**
+Ozellik/fiyat matrisi "kim ne yapiyor"u gosterir ama "bos pozisyon nerede"yi gostermez. Hedef kitlenin
+EN cok onemsedigi 2 ekseni sec (ornk: Basitlik <-> Guc, Fiyat <-> Kapsam, Hiz <-> Dogruluk) ve rakipleri
+bu 2x2'ye yerlestir.
+```
+            Yuksek [Eksen Y]
+                |
+   [App C]      |   [App A]
+                |
+  --------------+--------------  [Eksen X] dusuk -> yuksek
+                |
+   ( BOS? )     |   [App B, D]
+                |
+            Dusuk [Eksen Y]
+```
+- Eksenler kullanici-degeri olmali (rakip yogunlugu degil). Bos ceyrek = potansiyel wedge.
+- UYARI: bos ceyrek "rakip yok = pazar yok" (RF-2) olabilir; ancak Named-Insight (Kalite Kurali #8) ile
+  desteklenirse firsattir. Bos pozisyonu adlandirilmis kacirilmis icgoruyle birlikte raporla.
+- Cikti: `07-feature-matrix.md` icine 2x2 (Deep modunda zorunlu; Standard'da opsiyonel).
 
 ---
 
@@ -651,6 +689,20 @@ WebSearch: "[KATEGORI] app MRR solo developer"
 WebSearch: "[KATEGORI] iOS app revenue report"
 ```
 
+**Sorgu 5 — Satin-alma/exit komparasyonlari (B5, survivorship'i dengeler):**
+```
+WebSearch: "[KATEGORI] app acquire.com OR flippa asking price revenue"
+WebSearch: "[KATEGORI] app for sale revenue multiple flippa"
+WebSearch: "[KATEGORI] business starter story revenue"
+```
+- IndieHackers/Twitter "survivorship bias"lidir (sadece kazananlar paylasir). Acquire.com/Flippa ilanlari +
+  Starter Story kategori MEDYANI bunu dengeler.
+- **Ima edilen aylik gelir = satis fiyati / carpan.** Carpan AYLIK ise dogrudan (or. $48K / 36x aylik kar
+  ≈ $1.3K/ay); YILLIK ise once 12'ye bol (or. $48K / 3x yillik = $16K/yil ÷ 12 ≈ $1.3K/ay). Carpan gelir mi
+  kar mi belirt; KAR carpanindan cikan rakami GELIR ankoruna sayma.
+- **Kanit turu:** KAPANMIS satis = davranis (ankora sayilabilir). CANLI/satilmamis ILAN (asking price +
+  satici-beyani) = IDDIA → TAHMINI, MAX 3 (kac ilan olursa olsun; Mom Test/RF-16).
+
 **Puanlama skalasi:**
 - 5: 3+ bagimsiz indie gelir kaniti, ortalama $5K+/ay
 - 4: 2+ indie gelir kaniti, ortalama $2K+/ay
@@ -658,7 +710,10 @@ WebSearch: "[KATEGORI] iOS app revenue report"
 - 2: Gelir kaniti yok AMA lider uygulama premium fiyatli (dolaylı kanit)
 - 1: Gelir kaniti yok VE lider uygulama ucretsiz/reklam destekli
 
-**OVERRIDE KURALI:** Hicbir indie gelir kaniti bulunamadiysa → skor MAX 2.
+**OVERRIDE KURALI:** Hicbir indie gelir kaniti bulunamadiysa → skor MAX 2. (B5 istisnasi: KAPANMIS satis
+komparasyonu ima edilen aylik gelire cevrilip ilgili ankora eslesirse override KALKAR; ankor + bagimsiz-kaynak
+SAYISI kapisi gecerli kalir [skor 4 = 2+, skor 5 = 3+]. Canli/satilmamis ilan = iddia → TAHMINI, hala MAX 3.
+Yetkili tanim: `scoring-model.md` override tablosu.)
 
 ---
 
@@ -843,17 +898,23 @@ WebSearch: "[KATEGORI] app revenue case study indie developer blog"
 WebSearch: "[LIDER APP ADI] revenue earnings how much"
 ```
 
+**Sorgu 7 — Satin-alma/exit komparasyonu (B5):**
+```
+WebSearch: "[KATEGORI] app acquire.com OR flippa asking price revenue"
+WebSearch: "[KATEGORI] business starter story revenue median"
+```
+
 **En az 4 farkli sorgu yap. Bulamazsan → "Kanit bulunamadi" yaz.**
 
 **Her bulunan kanit icin kayit formati:**
 ```
 === Gelir Kaniti #[N] ===
-Kim: [developer adi/username]
+Kim: [developer adi/username VEYA "Flippa/Acquire ilani"]
 Uygulama: [uygulama adi]
-Gelir: [aylik/yillik miktar]
+Gelir: [aylik/yillik miktar]   (komparasyon ise: ima edilen MRR = satis fiyati / beyan carpan)
 Kaynak: [URL veya platform adi]
 Tarih: [ne zaman paylandi]
-Guvenilirlik: KESIN (kendi bildirimi, detayli) / TAHMINI (kendi bildirimi, yuvarlak sayi) / DUSUK (anonim veya 3. parti)
+Guvenilirlik: KESIN (kendi bildirimi, detayli) / TAHMINI (kendi bildirimi/ilan, yuvarlak sayi) / DUSUK (anonim veya 3. parti)
 Kategori uyumu: [bizim kategorimizle ne kadar alakali? 1-5]
 ```
 
@@ -862,7 +923,7 @@ Kategori uyumu: [bizim kategorimizle ne kadar alakali? 1-5]
 === Gelir Kaniti Arama Sonucu ===
 Yapilan sorgu sayisi: [sayi]
 Sonuc: KANIT BULUNAMADI
-Etki: Gelir Kaniti puani MAX 2 ile sinirlandirildi
+Etki: Gelir Kaniti puani MAX 2 ile sinirlandirildi (B5: Acquire/Flippa/Starter Story komparasyonu da denendi mi? Ima edilen MRR ankora eslesiyorsa override kalkar — scoring-model.md)
 Yorum: [neden bulunamadigi hakkinda tahmin — pazar yeni mi, nihai mi, gizlilik kulturu mu]
 ```
 
