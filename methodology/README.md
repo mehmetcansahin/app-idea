@@ -1,4 +1,4 @@
-# App Arastirma Metodolojisi v3.3
+# App Arastirma Metodolojisi v3.4
 
 > 10 fazli, veri odakli, sistematik app fikri degerlendirme metodolojisi.
 > Menopoz tracker hatasından (890 rating'li "milyar dolarlik pazar") ve 20+ uygulama
@@ -16,6 +16,7 @@
 | v3.2 | 2026-06-01 | Differential dis-kaynak arastirmasindan 7 ekleme: Dagitim Fizibilitesi/keyword difficulty (#1), Faz 5.5 build-oncesi dogrulama [Walling 2/20/200 + Mom Test + fake-door] (#5), Mom Test kalite kurali/RF-16 (#2), adlandirilmis-icgoru + SISP/RF-17 (#3), Sales Safari watering-hole kesfi/Kural 7 (#4), Zamanlama yasam-dongusu etiketi (#6), Apple first-party talep sinyali (#7) |
 | v3.2.1 | 2026-06-11 | Senkronizasyon + yapi: CLAUDE.md'ye Faz 5.5 pipeline adimi + 06-prebuild-plan.md cikti dosyasi eklendi; report-template v3.2'ye yukseltildi (Durum/Guven, 1.3 Dagitim Fizibilitesi, 5.2 Faz 5.5 plani, yasam-dongusu, adlandirilmis icgoru); Deep cikti dosyalari 07-11 olarak yeniden numaralandi; financial-model (Deep adim 9 sablonu) ve launch-playbook (GO sonrasi) pipeline'a baglandi; "15 tehlike isareti" → 17 duzeltildi; output/INDEX.md scoreboard + Durum takibi; .claude/commands/ kisayollari; git versiyon kontrolu baslatildi |
 | v3.3 | 2026-06-26 | Akran-grubu karsilastirmasindan eklemeler. KAVRAMLAR: Lean Canvas + Quantified Value Prop (Faz 9), Riskiest Assumption Test/RAT (Faz 5.5 Adim 0), JTBD Forces of Progress (Faz 4/7 goc analizi), Sean Ellis %40 PMF testi (launch post), 2x2 stratejik konumlandirma (Faz 4 Adim 6.5). ARACLAR (referans + pipeline): Glimpse/Exploding Topics (Trends kor noktasi), SearchAds.com/AppTweak (keyword difficulty, Apple popularity - Eki 2025 bozulmasi gecerli), F5Bot/Syften (Reddit otomasyonu), Acquire.com/Flippa/Starter Story (gelir kaniti), AppFigures/AppMagic (indie app intel), IdeaBrowser/ValidatorAI (capraz-kontrol), AnswerThePublic, Meta audience size. DAVRANIS: B5 satin-alma komparasyonu ima edilen MRR'a cevrilince "Gelir MAX 2" override'ini kaldirabilir; A2 pre-build artik en riskli varsayimi once test eder. DUZELTME: data.ai 2024'te Sensor Tower'a katildi; GummySearch (Kas 2025 kapandi) kullanilmaz. Append-only: faz dosya adlari + kalite kurali numaralari degismedi |
+| v3.4 | 2026-07-08 | xburak mobile-app operasyon onerilerinden eklemeler. Geo-LTV/hedef ulke odagi eklendi; Standard+ rakip analizine Mobbin/App Store screenshot/onboarding/paywall visual intelligence ve Adapty Paywall Library pattern kontrolu eklendi; Codia AI Design screenshot-to-Figma uretim yardimi olarak tanimlandi; finansal modele ulke bazli LTV/CAC sensitivity eklendi; Faz 5.5 dogrulanmis basit app'ler icin 1 haftalik micro-MVP sprint opsiyonu eklendi; MVP/launch icin security preflight ve AI share/secret hygiene checklist'i eklendi; Turkiye tesvikleri ve App Store Connect payout hazirligi yalnizca resmi-guncel kaynakla dogrulanacak sekilde protokole baglandi. K2 puanlama formulu degismedi; yeni sinyaller gelir/dagitim guveni ve rapor uyarisi olarak kullanilir. |
 
 ## Temel Ilkeler
 
@@ -26,6 +27,8 @@
 5. **Override Kurallari**: Objektif esikler (lider <500 → elen, indie gelir yok → max 2)
 6. **Bulunamadi da Veridir**: Aranan verinin bulunamamasi da puani sinirlar
 7. **Mom Test (Davranis > Beyan)**: Beyan edilen niyet/iltifat veri degil; sadece gecmis davranis sayilir
+8. **Geo-LTV Odagi**: Hedef ulke ve LTV/CAC varsayimi acikca yazilir; global buyume varsayimi kanitsiz kullanilmaz
+9. **Security + Secret Hygiene**: MVP/launch oncesi admin/auth/RLS/frontend-secret ve public AI share riskleri kontrol edilir
 
 ## 10 Faz Ozeti
 
@@ -52,7 +55,7 @@
 | `data-collection-protocol.md` | Faz bazli sorgu sablonlari | Veri toplama sirasinda |
 | `pre-build-validation.md` | Build-oncesi talep testi (2/20/200, Mom Test, fake-door) | Faz 5.5 (GO adayi cikinca) |
 | `prompt-templates.md` | Her faz icin hazir prompt'lar | Faz calistirirken |
-| `tools-and-data-sources.md` | Arac guvenilirlik matrisi | Kaynak secerken |
+| `tools-and-data-sources.md` | Arac guvenilirlik matrisi (Geo-LTV, visual intelligence, tesvik kaynaklari dahil) | Kaynak secerken |
 | `financial-model-template.md` | Bottom-up gelir modeli | Faz 9 (deep mode) |
 | `launch-playbook.md` | Lansman stratejisi | Post-arastirma |
 | `patterns/red-flags.md` | 17 tehlike isareti (RF-1 … RF-17) | Tum fazlarda kontrol |

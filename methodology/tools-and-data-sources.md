@@ -155,6 +155,68 @@
 
 ---
 
+## 4.6 VISUAL / PRODUCT FLOW INTELLIGENCE
+
+> Rakiplerin nasil sattigini, onboarding'de hangi vaadi verdigini ve paywall'u nerede gosterdigini anlamak icin kullanilir.
+> Bu kaynaklar TALEP veya GELIR kaniti degildir; ASO, positioning, onboarding ve MVP scope girdisidir.
+
+| Kaynak | Ne Verir | Guvenilirlik | Nasil Kullanilir |
+|---|---|---|---|
+| App Store screenshot'lari | Rakibin resmi screenshot mesaji, ilk 3 ekrandaki value prop, sosyal kanit, fiyat/benefit dili | ✅ Yuksek (KESIN — resmi sayfa) | Faz 4/8'de top rakiplerin screenshot mesajlarini tabloya al; ilk screenshot'in tek mesajini ve kullanilmayan acilari cikar. |
+| Mobbin | Onboarding, paywall, permission prompt, upgrade akislari icin ekran kutuphanesi | ⚠️ Orta (3. parti snapshot) | Standard+ visual intelligence icin kullan; tarih ve uygulama/akış adini kaydet. Ekranlar guncel olmayabilir, App Store/uygulama ile capraz kontrol et. |
+| Adapty Paywall Library | Paywall layout/pattern benchmark'lari, pricing presentation ve trial CTA ornekleri | ⚠️ Orta (pattern referansi) | Paywall erken dogrulama ve MVP sprinti icin pattern ilhami. Marka/metin/gorsel kopyalama yasak; yalnizca pattern ve hipotez cikar. |
+| Codia AI Design / screenshot-to-Figma | Screenshot'i duzenlenebilir Figma taslagina cevirme, screenshot uretim hizlandirma | ⚠️ Orta (uretim araci) | ASO screenshot veya onboarding taslagi uretirken kullanilabilir. Pazar kaniti DEGIL; kaynak olarak "uretim yardimi" diye etiketle. |
+| Figma / FigJam | Rakip akislari, 2x2 konumlandirma ve screenshot mesaj panosu | ✅ Yuksek (kendi sentezin) | Mobbin/App Store/Codia girdilerini tek board'da haritala; karar kaniti degil, analiz artefakti. |
+
+**Kayit formati (Standard+):**
+
+| Rakip | Kaynak | Incelenen akis | Ilk vaat / CTA | Paywall pattern | Bos kalan aci |
+|-------|--------|----------------|-----------------|-----------------|---------------|
+| [App] | App Store / Mobbin | Onboarding / Paywall / Screenshot | [metin] | [trial, yearly default, social proof...] | [wedge] |
+
+**Kural:** Visual intelligence, Rekabet Boslugu'nu ancak review/Reddit/fiyat verisiyle destekliyorsa guclendirir. Tek basina "screenshot kotu" demek Rekabet 4-5 icin yeterli degildir.
+
+---
+
+## 4.7 GEO-LTV / ULKE BAZLI MONETIZASYON KAYNAKLARI
+
+> Ulke secimi, subscription LTV ve paid acquisition fizibilitesini ciddi etkiler. "Global yayinlarim" varsayimi veri degildir.
+
+| Kaynak | Ne Verir | Guvenilirlik | Not |
+|---|---|---|---|
+| RevenueCat benchmark'lari | Subscription conversion, renewal, churn, kategori ve bolge benchmark'lari | ⚠️ Orta-Yuksek | Aggregate benchmark; kendi app verisi degil. Etiket TAHMINI. |
+| Adapty benchmark/blog/verileri | Paywall conversion ve ulke/segment bazli monetizasyon icgoru paylasimlari | ⚠️ Orta | Aggregate veya case-study olabilir; metodolojiyi ve tarihi kaydet. |
+| App Store Connect Analytics (kendi uygulaman) | Territory bazli impression, install, proceeds, conversion | ✅ Yuksek | SADECE kendi uygulaman icin KESIN. Arastirma asamasinda yoksa kullanilamaz. |
+| RevenueCat/Adapty kendi dashboard'un | Ulke bazli trial, conversion, renewal, LTV | ✅ Yuksek | Launch sonrasi first-party veri; finansal modeli guncellemek icin kullan. |
+| Apple Search Ads country/bid verisi | Ulke bazli keyword intent ve tahmini bid/CPA | ⚠️ Orta | Apple tarafindan gelir ama 2025 popularity bozulmasi ve bid oynakligi nedeniyle tek kaynak degil. |
+| Rakip localized App Store sayfalari | Rakibin hangi ulkeleri/dilleri hedefledigi | ✅ Yuksek | Hedef geo varsayimini destekler; gelir/LTV kaniti degil. |
+
+**Pratik kural:**
+- Baslangicta 3-5 oncelikli ulke sec: yuksek LTV, ulasilabilir dil/ASO, regule olmayan pazar, makul CAC.
+- 80+ ulkeye yayilma varsayimi, first-party LTV:CAC kaniti olmadan finansal modelde kullanilmaz.
+- Yuksek LTV ulkelerine erisim yoksa veya localization/odeme engeli varsa, Gelir/Dagitim guveni icin UYARI ekle; K2 formulu degismez.
+
+---
+
+## 4.8 TURKIYE TESVIKLERI VE APP STORE CONNECT PAYOUT
+
+> Turkiye'den faaliyet gosteren mobile app/game ekipleri icin tesvik ve payout bilgileri hizli degisir.
+> Tweet/blog/soylenti kanit degildir; yalnizca resmi ve guncel kurum/mevzuat sayfasi KESIN sayilir.
+
+| Konu | Kontrol | Guvenilirlik |
+|---|---|---|
+| Reklam/tool/App Store komisyon tesvikleri | Ilgili bakanlik/resmi program sayfalarinda guncel kapsam, limit, basvuru kosulu, tarih | ✅ KESIN (resmi kaynak) / ⚠️ TAHMINI (araci yorum) |
+| Basvuru uygunlugu | Sirket turu, faaliyet kodu, ihracat/hizmet geliri, dokumantasyon kosullari | ✅ KESIN (resmi kaynak + mali musavir teyidi) |
+| App Store Connect payout | Banka ulkesi, hesap sahibi, IBAN/SWIFT/branch bilgisi, vergi formlari, para birimi | ✅ KESIN (App Store Connect UI) |
+| Muhasebe kayitlari | Fatura/dekont, reklam faturasi, komisyon kesintisi, odeme makbuzu | ✅ KESIN (kendi kaydin) |
+
+**Raporlama kuralı:**
+- Tutar/limit/kapsam hard-code etme.
+- "Guncel resmi kaynakla dogrulanmali" notu kullan.
+- Turkiye tesviki, pazar GO kararinin yerine gecmez; yalnizca maliyet/launch fizibilitesi girdisidir.
+
+---
+
 ## 5. CLAUDE / AI YETENEKLERI
 
 > Bu bolum, Claude'un pazar arastirmasinda neler yapabilecegini ve yapamayacagini durust sekilde dokumante eder.
@@ -217,6 +279,9 @@
 | Conversion rate benchmark | RevenueCat / Superwall blog | ✅ Yuksek | IndieHackers raporlari |
 | Churn rate benchmark | RevenueCat blog | ✅ Yuksek | - |
 | Rakip reklam aktivitesi (kreatif, longevity) | FB Ad Library (browser otomasyonu) | ✅ Yuksek (KESIN — dogrudan gozlem) | Google ATC (advertiser bazli), WebSearch dolayli (TAHMINI) |
+| Rakip onboarding/paywall/screenshot pattern'i | App Store screenshot + Mobbin + Adapty Paywall Library | ⚠️ Orta-Yuksek | Pattern kaniti; talep/gelir kaniti degil |
+| Ulke bazli LTV/CAC benchmark'i | RevenueCat / Adapty benchmark + App Store Connect kendi verisi | ⚠️ TAHMINI / ✅ KESIN (kendi app) | Finansal model sensitivity girdisi |
+| Turkiye tesvik/payout kosullari | Resmi kurum sayfalari + App Store Connect UI | ✅ KESIN | Tweet/blog tek basina kullanilmaz |
 
 ---
 
@@ -268,11 +333,13 @@ Her arastirma fazi icin hangi araclarin kullanilacagi:
 | Faz 2: Keywords | App Store Search Suggest, Google Trends | Apple Search Ads, Google Keyword Planner | ⚠️ Kismi (Search Suggest ve Trends icin web erisim var, ASA icin yok) |
 | Faz 3: Hizli Tarama | App Store (direkt sayfa okuma) | AppMagic (ucretsiz tier) | ✅ Web fetch ile App Store sayfalari okunabilir |
 | Faz 4: Rakip Analizi | App Store + Reddit reviews | Sensor Tower (sinirli free), AlternativeTo | ✅ Web fetch ile App Store ve Reddit okunabilir |
+| Faz 4b: Visual intelligence | App Store screenshot, Mobbin | Adapty Paywall Library, Codia AI Design | ⚠️ Kismi (App Store okunur; Mobbin/Codia genelde browser/insan gerekir) |
 | Faz 5: Puanlama | Faz 3-4'te toplanan veriler | - | ✅ Tam — Claude veri analizi ve puanlama yapabilir |
 | Faz 6: Deep Dive | App Store reviews (tum yildizlar), Reddit threads | IndieHackers, Product Hunt | ✅ Web fetch ile detayli okuma yapilabilir |
 | Faz 7: Dogrulama | IndieHackers (gelir kaniti), Reddit, App Store | Product Hunt, Twitter #buildinpublic | ✅ Web search ve web fetch ile |
 | Faz 8: Karsilastirma | Tum onceki fazlardaki veriler | - | ✅ Tam — Claude karsilastirma analizi yapabilir |
 | Faz 9: Go/No-Go | Tum fazlarin ozeti | - | ✅ Tam — Claude karar matrisi olusturabilir |
+| Faz 9b: Geo-LTV / micro-MVP / security | Financial model, launch checklist | RevenueCat/Adapty benchmark, App Store Connect | ⚠️ Kismi (first-party dashboard yoksa TAHMINI) |
 | Faz 10: Devil's Advocate | Tum kaynaklar, ters perspektif | - | ✅ Tam — Claude her fikre karsi arguman uretebilir |
 
 ---
@@ -285,6 +352,9 @@ Her arastirma fazi icin hangi araclarin kullanilacagi:
 | Google Trends | Arastirma basinda + mevsim kontrolu | Trendler degisir, mevsimsellik onemli |
 | Reddit | Her arastirma basinda | Yeni thread'ler surekli acilir |
 | Ad library (FB/Google ATC) | Her arastirma basinda | Aktif reklamlar ve kreatifler surekli degisir; anlik goruntu |
+| Mobbin/App Store screenshot/paywall pattern | Her Standard+ arastirma basinda | Rakip onboarding ve paywall mesajlari sik degisir |
+| Geo-LTV benchmark | Her finansal model guncellemesinde | Ulke bazli LTV/CAC ve paywall benchmark'lari degisir |
+| Turkiye tesvik/payout kosullari | Her raporda kullanmadan once | Tutar, limit, basvuru sarti ve App Store Connect UI degisebilir |
 | Sensor Tower / AppFigures / AppMagic | Ayda 1 | Tahminler guncellenir (eski data.ai artik Sensor Tower icinde) |
 | IndieHackers | Ceyreklik | Gelir raporlari genelde aylik/ceyreklik paylasilir |
 | Pazar arastirma raporlari | Yilda 1 (varsa) | Nadiren guncellenir, nadiren guvenilir |

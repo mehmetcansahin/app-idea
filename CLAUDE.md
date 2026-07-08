@@ -26,6 +26,7 @@ Kisayol komutlari: `/quick-scan`, `/standard`, `/deep`, `/compare` (bkz. `.claud
    - App Store lider tespiti + top 5 rakip metadata (WebSearch + WebFetch)
    - Google Trends kontrol (WebSearch — direkt trends.google.com interaktif grafigi okunamaz, arama sonuclarindan cikarim yap)
    - Reddit hizli tarama (1 sorgu: "[keyword] app reddit")
+   - Hedef geo/Geo-LTV hizli kontrolu (pazar varsayimi US/global degilse ulke notu)
 3. Hizli 3 katmanli puanlama (K1 pass/fail + K2 agirlikli + K3 fizibilite)
    - **Early termination:** K1 KALDI ise → puanlama tamamla ama raporda "ELENDIR (K1 fail)" yaz, MVP/detay bolumlerini atla
    - **Early termination:** K3 < 0.5 ise → raporda "Fizibilite cok dusuk — detay analiz gereksiz" notu ekle
@@ -53,6 +54,8 @@ Kisayol komutlari: `/quick-scan`, `/standard`, `/deep`, `/compare` (bkz. `.claud
    - Gelir kaniti arama (min 4 sorgu: IndieHackers, Twitter #buildinpublic, bloglar, "[app] revenue")
    - Fiyat karsilastirma matrisi (tum rakiplerin fiyat bilgilerini tek tabloda — ortalama, medyan, aralik, lifetime sunan)
    - Reklam istihbarati (FB Ad Library keyword + top rakip advertiser, Google ATC — browser otomasyonu, bkz. kalite kurali #11; longevity, kreatif yogunluk, mesaj acilari)
+   - Geo-LTV / hedef ulke parasallasma kontrolu (RevenueCat/Adapty benchmark, App Store Connect varsa first-party)
+   - Visual intelligence: App Store screenshot + Mobbin/onboarding/paywall pattern + Adapty Paywall Library referanslari (bkz. kalite kurali #15)
 4. 3 katmanli puanlama (tam versiyon, her puan veri referansli)
    - **Early termination:** K1 KALDI ise → puanlama tamamla ama "ELENDIR (K1 fail)" yaz
    - **Early termination:** K3 < 0.5 ise → raporda notu ekle, MVP detayini kisalt
@@ -84,8 +87,8 @@ output/{tarih}-{konu}/
 **Pipeline:** Standard pipeline (adim 1-6) + asagidakiler:
 7. Ozellik karsilastirma matrisi (temel/gelismis/benzersiz/eksik)
 8. ASO keyword arastirmasi (6+ sorgu, rakip ASO analizi + reklam kreatif aci analizi [Faz 4 Adim 8 verisinden])
-9. Finansal model (3 senaryo: konservatif/realistik/iyimser) — **sablon:** `methodology/financial-model-template.md`
-10. Proje brief + MVP scope + Moat analizi (kanonik Faz 9). Faz 5.5 henuz insan tarafindan yurutulmediyse brief DOGRULAMAYA KOSULLU TASLAKTIR — nihai GO karari Faz 5.5 sonucuna baglidir (Durum: FAZ 5.5 BEKLIYOR).
+9. Finansal model (3 senaryo: konservatif/realistik/iyimser + ulke bazli LTV/CAC sensitivity) — **sablon:** `methodology/financial-model-template.md`
+10. Proje brief + MVP scope + Moat analizi (kanonik Faz 9). Basit app'lerde Faz 5.5 dogrulaninca 1 haftalik micro-MVP sprint opsiyonu ekle; Faz 5.5 henuz insan tarafindan yurutulmediyse brief DOGRULAMAYA KOSULLU TASLAKTIR — nihai GO karari Faz 5.5 sonucuna baglidir (Durum: FAZ 5.5 BEKLIYOR).
 11. Seytan'in avukati (varsayim tablosu, menopoz testi, en kotu senaryolar) (kanonik Faz 10)
 12. → `REPORT.md` + tam faz ciktilari. Karar GO ise Sonraki Adimlar'a lansman yonlendirmesi: `methodology/launch-playbook.md`
 
@@ -202,6 +205,21 @@ Goc sinyalini (Faz 4/7) ham sayma; NEDEN goculdugunu coz: goc ancak Push (mevcut
 ### 13. Riskiest Assumption Test (RAT) — Faz 5.5
 Faz 5.5'te otomatik talebi degil, EN RISKLI varsayimi test et. Varsayimlari (Talep/Odeme/Teknik/Retention/Regulasyon/Dagitim) etki x belirsizlik ile sirala; en riskliyi uygun yontemle (landing/on-satis/spike/concierge/uzman-gorusme/ASO-testi) once dogrula. Cogu tuketici app'inde en riskli = Talep. Detay: `methodology/pre-build-validation.md` (Adim 0).
 
+### 14. Geo-LTV ve Hedef Ulke Odagi
+Global/US varsayimi yapma. Her GO/SARTLI GO adayinda hedef ulkeleri acikca yaz ve ulke bazli LTV/CAC mantigini kontrol et. RevenueCat/Adapty benchmark'lari TAHMINI'dir; App Store Connect/RevenueCat kendi app verisi KESIN'dir. Yuksek LTV ulkeleri erisilemiyorsa veya hedef geo belirsizse gelir/paid UA guveni icin UYARI ekle. 80 ulkeye yayilma varsayimi, 3-5 oncelikli ulkede LTV:CAC kaniti olmadan kullanilmaz.
+
+### 15. Visual Intelligence (Mobbin / App Store / Codia)
+Standard+ analizlerde rakiplerin sadece metadata'sini degil, onboarding, paywall ve screenshot mesajlarini da incele. Kaynaklar: App Store screenshot'lari (KESIN), Mobbin gibi 3. parti ekran kutuphaneleri (TAHMINI/tamamlayici), Adapty Paywall Library (pattern referansi), Codia AI Design veya screenshot-to-Figma araclari (uretim yardimi, pazar kaniti DEGIL). Cikti: hangi akisin incelendigi, hangi mesaj/pattern'in tekrarlandigi, hangi farklilasma acisinin bos kaldigi. Kopyalama yasak; sadece pattern ve bosluk cikar.
+
+### 16. 1 Haftalik Micro-MVP Sprint
+Faz 5.5 davranisla DOGRULANDI ise ve app teknik/regulasyon olarak basitse, Sonraki Adimlar'a 1 haftalik sprint opsiyonu ekle: Pazartesi keyword/scope, Sali proje+onboarding, Carsamba max 5 ekran MVP, Persembe paywall+market fit, Cuma test+screenshots, Cumartesi submit, Pazar marketing. Bu sprint puanlama ankori degil; sadece dogrulanmis, dusuk karmasiklikli fikirler icin uygulama planidir.
+
+### 17. Security Preflight + AI Share/Secret Hygiene
+MVP/launch planinda guvenlik checklist'i zorunlu: admin endpoint'leri koru, user content icin ID-only erisim kullanma, token/session auth uygula, API/admin token'larini frontend'e koyma, Supabase RLS/Firestore rules kontrol et, predictable ID riskini azalt, `isAdmin/role/credits` gibi korumali alanlari kullanici tarafindan update ettirme. ChatGPT/Codex/Claude public share linklerine API key, admin token, musteri verisi veya private repo icerigi koyma; paylasilacaksa once secret scrub yap.
+
+### 18. Turkiye Tesvikleri ve App Store Connect Payout
+Turkiye sirketi/operasyonu veya Turkiye'den gider yazma soz konusuysa, reklam/tool/App Store komisyon tesvikleri ve App Store Connect banka/payout gereksinimleri ayri checklist olarak kontrol edilir. Tweet/blog bilgisi dogrudan kanit degildir; sadece resmi ve guncel kurum/mevzuat sayfasi KESIN sayilir. Tutar, limit, kapsam ve tarih degisebildigi icin hard-code etme; raporda "guncel resmi kaynakla dogrulanmali" notu kullan.
+
 ---
 
 ## Dosya Haritasi
@@ -253,7 +271,7 @@ Agent tool ile paralel calistirilabilecek arastirma gruplari. Gruplar HARF ile e
 ### Quick Scan
 ```
 [SERI]    A. Girdi analizi + disambiguation (konu belirsizse)
-[PARALEL] B. App Store lider tespiti | Google Trends kontrol
+[PARALEL] B. App Store lider tespiti | Google Trends kontrol | Geo-LTV hizli kontrol
 [SERI]    C. Puanlama (K1 fail → early termination, K3 < 0.5 → kisalt) + Rapor
 ```
 
@@ -261,7 +279,7 @@ Agent tool ile paralel calistirilabilecek arastirma gruplari. Gruplar HARF ile e
 ```
 [SERI]    A. Girdi analizi + disambiguation + use case segmentasyonu
 [PARALEL] B. App Store tarama | Google Trends | Reddit sentiment
-[PARALEL] C. Review mining | Gelir kaniti | Fiyat matrisi | Reklam istihbarati
+[PARALEL] C. Review mining | Gelir kaniti | Fiyat matrisi | Reklam istihbarati | Geo-LTV | Visual intelligence
 [SERI]    D. Puanlama (K1 fail → early termination, K3 < 0.5 → kisalt)
 [SERI]    E. Dogrulama + Faz 5.5 plani (GO/SARTLI GO ise) + Rapor + Cross-report + INDEX guncelle
 ```
@@ -269,7 +287,7 @@ Agent tool ile paralel calistirilabilecek arastirma gruplari. Gruplar HARF ile e
 ### Deep
 ```
 Standard gruplari (A-E) +
-[PARALEL] F. Ozellik matrisi | ASO arastirmasi | Finansal model (sablon: financial-model-template.md)
+[PARALEL] F. Ozellik matrisi | ASO arastirmasi + visual intelligence | Finansal model + Geo-LTV sensitivity (sablon: financial-model-template.md)
 [SERI]    G. Proje brief + MVP + Moat (F'ye bagimli)
 [SERI]    H. Seytan'in avukati (tum verilere bagimli)
 [SERI]    I. Final rapor + INDEX guncelle (GO ise launch-playbook yonlendirmesi)

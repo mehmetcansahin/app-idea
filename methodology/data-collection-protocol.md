@@ -75,6 +75,15 @@ Her pazar icin su sablonlari ara (Amy Hoy Sales Safari):
 
 Not: Kati 7-etiketli kodlama SART degil (dogrulanmadi); sablonlari ve "once mecra bul, pasif gozle" durusunu benimse. The Mom Test (RF-16) ile birlikte calisir.
 
+### Kural 8: Geo-LTV ve Ulke Varsayimi
+
+Pazar "global" diye varsayilmaz. Her analizde hedef ulke/bolge acikca yazilir.
+
+- Quick Scan: hedef geo belirsizse US/global varsayimini not et ve "Geo-LTV belirsiz" uyarisi ekle.
+- Standard+: 3-5 oncelikli ulke sec; LTV/CAC, dil/ASO, odeme ve regulasyon riskini tabloya koy.
+- RevenueCat/Adapty benchmark'lari TAHMINI; App Store Connect veya RevenueCat kendi app verisi KESIN'dir.
+- 80+ ulkeye yayilma varsayimi, ilk 3-5 ulkede LTV:CAC kaniti olmadan finansal modele girmez.
+
 ---
 
 ## FAZ 3: HIZLI PAZAR TARAMA — Veri Toplama Protokolu
@@ -83,7 +92,7 @@ Not: Kati 7-etiketli kodlama SART degil (dogrulanmadi); sablonlari ve "once mecr
 **Girdi:** Keyword cluster listesi (Faz 2'den)
 **Cikti:** Her cluster icin pazar durumu ozet tablosu
 
-### Her Keyword Cluster Icin 4 Adim
+### Her Keyword Cluster Icin 7 Adim
 
 #### Adim 1: App Store Lider Tespiti
 
@@ -206,13 +215,38 @@ Kayit: her ana keyword icin difficulty (dusuk/orta/yuksek), kaynak (rating-tahmi
 
 ---
 
+#### Adim 7: Hedef Geo / Geo-LTV Hizli Kontrolu
+
+```
+WebSearch: "[KATEGORI] app subscription LTV country benchmark RevenueCat Adapty"
+WebSearch: "[KATEGORI] app pricing country iOS subscription"
+```
+
+**Ne cikarilacak:**
+- Varsayilan hedef ulke/bolge: US / UK / CA / AU / EU / TR / global / diger
+- Bu geo icin monetizasyon beklentisi: YUKSEK / ORTA / DUSUK / BELIRSIZ
+- Dil/localization gereksinimi
+- Odeme/regulasyon riski
+
+**Kayit formati:**
+```
+Hedef Geo: [ulke/bolge]
+Geo-LTV sinifi: YUKSEK / ORTA / DUSUK / BELIRSIZ (TAHMINI)
+Kaynak: [RevenueCat/Adapty benchmark, App Store localized rakip, vb.]
+Uyari: [varsa — hedef geo belirsiz, localization gerekir, CAC yuksek...]
+```
+
+**Kural:** Geo-LTV K2 formülünü degistirmez. Gelir ve Dagitim Fizibilitesi guvenini artiran/azaltan ek sinyaldir.
+
+---
+
 ### Faz 3 Cikti Formati
 
 Her cluster icin bir satir:
 
-| Cluster | Lider | iOS Rating | Yildiz | Fiyat Modeli | Kategori | Son Guncelleme | Trend | Pazar Durumu |
-|---------|-------|------------|--------|--------------|----------|----------------|-------|--------------|
-| [KEYWORD] | [App Adi] | [sayi] | [x/5] | [free/paid/sub] | [kat] | [tarih] | [Y/D/A] | [DOYMUS/BUYUYOR/NIS] |
+| Cluster | Lider | iOS Rating | Yildiz | Fiyat Modeli | Kategori | Son Guncelleme | Trend | Hedef Geo / Geo-LTV | Pazar Durumu |
+|---------|-------|------------|--------|--------------|----------|----------------|-------|---------------------|--------------|
+| [KEYWORD] | [App Adi] | [sayi] | [x/5] | [free/paid/sub] | [kat] | [tarih] | [Y/D/A] | [US/YUKSEK] | [DOYMUS/BUYUYOR/NIS] |
 
 **Pazar Durumu degerlendirmesi:**
 - DOYMUS: Lider 100K+ rating VE 4.5+ yildiz VE 5+ guclu rakip
@@ -230,6 +264,7 @@ Her cluster icin:
 - [ ] Son guncelleme tarihi kontrol edildi (6 aydan eski = bayat)
 - [ ] En az 3 rakip daha tespit edildi
 - [ ] Google Trends yonu kontrol edildi
+- [ ] Hedef geo ve Geo-LTV hizli kontrolu kaydedildi
 - [ ] Pazar durumu degerlendirmesi yapildi
 
 ---
@@ -240,7 +275,7 @@ Her cluster icin:
 **Girdi:** Faz 3'ten gecen cluster'lar (genelde 15'ten 8'e duser)
 **Cikti:** Her cluster icin rakip matrisi, sikayet analizi, fiyat/ozellik karsilastirmasi
 
-### Her Hayatta Kalan Cluster Icin 7 Adim
+### Her Hayatta Kalan Cluster Icin 9 Adim
 
 #### Adim 1: Tam Rakip Listesi Olusturma
 
@@ -600,9 +635,44 @@ Paid kanal yorumu: DOYGUN / AKTIF / BOS — [1-2 cumle]
 
 ---
 
+#### Adim 9: Visual / Product Flow Intelligence
+
+**Amac:** Rakiplerin onboarding, paywall ve App Store screenshot mesajlarini inceleyerek satis/pattern bosluklarini bulmak.
+
+**Birincil kaynak — App Store screenshot'lari:**
+```
+WebFetch: https://apps.apple.com/us/app/[RAKIP-SLUG]/id[RAKIP-ID]
+Prompt: "Extract screenshot captions/messages and summarize the first 3 screenshot value propositions."
+```
+
+**Tamamlayici kaynaklar (browser/insan erisimi gerekebilir):**
+- Mobbin: top 3-5 rakibin onboarding, paywall, permission prompt ve upgrade akislari
+- Adapty Paywall Library: benzer kategoride paywall pattern referanslari
+- Codia AI Design / screenshot-to-Figma: secilen referans screenshot'i uretim taslagina cevirmek icin, pazar kaniti olarak degil
+
+**Kayit formati:**
+```
+=== Visual Intelligence — [CLUSTER] ===
+Tarama tarihi: [tarih]
+Kaynaklar: App Store / Mobbin / Adapty Paywall Library / Codia
+
+| Rakip | Kaynak | Incelenen akis | Ilk vaat / CTA | Paywall pattern | Bos kalan aci |
+|-------|--------|----------------|-----------------|-----------------|---------------|
+| [App] | [kaynak] | Onboarding/Paywall/Screenshot | [mesaj] | [pattern] | [wedge] |
+
+Sonuc:
+- Tekrarlanan mesaj/pattern:
+- Rakiplerin kullanmadigi ama review/reddit'te acik olan aci:
+- MVP/paywall hipotezi:
+```
+
+**Kural:** Visual intelligence, review/Reddit/fiyat kanitiyla desteklenmedikce Rekabet 4-5 icin tek basina yeterli degildir. Kopyalama yasak; sadece pattern ve bosluk cikar.
+
+---
+
 ### Faz 4 Cikti Formati
 
-Her cluster icin asagidaki 7 ciktiyi hazirla:
+Her cluster icin asagidaki 8 ciktiyi hazirla:
 
 1. **Rakip Matrisi** (5-10 satir x 12+ kolon)
 2. **Kotu Yorum / Sikayet Ozeti** (top 5 tema + frekans sayilari)
@@ -611,6 +681,7 @@ Her cluster icin asagidaki 7 ciktiyi hazirla:
 5. **Reddit Sentiment Ozeti** (her rakip icin sentiment + goc sinyalleri)
 6. **iOS vs Android Karsilastirma** (cross-platform fark analizi)
 7. **Reklam Istihbarati Ozeti** (rakip basina longevity + mesaj acilari + paid kanal yorumu)
+8. **Visual Intelligence Ozeti** (screenshot/onboarding/paywall pattern + bos acilar)
 
 **Tahmini sure:** Cluster basina ~30 dakika, 8 cluster = ~4 saat
 
@@ -629,6 +700,7 @@ Her cluster icin:
 - [ ] Google Play cross-check yapildi — en az top 5 rakip icin (Adim 7)
 - [ ] iOS vs Android farkliliklari not alindi
 - [ ] Reklam istihbarati taramasi yapildi — FB keyword + top rakip advertiser, erisim yolu not edildi (Adim 8)
+- [ ] Visual intelligence tamamlandi — App Store screenshot + varsa Mobbin/Adapty Paywall Library/Codia not edildi (Adim 9)
 
 ---
 
@@ -702,6 +774,16 @@ WebSearch: "[KATEGORI] business starter story revenue"
   kar mi belirt; KAR carpanindan cikan rakami GELIR ankoruna sayma.
 - **Kanit turu:** KAPANMIS satis = davranis (ankora sayilabilir). CANLI/satilmamis ILAN (asking price +
   satici-beyani) = IDDIA → TAHMINI, MAX 3 (kac ilan olursa olsun; Mom Test/RF-16).
+
+**Sorgu 6 — Geo-LTV / ulke bazli monetizasyon:**
+```
+WebSearch: "[KATEGORI] app subscription LTV country benchmark RevenueCat"
+WebSearch: "[KATEGORI] app paywall conversion country Adapty"
+WebSearch: "[KATEGORI] app Apple Search Ads CPA country"
+```
+- 3-5 hedef ulkeyi sec ve her biri icin LTV/CAC sinifini not et.
+- Benchmark verisi TAHMINI'dir; first-party App Store Connect/RevenueCat verisi yoksa KESIN yazma.
+- Geo-LTV sinyali Gelir puanini otomatik artirmaz; gelir kaniti ve dagitim guvenini yorumlar.
 
 **Puanlama skalasi:**
 - 5: 3+ bagimsiz indie gelir kaniti, ortalama $5K+/ay
@@ -805,12 +887,18 @@ WebSearch: "[KATEGORI] new regulation OR law OR policy 2025 2026"
 |---------|-------------|---------------|-------------|---------------|--------------|----------------|-----------------|-------------|-----------------|-------------|--------|
 | [KEYWORD] | [X] | [kaynak+etiket] | [X] | [kaynak+etiket] | [X] | [kaynak+etiket] | [X] | [kaynak+etiket] | [X] | [kaynak+etiket] | [X/25] |
 
+**Ek not (K2 formulune dahil degil):**
+| Cluster | Hedef Geo | Geo-LTV sinifi | Gelir/Dagitim Etkisi |
+|---------|-----------|----------------|----------------------|
+| [KEYWORD] | [US/UK/TR...] | YUKSEK/ORTA/DUSUK/BELIRSIZ | [guven artar/uyari] |
+
 **Tahmini sure:** Cluster basina ~15 dakika, 8 cluster = ~2 saat
 
 ### Faz 5 Kontrol Listesi
 
 - [ ] Her kriter icin veri kaynagi acikca belirtildi (KESIN/TAHMINI/DUSUK)
 - [ ] Gelir kaniti icin en az 3 farkli sorgu yapildi
+- [ ] Geo-LTV / hedef ulke monetizasyon kontrolu yapildi
 - [ ] Override kurallari kontrol edildi (ornek: gelir kaniti yok → max 2)
 - [ ] Tek kaynaga dayanan hicbir puan yok (Ucgen kurali)
 - [ ] Retention icin guncelleme sikligi alternatif sinyal olarak kontrol edildi
@@ -1078,7 +1166,7 @@ Her finalist icin:
 
 **Amac:** Secilen fikir icin App Store Optimization verilerini toplamak.
 **Girdi:** Faz 8'den secilen tek finalist
-**Cikti:** Keyword listesi, rakip ASO analizi, screenshot analizi
+**Cikti:** Keyword listesi, rakip ASO analizi, screenshot/visual intelligence analizi, micro-MVP/security/tesvik guardrail notlari
 
 ### Adim 1: Keyword Arastirmasi
 
@@ -1220,6 +1308,90 @@ Screenshot 3 onerisi: [ne gostermeli]
 Rakiplerden farklilasma noktasi: [ne]
 ```
 
+---
+
+### Adim 5: Paywall / Onboarding Pattern Referansi
+
+Faz 4 Adim 9 visual intelligence verisini kullan. Eksikse top 3 rakip icin tamamla.
+
+**Kaynaklar:**
+- App Store screenshot'lari (KESIN)
+- Mobbin onboarding/paywall akislari (TAHMINI/tamamlayici)
+- Adapty Paywall Library (pattern referansi)
+- Codia AI Design / screenshot-to-Figma (uretim yardimi; pazar kaniti degil)
+
+**Cikti:**
+```
+=== Paywall / Onboarding Pattern Onerisi ===
+Ilk deger ani: [kullanici ilk 60 sn'de ne gorecek]
+Paywall tetigi: [hangi aksiyon/ekran]
+Default plan: [aylik/yillik/lifetime]
+Kopyalanmayacak referanslar: [hangi pattern'ler, neden]
+Farkli mesaj acisi: [review/reddit'ten gelen bos aci]
+```
+
+---
+
+### Adim 6: Micro-MVP Sprint Uygunlugu
+
+```
+Micro-MVP sprint uygunlugu: EVET / HAYIR
+Kosul kontrolu:
+- Faz 5.5 durumu:
+- Teknik/regulasyon karmasikligi:
+- Max 5 ekran mumkun mu:
+- Paywall erken eklenebilir mi:
+
+1 haftalik sprint:
+Pazartesi: keyword/final scope
+Sali: proje kurulumu + onboarding
+Carsamba: max 5 ekran MVP
+Persembe: paywall + market-fit copy
+Cuma: test + screenshots
+Cumartesi: App Store submit
+Pazar: marketing/community posts
+```
+
+Bu sprint sadece Faz 5.5 davranisla dogrulanmis, dusuk karmasiklikli app'ler icin uygulama planidir; K3 MVP suresi ankori degismez.
+
+---
+
+### Adim 7: Security Preflight + AI Share Hygiene
+
+**Checklist:**
+- [ ] Admin endpoint'leri auth/role check ile korunuyor
+- [ ] User content ID-only URL ile acilmiyor; token/session/ownership check var
+- [ ] API key/admin token frontend bundle'a koyulmuyor; backend/proxy kullaniliyor
+- [ ] Supabase RLS / Firestore rules / backend authorization kurallari yazildi ve test edildi
+- [ ] Predictable ID riski kontrol edildi
+- [ ] Kullanici `isAdmin`, `role`, `credits`, `subscriptionStatus` gibi korumali alanlari update edemiyor
+- [ ] Public AI share linklerinde API key, admin token, private repo icerigi veya musteri verisi yok
+
+**Cikti:** Risk bolumune "Security preflight: GECTI / EKSIK / UYGULANAMAZ" olarak yaz.
+
+---
+
+### Adim 8: Turkiye Tesvik / Payout Kontrolu
+
+**Ne zaman:** Kurucu Turkiye'de sirket/operasyon yurutuyorsa, maliyetleri Turkiye'de gider yazacaksa veya tesvik kullanmayi planliyorsa.
+
+```
+WebSearch: "mobil uygulama ihracat destekleri resmi site guncel"
+WebSearch: "dijital hizmet ihracati reklam komisyon destekleri resmi site"
+App Store Connect UI: Agreements, Tax, and Banking > Bank Accounts / Tax Forms
+```
+
+**Kayit formati:**
+```
+Turkiye tesvik uygunlugu: UYGUN / BELIRSIZ / UYGUN DEGIL
+Resmi kaynak: [URL, tarih]
+Kapsam: [reklam/tool/komisyon/diger]
+Hard-coded tutar kullanildi mi: HAYIR
+Payout hazirligi: [IBAN/SWIFT/vergi formu/banka sahibi notu]
+```
+
+**Kural:** Tweet/blog/soylenti TAHMINI'dir. Resmi ve guncel kaynak yoksa "BELIRSIZ" yaz; GO kararini tesvige dayandirma.
+
 **Tahmini sure:** ~60 dakika (1 finalist icin)
 
 ### Faz 9 Kontrol Listesi
@@ -1231,6 +1403,10 @@ Rakiplerden farklilasma noktasi: [ne]
 - [ ] Top 3 rakibin screenshot'lari analiz edildi
 - [ ] Her screenshot icin metin, ozellik, renk, mesaj cikarldi
 - [ ] Kendi uygulamamiz icin ASO stratejisi olusturuldu
+- [ ] Paywall/onboarding pattern referansi cikartildi (Mobbin/App Store/Adapty Paywall Library varsa)
+- [ ] Micro-MVP sprint uygunlugu belirlendi
+- [ ] Security preflight + AI share/secret hygiene checklist'i dolduruldu
+- [ ] Turkiye tesvik/payout kontrolu gerekti mi ve resmi kaynakla dogrulandi mi not edildi
 
 ---
 
@@ -1456,11 +1632,33 @@ WebSearch: "[KATEGORI] app market growth CAGR forecast"
 WebSearch: "[KEYWORD] app" Google Trends interest 2024 2025 2026
 ```
 
+### Geo-LTV / Hedef Ulke
+```
+WebSearch: "[KATEGORI] app subscription LTV country benchmark RevenueCat"
+WebSearch: "[KATEGORI] app paywall conversion country Adapty"
+WebSearch: "[KATEGORI] app Apple Search Ads CPA country"
+```
+
 ### Reklam Istihbarati (Ad Library — WebFetch CALISMAZ, browser otomasyonu gerekir)
 ```
 Browser: facebook.com/ads/library/?active_status=active&ad_type=all&country=US&q=[KEYWORD]&search_type=keyword_unordered
 Browser: adstransparency.google.com/?region=US&domain=[RAKIP-DOMAIN]   (sadece advertiser; screenshot ile oku)
 WebSearch (fallback): "[RAKIP APP] facebook ads OR tiktok ads"
+```
+
+### Visual Intelligence
+```
+WebFetch: https://apps.apple.com/us/app/[RAKIP-SLUG]/id[RAKIP-ID]
+Browser/insan: Mobbin onboarding/paywall akislari
+Browser/insan: Adapty Paywall Library benzer kategori pattern'leri
+Uretim yardimi: Codia AI Design / screenshot-to-Figma
+```
+
+### Turkiye Tesvik / Payout
+```
+WebSearch: "mobil uygulama ihracat destekleri resmi site guncel"
+WebSearch: "dijital hizmet ihracati reklam komisyon destekleri resmi site"
+App Store Connect UI: Agreements, Tax, and Banking
 ```
 
 ### Karsit Kanit
@@ -1483,6 +1681,7 @@ Tum arastirma boyunca takip edilecek kontrol listesi:
 - [ ] Son guncelleme tarihi kontrol edildi
 - [ ] En az 3 rakip daha tespit edildi
 - [ ] Google Trends yonu kontrol edildi
+- [ ] Hedef geo / Geo-LTV hizli kontrolu kaydedildi
 - [ ] Pazar durumu degerlendirmesi yapildi (DOYMUS/BUYUYOR/NIS/ERKEN)
 
 ### Faz 4 Kontrolleri (Her Cluster Icin)
@@ -1496,10 +1695,12 @@ Tum arastirma boyunca takip edilecek kontrol listesi:
 - [ ] Ozellik karsilastirma tablosu tamamlandi
 - [ ] Google Play cross-check yapildi — en az top 5 rakip icin
 - [ ] Reklam istihbarati taramasi yapildi (browser varsa KESIN; yoksa WebSearch fallback TAHMINI)
+- [ ] Visual intelligence taramasi yapildi (App Store screenshot + varsa Mobbin/Adapty Paywall Library/Codia)
 
 ### Faz 5 Kontrolleri
 - [ ] Her kriter icin veri kaynagi belirtildi (KESIN/TAHMINI/DUSUK)
 - [ ] Gelir kaniti icin en az 3 farkli sorgu yapildi
+- [ ] Geo-LTV / hedef ulke monetizasyon kontrolu yapildi
 - [ ] Override kurallari kontrol edildi
 - [ ] Tek kaynaga dayanan puan yok (Ucgen kurali)
 - [ ] Retention icin guncelleme sikligi kontrol edildi
@@ -1519,6 +1720,9 @@ Tum arastirma boyunca takip edilecek kontrol listesi:
 - [ ] Top 5 rakibin ASO verileri toplandi
 - [ ] Top 3 rakibin screenshot'lari analiz edildi
 - [ ] ASO stratejisi olusturuldu
+- [ ] Paywall/onboarding pattern'i ve micro-MVP sprint uygunlugu yazildi
+- [ ] Security preflight + AI share/secret hygiene kontrol edildi
+- [ ] Turkiye tesvik/payout kontrolu gerekiyorsa resmi kaynakla ele alindi
 
 ### Faz 10 Kontrolleri
 - [ ] 5 varsayimin her biri icin karsit kanit arandi

@@ -5,6 +5,31 @@ Pre-launch'tan post-launch analizine kadar her adim.
 
 ---
 
+## FAZ 5.5 SONRASI: 1 HAFTALIK MICRO-MVP SPRINT
+
+Bu sprint sadece Faz 5.5 davranisla DOGRULANDI olan, teknik/regulasyon olarak basit ve max 5 ekranla cikabilecek app'ler icindir. Karmasik ML, agir regule veri, donanim entegrasyonu veya coklu backend bagimliligi varsa 8 haftalik pre-launch planini kullan.
+
+**Uygunluk checklist'i:**
+- [ ] Faz 5.5 sonucu DOGRULANDI veya guven >=%70 + gercek davranis sinyali var
+- [ ] MVP max 5 ekran, 3 ana ozellik
+- [ ] Paywall ilk versiyona eklenebilir
+- [ ] App Store privacy/policy riski basit
+- [ ] Security preflight'ta olumcul eksik yok
+
+| Gun | Odak | Cikti |
+|-----|------|-------|
+| Pazartesi | Keyword + final scope | App name/subtitle taslagi, max 5 ekran, V1 disi liste |
+| Sali | Proje kurulumu + onboarding | Repo/app skeleton, ilk acilis akisi, analytics event taslagi |
+| Carsamba | MVP ekranlari | Core flow calisir, empty/error/loading durumlari var |
+| Persembe | Paywall + market-fit copy | RevenueCat/StoreKit/Adapty/Superwall entegrasyonu, paywall mesajlari |
+| Cuma | Test + screenshots | Smoke test, crash kontrolu, App Store screenshot taslaklari |
+| Cumartesi | Submit | App Store Connect metadata, privacy nutrition, review notes |
+| Pazar | Marketing | Reddit/PH/X/email taslaklari, launch waitlist follow-up |
+
+**Paywall pattern girdileri:** App Store screenshot'lari, Mobbin onboarding/paywall akislari ve Adapty Paywall Library pattern'leri ilham icin kullanilir; metin/gorsel/marka kopyalanmaz.
+
+---
+
 ## PRE-LAUNCH (8 Hafta Once)
 
 ### Hafta -8 to -6: Temel Hazirlik
@@ -127,6 +152,7 @@ Pre-launch'tan post-launch analizine kadar her adim.
 - [ ] Son smoke test: Gercek cihazda (TestFlight degil) production build'i test et
 - [ ] Server tarafindaki her sey hazir mi? (API, veritabani, CDN)
 - [ ] Push notification sertifikalari uretim icin dogru mu?
+- [ ] Security & secret hygiene preflight tamam mi? (asagidaki bolum)
 
 #### Lansman Gunu Plani
 - [ ] Sosyal medya postlarini onceden hazirla
@@ -298,6 +324,54 @@ Pre-launch'tan post-launch analizine kadar her adim.
 
 ---
 
+## SECURITY & SECRET HYGIENE PREFLIGHT
+
+Lansman oncesi bu kontrol tamamlanmadan public launch yapma. Basit app'lerde bile admin paneli, paywall entitlement'i ve kullanici verisi hatalari kalici hasar verebilir.
+
+### Auth / Authorization
+- [ ] Admin endpoint'leri sadece rol bazli yetkiyle calisiyor
+- [ ] User content erisimi ID-only URL ile acilmiyor; ownership/session check var
+- [ ] Entitlement/subscription status server veya guvenilir receipt kontroluyle dogrulaniyor
+- [ ] Kullanici `isAdmin`, `role`, `credits`, `subscriptionStatus` gibi korumali alanlari update edemiyor
+
+### Secrets / Backend
+- [ ] API key, admin token, service role key frontend bundle'a koyulmadi
+- [ ] Supabase RLS / Firestore rules / backend policy'leri test edildi
+- [ ] Predictable ID riski kontrol edildi
+- [ ] Webhook endpoint'lerinde signature verification var
+- [ ] Crash/logging araclari PII veya token basmiyor
+
+### AI Share Hygiene
+- [ ] ChatGPT/Codex/Claude public share linkleri secret, private repo icerigi, musteri verisi icermiyor
+- [ ] Paylasilacak prompt/log/screenshot'lar secret scrub'dan gecti
+- [ ] `.env`, App Store Connect ekranlari ve payment/account bilgileri public gorselde yok
+
+**Sonuc:** GECTI / EKSIK / UYGULANAMAZ. EKSIK ise launch checklist skorundan bagimsiz olarak once duzelt.
+
+---
+
+## TURKIYE OPERASYON: TESVIK VE PAYOUT CHECKLIST'I
+
+Bu bolum yalnizca kurucu Turkiye'de sirket/operasyon yurutuyorsa, giderleri Turkiye'de belgelemek istiyorsa veya tesvik kullanacaksa uygulanir. Tweet/blog bilgisi kanit degildir; resmi ve guncel kaynak gerekir.
+
+### Resmi Tesvik Dogrulama
+- [ ] Ilgili resmi kurum/program sayfasinda guncel kapsam, limit, basvuru kosulu ve tarih kontrol edildi
+- [ ] Reklam, tool, komisyon veya diger gider kalemlerinin kapsama girip girmedigi resmi kaynaktan yazildi
+- [ ] Basvuru icin gerekli sirket/evrak/fatura/dekont kosullari not edildi
+- [ ] Tutar/limit hard-code edilmedi; raporda "guncel resmi kaynakla dogrulanmali" notu var
+- [ ] Mali musavir/uzman teyidi gerekiyorsa Sonraki Adimlar'a eklendi
+
+### App Store Connect Payout
+- [ ] Agreements, Tax, and Banking durumu aktif
+- [ ] Banka hesap sahibi, ulke, IBAN/SWIFT/branch bilgisi dogru
+- [ ] Vergi formlari ve sozlesmeler tamamlandi
+- [ ] Payout para birimi ve muhasebe kaydi not edildi
+- [ ] Apple komisyonu (%15 Small Business Program veya standart %30) finansal modele dogru yansitildi
+
+**Kural:** Tesvik/payout uygunlugu pazar GO kararinin yerine gecmez; yalnizca maliyet ve launch fizibilitesi girdisidir.
+
+---
+
 ## POST-LAUNCH METRIKLERI
 
 ### Hafta 1 Hedefleri
@@ -356,7 +430,7 @@ Asagidaki 4 soruyu cevapla:
 
 2. **Kullanicilar oduyor mu?** (Trial→Paid > %5)
    - Evet → fiyatlandirma dogru, hacim artir
-   - Hayir → fiyat cok yuksek, veya deger yeterince gosterilemiyor
+  - Hayir → fiyat cok yuksek, veya deger yeterince gosterilemiyor
 
 3. **Organik buyume var mi?** (Organik install orani > %30)
    - Evet → ASO ve word-of-mouth calisiyor
@@ -722,12 +796,14 @@ Lansman oncesinde bu checklist'i doldur. Her "evet" = 1 puan.
 - **Analytics:** TelemetryDeck (ucretsiz tier), Firebase Analytics (ucretsiz)
 - **Crash Reporting:** Firebase Crashlytics (ucretsiz)
 - **Subscription:** RevenueCat (ucretsiz, $2.5K/ay gelire kadar)
-- **Screenshot Mockup:** Previewed.app, Rotato (trial), Figma (ucretsiz)
+- **Paywall Pattern:** Adapty Paywall Library (pattern referansi; kopyalama degil)
+- **Screenshot Mockup:** Previewed.app, Rotato (trial), Figma (ucretsiz), Codia AI Design / screenshot-to-Figma (uretim yardimi)
 - **Privacy Policy:** PrivacyPolicies.com, iubenda (ucretsiz tier)
 
 ### Ucretli Araclar (Buyudukce)
 - **ASO:** AppTweak ($69/ay), ASOTools ($49/ay)
 - **Market Data:** Sensor Tower (eski data.ai dahil), AppFigures, AppMagic
+- **Product Flow Research:** Mobbin (onboarding/paywall/screenshot pattern kutuphanesi)
 - **A/B Test:** SplitMetrics ($100+/ay)
 - **Email (buyudukce):** ConvertKit, Beehiiv
 - **Design:** Figma Pro ($12/ay), Rotato ($49)

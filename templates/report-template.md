@@ -2,7 +2,7 @@
 
 > Tarih: [TARIH]
 > Mod: Quick Scan / Standard / Deep
-> Metodoloji: v3.3 - sablon rev. v3.3 (10 Faz + Faz 5.5, 3 Katmanli Puanlama + Dagitim Fizibilitesi + JTBD/Lean Canvas/PMF)
+> Metodoloji: v3.4 - sablon rev. v3.4 (10 Faz + Faz 5.5, 3 Katmanli Puanlama + Dagitim Fizibilitesi + Geo-LTV + Visual Intelligence + JTBD/Lean Canvas/PMF)
 
 ---
 
@@ -16,6 +16,7 @@
 | **Final Skor** | X/100 (K2) × X.XX (K3) = **XX.X** |
 | **Risk Seviyesi** | DUSUK / ORTA / YUKSEK / COK YUKSEK |
 | **MVP Tahmini** | X hafta |
+| **Hedef Geo / Geo-LTV** | [US/UK/TR/global] — YUKSEK / ORTA / DUSUK / BELIRSIZ |
 | **Dagitim Fizibilitesi** | KD ~XX (DUSUK/ORTA/YUKSEK) — [kesfedilebilir mi, 1 cumle] |
 | **Anahtar Bulgu** | [1-2 cumle] |
 | **Oneri** | [1-2 cumle] |
@@ -35,6 +36,8 @@
 | Google Trends | YUKARI / DUZ / ASAGI | TAHMINI |
 | Yasam-Dongusu | Exploding / Regular / Peaked + Ustel / Sabit / Duragan | TAHMINI |
 | Mevsimsellik | [varsa aciklama] | TAHMINI |
+| Hedef Geo | [ulke/bolge] | — |
+| Geo-LTV Sinifi | YUKSEK / ORTA / DUSUK / BELIRSIZ | TAHMINI / KESIN (first-party ise) |
 
 ### 1.2 Pazar Gecerliligi (Katman 1)
 | Kriter | Sonuc |
@@ -57,6 +60,15 @@
 | Paid kanal doygunlugu (ad library: lider kreatif sayisi/longevity) | DOYGUN / ORTA / BOS | KESIN (browser) / TAHMINI (WebSearch) |
 | Organik/ASO wedge var mi? | [wedge tanimi veya YOK] | — |
 | En az 3 orta-hacim/dusuk-difficulty keyword? | EVET / HAYIR (HAYIR ise fizibilite UYARISI) | TAHMINI |
+| Hedef geo'da LTV:CAC varsayimi | SAGLIKLI / DAR / BELIRSIZ | TAHMINI / KESIN |
+
+### 1.4 Geo-LTV / Hedef Ulke ⚐ STANDARD+
+| Ulke/Bolge | LTV Sinifi | Dil/ASO | CAC Riski | Kaynak | Not |
+|------------|------------|---------|-----------|--------|-----|
+| [US] | YUKSEK | EN | ORTA | [RevenueCat/Adapty/App Store Connect] | [not] |
+| [TR] | DUSUK/ORTA | TR | DUSUK/ORTA | [kaynak] | [tesvik/payout gerekiyorsa not] |
+
+**Geo-LTV yorumu:** [K2 formulune dahil degil; gelir/dagitim guvenini nasil etkiliyor?]
 
 ---
 
@@ -77,6 +89,13 @@
 **Adlandirilmis Icgoru (Rekabet 4-5 icin ZORUNLU):** [Rakiplerin kacirdigi SPESIFIK icgoru tek cumleyle — neden onlar yapmamis/yapamamis. Adlandirilamiyorsa Rekabet MAX 3.]
 
 **Goc Dinamigi (JTBD Forces) ⚐ STANDARD+:** [Kullanicilar mevcut cozumden NEDEN ayriliyor/ayrilmiyor? Push (iten aci) + Pull (ceken vaat) vs Anxiety (gecis korkusu) + Habit (aliskanlik). Push+Pull > Anxiety+Habit ise goc gercek; degilse fantezi (RF-7).]
+
+### Visual Intelligence ⚐ STANDARD+
+| Rakip | Kaynak | Incelenen Akis | Ilk Vaat / CTA | Paywall Pattern | Bos Kalan Aci |
+|-------|--------|----------------|-----------------|-----------------|---------------|
+| [app] | App Store / Mobbin / Adapty | Screenshot / Onboarding / Paywall | [mesaj] | [pattern] | [wedge] |
+
+**Not:** Codia/screenshot-to-Figma kullanildiysa kaynak olarak "uretim yardimi" diye yaz; pazar kaniti sayma.
 
 ### 2x2 Stratejik Konumlandirma ⚐ DEEP
 [Kullanici-degeri 2 ekseni (or. Basitlik <-> Guc) + rakiplerin yerlesimi + bos pozisyon/wedge. Bos ceyrek ancak adlandirilmis icgoruyle firsattir.]
@@ -109,6 +128,8 @@
 
 **Uygulanan Override:** [varsa listele — tam liste: `methodology/scoring-model.md`]
 
+**Geo-LTV / Dagitim Guveni:** [Hedef ulke LTV/CAC varsayimi gelir veya paid UA guvenini artiriyor mu, yoksa UYARI mi? K2 formulu degismedi.]
+
 ### Katman 3: Fizibilite Carpani
 | Kriter | Skor | Gerekce |
 |--------|------|---------|
@@ -135,6 +156,8 @@
 **Satin-alma/exit komparasyonu (B5):** [Acquire.com/Flippa ilani veya Starter Story medyani varsa: ima edilen MRR = satis fiyati / carpan. Ankora (>=$1K/ay) eslesiyorsa "Gelir MAX 2" override'ini kaldirir. Tek/zayif komparasyon = TAHMINI, MAX 3.]
 
 **Reklam longevity sinyali:** [2+ rakip 6+ aydir kesintisiz reklam donduruyorsa belirt — parasallasma DAVRANIS kaniti; indie gelir kaniti DEGILDIR, "Gelir MAX 2" kuralini degistirmez]
+
+**Geo-LTV monetizasyon notu:** [Ulke bazli LTV/CAC benchmark'i, fiyat tier ve localization riski. Benchmark TAHMINI ise acikca yaz.]
 
 ### Quantified Value Prop ⚐ STANDARD+
 [Status quo'ya gore degeri SAYISALLASTIR: "X saat / $Y / Z adim tasarruf". Fiyatlandirma ve Talep argumanini besler.]
@@ -192,6 +215,25 @@
 | 1 | [risk] | Dusuk/Orta/Yuksek | [etki] | [onlem] |
 | 2 | ... | ... | ... | ... |
 
+### Security Preflight + AI Share Hygiene ⚐ STANDARD+
+| Kontrol | Sonuc | Not |
+|---------|-------|-----|
+| Admin endpoint auth/role check | GECTI / EKSIK / UYGULANAMAZ | [not] |
+| User content ownership/token check | GECTI / EKSIK / UYGULANAMAZ | [not] |
+| Frontend secret/API admin token yok | GECTI / EKSIK / UYGULANAMAZ | [not] |
+| Supabase RLS/Firestore rules/backend auth | GECTI / EKSIK / UYGULANAMAZ | [not] |
+| Protected fields client update riski | GECTI / EKSIK / UYGULANAMAZ | [not] |
+| Public AI share secret scrub | GECTI / EKSIK / UYGULANAMAZ | [not] |
+
+### Turkiye Tesvik / Payout ⚐ Gerekiyorsa
+| Alan | Deger |
+|------|-------|
+| Uygulanir mi? | EVET / HAYIR |
+| Resmi kaynak | [URL + erisim tarihi; yoksa BELIRSIZ] |
+| Kapsam | Reklam / tool / komisyon / diger |
+| Hard-coded tutar kullanildi mi? | HAYIR |
+| App Store Connect payout hazirligi | [banking/tax/contracts notu] |
+
 ---
 
 ## 7. MVP Onerisi ⚐ STANDARD+
@@ -221,6 +263,17 @@
 - [kapsam disi 1]
 - [kapsam disi 2]
 
+### 1 Haftalik Micro-MVP Sprint Opsiyonu ⚐ (Faz 5.5 DOGRULANDI + basit app ise)
+| Gun | Cikti |
+|-----|-------|
+| Pazartesi | Keyword/final scope |
+| Sali | Proje kurulumu + onboarding |
+| Carsamba | Max 5 ekran MVP |
+| Persembe | Paywall + market-fit copy |
+| Cuma | Test + screenshots |
+| Cumartesi | App Store submit |
+| Pazar | Marketing/community posts |
+
 ### Teknik Stack Onerisi
 | Alan | Oneri |
 |------|-------|
@@ -241,6 +294,8 @@
 | Screenshot 1 | [mesaj] |
 | Screenshot 2 | [mesaj] |
 | Screenshot 3 | [mesaj] |
+| Paywall / onboarding pattern | [Mobbin/App Store/Adapty referansindan cikan hipotez] |
+| Screenshot uretim yardimi | [Codia/Figma/Rotato vb. kullanilacaksa] |
 
 ---
 
@@ -251,6 +306,7 @@
 3. [ ] [adim 3]
 
 *Karar GO/SARTLI GO ise: ilk adim Faz 5.5 planinin (bolum 5.2) yurutulmesidir. Faz 5.5 DOGRULANDI ile biterse lansman hazirligi icin `methodology/launch-playbook.md` ile devam et.*
+*Basit app + Faz 5.5 DOGRULANDI ise: Sonraki Adimlar'a 1 haftalik micro-MVP sprint opsiyonunu ekle. Turkiye operasyonu varsa resmi tesvik/payout dogrulamasini ayri adim yap.*
 
 ---
 
@@ -273,7 +329,7 @@
 
 ---
 
-*Bu rapor App Idea Research Agent v3.3 metodolojisi ile olusturulmustur.*
+*Bu rapor App Idea Research Agent v3.4 metodolojisi ile olusturulmustur.*
 
 ---
 
@@ -284,14 +340,16 @@
 | Yonetici Ozeti (+Durum +Guven) | ✓ | ✓ | ✓ |
 | 1.1-1.2 Pazar Analizi (+yasam-dongusu, +regulasyon K1) | ✓ | ✓ | ✓ |
 | 1.3 Dagitim Fizibilitesi | — (puanlamada kisa) | ✓ | ✓ |
+| 1.4 Geo-LTV / Hedef Ulke | kisa | ✓ | ✓ + finansal model |
 | 2. Rakip Analizi (+adlandirilmis icgoru) | ✓ (top 5) | ✓ (top 10) | ✓ (top 10+) |
+| Visual Intelligence | — | ✓ | ✓ |
 | 3. Firsat Puanlama (+regulasyon K3) | ✓ | ✓ | ✓ |
 | 4. Gelir Potansiyeli (+reklam longevity) | ✓ (basit) | ✓ (detayli) | ✓ (finansal model) |
 | 5.1 Dogrulama (4 kontrol) | — | ✓ | ✓ |
 | 5.2 Faz 5.5 Plani | — (Sonraki Adimlar'da oneri) | ✓ (GO/SARTLI GO ise) | ✓ (GO/SARTLI GO ise) |
-| 6. Risk Degerlendirmesi (+regulasyon riski) | ✓ (top 3) | ✓ | ✓ |
-| 7. MVP Onerisi | — | ✓ | ✓ |
-| 8. ASO Stratejisi | — | — | ✓ |
+| 6. Risk Degerlendirmesi (+regulasyon riski + security) | ✓ (top 3) | ✓ | ✓ |
+| 7. MVP Onerisi (+micro-MVP opsiyonu) | — | ✓ | ✓ |
+| 8. ASO Stratejisi (+paywall/screenshot pattern) | — | — | ✓ |
 | 9. Sonraki Adimlar | ✓ | ✓ | ✓ |
 | 10. Cross-Report Karsilastirma | — | ✓ (varsa) | ✓ |
 | Veri Kaynaklari | ✓ | ✓ | ✓ |

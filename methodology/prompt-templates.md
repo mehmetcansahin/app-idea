@@ -92,6 +92,7 @@ Her cluster icin:
 1. Ana keyword'u App Store'da ara
 2. Ilk siradaki (lider) uygulamayi bul
 3. iOS rating sayisini, yildiz puanini, fiyat modelini kaydet
+4. Hedef geo/Geo-LTV varsayimini not et (US/global varsayma; belirsizse UYARI)
 
 Pazar durumu kriterleri:
 - Rating > 10K = Guclu pazar
@@ -100,9 +101,9 @@ Pazar durumu kriterleri:
 - Rating < 500 = Pazar yok (ELEN)
 
 Cikti formati:
-| # | Cluster | Lider Uygulama | iOS Rating | Yildiz | Fiyat | Pazar Durumu |
-|---|---------|----------------|------------|--------|-------|--------------|
-| 1 | ... | ... | ... | ... | ... | Guclu/Orta/Mikro/Yok |
+| # | Cluster | Lider Uygulama | iOS Rating | Yildiz | Fiyat | Hedef Geo / Geo-LTV | Pazar Durumu |
+|---|---------|----------------|------------|--------|-------|---------------------|--------------|
+| 1 | ... | ... | ... | ... | ... | US/YUKSEK veya BELIRSIZ | Guclu/Orta/Mikro/Yok |
 
 Sonunda ozet: Kac cluster gecti, kac elendi.
 
@@ -130,6 +131,8 @@ Her cluster icin:
 4. Rekabet durumunu degerlendir
 5. Reklam istihbarati: FB Ad Library'de keyword + top 3 rakibi ara (browser otomasyonu, WebFetch calismaz)
    — aktif reklam sayisi, en eski reklamin baslama tarihi (longevity), mesaj acilari
+6. Visual intelligence: App Store screenshot'lari + varsa Mobbin onboarding/paywall akislari + Adapty Paywall Library pattern'leri
+   — ilk vaat, CTA, paywall pattern, bos kalan mesaj acisi. Codia/screenshot-to-Figma sadece uretim yardimidir; pazar kaniti degil.
 
 Cikti formati (her cluster icin):
 
@@ -159,6 +162,13 @@ Cikti formati (her cluster icin):
 - Paid kanal durumu: DOYGUN / AKTIF / BOS
 - Erisim yolu: BROWSER (KESIN) / WEBSEARCH-FALLBACK (TAHMINI)
 
+**Visual Intelligence:**
+| Rakip | Kaynak | Akis | Ilk vaat / CTA | Paywall pattern | Bos kalan aci |
+|-------|--------|------|----------------|-----------------|---------------|
+| ... | App Store/Mobbin/Adapty | Screenshot/Onboarding/Paywall | ... | ... | ... |
+
+Not: Visual intelligence talep/gelir kaniti degildir; review/Reddit/fiyat verisiyle desteklenirse wedge hipotezini guclendirir.
+
 Gecen cluster'lar:
 [CLUSTER LISTESINI YAPISTIR]
 
@@ -180,7 +190,7 @@ Asagidaki cluster'lar icin 3 KATMANLI firsat puanlamasi yap.
 
 === KATMAN 1: PAZAR GECERLILIGI (Pass/Fail) ===
 
-4 kriter — TUMU GECMELI. Biri bile basarisiz → ELENDIR, Katman 2'ye tasima.
+4 kriter — TUMU GECMELI. Biri bile basarisiz → ELENDIR. Yine de Katman 2 ve Katman 3 puanlamasini tamamla; raporda "ELENDIR (K1 fail)" olarak isaretle ve MVP/detay bolumlerini atla.
 
 | Kriter | Pass Kosulu |
 |--------|-------------|
@@ -228,11 +238,17 @@ ZORUNLU OVERRIDE KURALLARI:
 - Beyan edilen niyet/iltifat tek delil → O kriter (Talep/Gelir) MAX 3 (Mom Test, RF-16)
 - Rekabet 4-5 ama adlandirilmis kacirilmis icgoru yok → Rekabet MAX 3
 - Hedef keyword'lerde difficulty yuksek + farklilasma wedge'i yok → Rekabet MAX 2 (Dagitim fizibilitesi)
+- Geo-LTV belirsiz/dusuk veya yuksek LTV ulkelerine erisim zayif → Gelir/Dagitim guveni icin UYARI (K2 formulu degismez; Gelir puanini tek basina artirmaz)
 
 Cikti:
 | # | Cluster | Talep (x5) | Gelir (x5) | Rekabet (x4) | Retention (x3) | Zamanlama (x3) | Toplam (/100) |
 |---|---------|-----------|-----------|-------------|---------------|---------------|--------------|
 | 1 | ... | X (XX) | X (XX) | X (XX) | X (XX) | X (XX) | XX |
+
+Ek tablo:
+| Cluster | Hedef Geo | Geo-LTV sinifi | Gelir/Dagitim Etkisi |
+|---------|-----------|----------------|----------------------|
+| ... | US/UK/TR/global | YUKSEK/ORTA/DUSUK/BELIRSIZ | Guven artar / UYARI |
 
 === KATMAN 3: UYGULAMA FIZIBILITESI (Carpan) ===
 
@@ -538,11 +554,42 @@ Moat skoru < 5 ise: MVP'ye veya v2'ye moat artirici ozellikler oner (veri birikt
   1. ...
   2. ...
   3. ...
+- **Visual intelligence kaynaklari:** [App Store/Mobbin/Adapty Paywall Library; Codia uretim yardimi ise not et]
+- **Onboarding/paywall hipotezi:** [ilk deger ani, paywall tetigi, default plan, trial CTA]
+
+## Geo-LTV / Ulke Odagi
+| Ulke/Bolge | LTV sinifi | Dil/ASO | CAC riski | Not |
+|------------|------------|---------|-----------|-----|
+| ... | YUKSEK/ORTA/DUSUK/BELIRSIZ | ... | ... | ... |
 
 ## Ilk 30 Gun Plani
 - Takip edilecek metrikler:
 - Hedef sayilar (install, trial, paid):
 - Pazarlama kanallari:
+
+## 1 Haftalik Micro-MVP Sprint (yalnizca Faz 5.5 dogrulandiysa ve app basitse)
+- Pazartesi: keyword/final scope
+- Sali: proje kurulumu + onboarding
+- Carsamba: max 5 ekran MVP
+- Persembe: paywall + market-fit copy
+- Cuma: test + screenshots
+- Cumartesi: App Store submit
+- Pazar: marketing/community posts
+
+## Security Preflight + AI Share Hygiene
+| Kontrol | Sonuc |
+|---------|-------|
+| Admin endpoint auth/role check | GECTI/EKSIK/UYGULANAMAZ |
+| User content ownership/token check | GECTI/EKSIK/UYGULANAMAZ |
+| Frontend secret/API admin token yok | GECTI/EKSIK/UYGULANAMAZ |
+| Supabase RLS/Firestore rules/backend auth | GECTI/EKSIK/UYGULANAMAZ |
+| Public AI share secret scrub | GECTI/EKSIK/UYGULANAMAZ |
+
+## Turkiye Tesvik / App Store Connect Payout (gerekiyorsa)
+- Resmi ve guncel kaynak:
+- Kapsam: reklam/tool/komisyon/diger
+- Hard-coded tutar kullanildi mi: HAYIR
+- Payout hazirligi: [banking/tax/contracts]
 
 Onceki faz verileri:
 [FAZ 1-8 OZETINI YAPISTIR]
@@ -627,6 +674,8 @@ Olumcul kusurlar (bunlardan biri varsa PIVOT veya KILL):
 - MVP 2-4 haftada cikarilmaz
 - Farklilasma cumlesi yazilamiyor
 - Moat skoru 0 VE rakipler aktif/guclu
+- Geo-LTV belirsiz ve paid/organik ulke odagi yok
+- Security preflight EKSIK ve kullanici/odeme verisi riski var
 
 Basarisizlik durumunda:
 - Pivot icin: Ayni pazar farkli aci VEYA ayni aci farkli pazar

@@ -79,6 +79,24 @@ degerleri guncellemeniz gerekir.**
 
 Her projeksiyon uc senaryo icermeli. Tek bir rakama guvenmek en yaygin hatadir.
 
+### 3.0 Geo-LTV / Ulke Bazli Sensitivity (v3.4)
+
+Senaryo kurmadan once 3-5 oncelikli ulke sec. "Global yayinlarim, organik gelir" varsayimi tek basina finansal model degildir.
+
+| Ulke/Bolge | Dil/Localization | Benchmark LTV | Tahmini CPA/CAC | LTV:CAC | App Store fiyat tier | Not / Risk |
+|------------|------------------|---------------|-----------------|---------|----------------------|------------|
+| US | EN | $___ (TAHMINI) | $___ | ___x | $___/ay | [ASA rekabeti, localization yok] |
+| UK | EN | $___ (TAHMINI) | $___ | ___x | $___/ay | [not] |
+| CA | EN/FR | $___ (TAHMINI) | $___ | ___x | $___/ay | [not] |
+| TR | TR | $___ (TAHMINI) | $___ | ___x | TRY tier | [dusuk LTV / maliyet avantaji / tesvik kontrolu] |
+
+**Veri etiketleri:**
+- RevenueCat/Adapty benchmark veya Apple Search Ads bid verisi: TAHMINI
+- App Store Connect / RevenueCat kendi uygulama verisi: KESIN
+- Rakip localized sayfa varligi: KESIN ama LTV kaniti DEGIL
+
+**Kural:** 80+ ulkeye yayilma varsayimi, ilk 3-5 ulkede LTV:CAC kaniti olmadan kullanilmaz. Yuksek LTV ulkeleri erisilemiyorsa veya localization/ASA rekabeti cok yuksekse, gelir modeline UYARI ekle.
+
 ### Senaryo Tanimlari
 
 **KOTUMSER (Pessimistic)**
@@ -562,10 +580,11 @@ Ay 1'de 300 organik indirme ile baslayip farkli buyume oranlariyla:
 ## SONRAKI ADIMLAR
 
 1. Bu sablondaki bos tablolari kendi uygulamaniz icin doldurun.
-2. Ilk 30 gunde gercek verilerinizi toplayin.
-3. Her ay modeli gercek verilerle karsilastirin ve guncelleyin.
-4. Kotumser senaryo ile planlayin, gercekci senaryo ile motive olun.
-5. LTV:CAC 3x'i gecene kadar ucretli reklama baslamayin.
+2. Geo-LTV tablosunda 3-5 oncelikli ulkeyi secin; global olcek varsayimini erteleyin.
+3. Ilk 30 gunde gercek verilerinizi toplayin.
+4. Her ay modeli gercek verilerle karsilastirin ve guncelleyin.
+5. Kotumser senaryo ile planlayin, gercekci senaryo ile motive olun.
+6. LTV:CAC 3x'i gecene kadar ucretli reklama baslamayin.
 
 **Unutmayin:** En iyi finansal model bile bir tahmindir. Onemli olan modelin
 kendisi degil, onu surekli guncelleyerek ogrenme surecidir.

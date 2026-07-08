@@ -36,8 +36,8 @@
 
 **Amac:** Keyword cluster'larin gercek App Store verileriyle dogrulamasi
 **Girdi:** Faz 2 keyword cluster listesi
-**Cikti:** Her cluster icin lider app, rating, yildiz, fiyat, trend, pazar durumu
-**Araclar:** WebSearch (site:apps.apple.com), WebFetch (App Store sayfalari), Google Trends
+**Cikti:** Her cluster icin lider app, rating, yildiz, fiyat, trend, hedef geo/Geo-LTV, pazar durumu
+**Araclar:** WebSearch (site:apps.apple.com), WebFetch (App Store sayfalari), Google Trends, RevenueCat/Adapty benchmark aramalari
 **Sure:** ~5 dk/cluster
 
 **Pazar siniflandirmasi:**
@@ -55,11 +55,11 @@
 
 **Amac:** Her cluster icin derinlemesine rakip incelemesi
 **Girdi:** Faz 3'ten gecen cluster'lar
-**Cikti:** Rakip matrisi, sikayet analizi, fiyat/ozellik karsilastirmasi, Reddit sentiment
-**Araclar:** App Store (WebFetch), Reddit (WebSearch), Google Play (cross-check), Ad library (FB/Google ATC — browser otomasyonu; WebFetch calismaz)
+**Cikti:** Rakip matrisi, sikayet analizi, fiyat/ozellik karsilastirmasi, Reddit sentiment, reklam istihbarati, visual intelligence
+**Araclar:** App Store (WebFetch), Reddit (WebSearch), Google Play (cross-check), Ad library (FB/Google ATC — browser otomasyonu; WebFetch calismaz), Mobbin/App Store screenshot/Adapty Paywall Library/Codia
 **Sure:** ~30 dk/cluster
 
-**8 Adim:**
+**9 Adim:**
 1. Tam rakip listesi (min 5, ideal 10)
 2. Her rakip icin tam metadata (App Store WebFetch)
 3. Kotu yorum analizi (1-2 yildiz, min 10-20 yorum/rakip)
@@ -69,6 +69,7 @@
    - 6.5 (A6): 2x2 stratejik konumlandirma — kullanici-degeri eksenlerinde bos pozisyon/wedge ara (Deep'te zorunlu)
 7. Google Play cross-check
 8. Reklam istihbarati (FB Ad Library keyword + top rakip advertiser, Google ATC; browser yoksa WebSearch fallback)
+9. Visual intelligence (App Store screenshot + Mobbin/onboarding/paywall + Adapty Paywall Library; Codia uretim yardimi)
 
 **Gate:** Her cluster icin min 5 rakip analiz edilmis
 **Basarisizlik:** Analizi tamamla, eksik veriyle puanlama yapma
@@ -88,6 +89,8 @@
 - K2: Agirlikli skor /100 (talep %25, gelir %25, rekabet %20, retention %15, zamanlama %15)
 - K3: Fizibilite carpani (teknik x kurucu x regulasyon x MVP, her biri 0.6/0.8/1.0; regulasyon engeli yoksa 1.0 alir)
 - Final = K2 × K3
+
+**v3.4 ek sinyal:** Geo-LTV/hedef ulke uyumu Gelir ve Dagitim guvenini yorumlar; K2 formulu degismez ve indie gelir kaniti override'inin yerine gecmez.
 
 **Esikler:** 60+ Guclu | 45-59 Orta | 30-44 Zayif | <30 Elen
 
@@ -166,11 +169,19 @@
 
 **Amac:** Kazanan icin eksiksiz proje dokumani
 **Girdi:** Faz 8'den secilen finalist + tum onceki faz verileri
-**Cikti:** Lean Canvas (1 sayfa), Quantified Value Prop, Proje brief, MVP scope (max 4 ekran, 3 ozellik), Moat analizi, monetizasyon, ASO taslagi
+**Cikti:** Lean Canvas (1 sayfa), Quantified Value Prop, Proje brief, MVP scope (max 4 ekran, 3 ozellik), Moat analizi, monetizasyon, ASO taslagi, visual/paywall hipotezi, Geo-LTV odagi, security preflight, gerekiyorsa Turkiye tesvik/payout notu
 
 **Lean Canvas (A1) — 9 blok, tek sayfa:** Problem | Musteri Segmenti | UVP (essiz deger onerisi) | Cozum | Kanallar | Gelir Akisi | Maliyet Yapisi | Anahtar Metrikler | Haksiz Avantaj (= Moat). Dagik parcalari (UVP, Anahtar Metrikler, Haksiz Avantaj su an ortuktu) tek gorsele toplar. Bos kalan blok = arastirma boslugu.
 
 **Quantified Value Prop (A5):** "Status quo'ya gore X saat / $Y / Z adim tasarruf" — degeri musterinin terimleriyle SAYISALLASTIR. Fiyatlandirma ve Talep argumanini besler.
+
+**Visual intelligence (v3.4):** App Store screenshot, Mobbin/onboarding-paywall ve Adapty Paywall Library pattern'lerinden ilk deger ani, paywall tetigi, screenshot mesajlari ve bos kalan aci cikar. Codia/screenshot-to-Figma yalnizca uretim yardimidir; pazar kaniti degildir.
+
+**Geo-LTV odagi (v3.4):** 3-5 oncelikli ulke sec; LTV/CAC, dil/ASO ve localization riskini yaz. 80+ ulkeye yayilma varsayimi first-party veri olmadan kullanilmaz.
+
+**Security + secret hygiene (v3.4):** Admin/auth, user ownership, frontend secret, RLS/Firestore/backend rules, protected fields ve public AI share secret scrub checklist'i doldur.
+
+**Micro-MVP sprint (v3.4):** Faz 5.5 dogrulanmis ve app basitse, 1 haftalik sprint opsiyonu ekle; K3 MVP suresi ankori degismez.
 
 **Moat turleri (0-3 puan):** Veri avantaji | Gecis maliyeti | Network etkisi | Hiz avantaji | Ekosistem kilit
 - <5: Zayif moat | 5-10: Orta moat | 10+: Guclu moat

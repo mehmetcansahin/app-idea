@@ -59,6 +59,12 @@ Puanlamada kullanilacak "lider", kullanicinin giris yapacagi segmentte ayni kull
 - **Kanit turu (Mom Test ile uyumlu):** KAPANMIS satis (gerceklesen islem) = DAVRANIS → ankora gore puanlanabilir. CANLI/satilmamis ILAN (asking price + satici-beyani gelir) = IDDIA → TAHMINI, o kriter MAX 3 (kac ilan olursa olsun; RF-16).
 - **Ankor + sayim kapisi:** rakami yukaridaki Gelir Kaniti olcegine gore puanla; olcek bagimsiz-kaynak SAYISINI da sart kosar (skor 4 = 2+ bagimsiz, skor 5 = 3+ bagimsiz). Tek komparasyon bu sayilari yakalamaz.
 
+**Geo-LTV / Ulke Bazli Monetizasyon Sinyali (v3.4):** Hedef ulkelerin LTV/CAC profili Gelir Kaniti puaninin yerine gecmez, ancak gelir ve dagitim guvenini yorumlar.
+- RevenueCat/Adapty benchmark'lari veya Apple Search Ads country/bid verisi = TAHMINI; kendi App Store Connect/RevenueCat verin = KESIN.
+- Yuksek LTV ulkelerine (dil, ASO, lokalizasyon, odeme, regule olmayan pazar) erisim varsa gelir modelinin guveni artar.
+- Hedef geo belirsizse, sadece dusuk-LTV pazarlara yaslaniyorsa veya CAC/LTV dengesi bilinmiyorsa rapora UYARI ekle.
+- K2 formulu degismez; Geo-LTV tek basina Gelir puanini artirmaz ve "indie gelir kaniti yok → Gelir MAX 2" override'ini kaldirmaz.
+
 ### Rekabet Boslugu (%20, max 20 puan)
 
 | Skor | Tanim | Objektif Ankor |
@@ -129,6 +135,7 @@ Pazar buyuk olabilir ama yeni app KESFEDILEMEZSE olmaz. Puanlamadan once olc:
 - **Opportunity (kopyalanabilir formul):** Opportunity = Hacim x0.4 + (100 - Difficulty) x0.3 + Relevance x0.3  (40/30/30 bir konvansiyon, ayarlanabilir).
 - **AppFigures kurali:** Sadece top-10'un minimum esigini yakalayip asabilecegin keyword'leri hedefle.
 - **Paid Kanal Kontrolu (ad library):** Lider(ler) FB/Google'da yuzlerce aktif kreatif donduruyorsa paid kanal doygundur; indie CAC yarisina giremez → organik/ASO wedge SART (yoksa fizibilite UYARISI). Hicbir rakip reklam vermiyorsa paid UA dogrulanmamis, buyume tamamen organik/ASO'ya bagimli — bunu da fizibilite degerlendirmesine yaz. Etiket: browser ile dogrudan gozlem KESIN, WebSearch dolayli TAHMINI. (Veri: Faz 4 Adim 8)
+- **Geo-LTV Fit:** Hedef keyword/kanal secimi ulke bazli LTV ile uyumlu mu? Yuksek LTV ulkelerinde rank sansi veya paid CAC makul degilse, pazar buyuk olsa bile Dagitim Fizibilitesi UYARISI ekle. Baslangicta 3-5 ulke sec; 80+ ulkeye yayilma varsayimi first-party LTV:CAC verisi olmadan kullanilmaz.
 
 **Puanlamaya etkisi:** Yuksek difficulty + farklilasma wedge'i yok -> Rekabet MAX 2 (yukaridaki override). En az 3 orta-hacim/dusuk-difficulty keyword'de rank sansi yoksa -> fizibilite UYARISI ekle. Etiket: TAHMINI.
 
@@ -146,6 +153,7 @@ Pazar buyuk olabilir ama yeni app KESFEDILEMEZSE olmaz. Puanlamadan once olc:
 **Carpan = Teknik × Kurucu × Regulasyon × MVP**
 
 > **Not:** Regulasyon 1.0 ise (engel yok), carpan onceki gibi 3 faktorlu kalir. Sadece regulasyon engeli olan pazarlarda 4. faktor devreye girer.
+> **v3.4 Notu:** 1 haftalik micro-MVP sprint, Faz 5.5 sonrasi uygulama planidir; K3 MVP suresi ankori degismez. Sprint yalnizca basit, dogrulanmis, max 5 ekranlik app'ler icin onerilir.
 
 ---
 
