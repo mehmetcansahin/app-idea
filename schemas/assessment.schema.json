@@ -1,0 +1,176 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://app-idea.local/schemas/assessment.schema.json",
+  "title": "App Idea Research Assessment v4.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "methodology_version",
+    "idea_id",
+    "analysis_date",
+    "mode",
+    "stage",
+    "target_segment",
+    "target_geos",
+    "primary_archetype",
+    "risk_modifiers",
+    "dimensions",
+    "opportunity",
+    "fatal_gates",
+    "riskiest_assumptions",
+    "overall_evidence_grade",
+    "decision",
+    "status",
+    "next_test",
+    "stopping_rule",
+    "post_mvp_result"
+  ],
+  "properties": {
+    "methodology_version": {"const": "4.0"},
+    "idea_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$"},
+    "analysis_date": {"type": "string", "format": "date"},
+    "mode": {"enum": ["quick", "standard", "deep", "compare"]},
+    "stage": {"enum": ["desk_research", "prebuild_validation", "post_mvp"]},
+    "target_segment": {"type": "string", "minLength": 1},
+    "target_geos": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "primary_archetype": {
+      "enum": ["consumer_utility", "consumer_subscription", "b2b_prosumer", "marketplace_network"]
+    },
+    "risk_modifiers": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": ["regulated", "sensitive_data", "ai_variable_cost", "hardware_dependency", "children", "platform_dependency"]
+      }
+    },
+    "dimensions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "problem_demand",
+        "monetization_economics",
+        "competitive_wedge",
+        "distribution_access",
+        "repeat_value_retention",
+        "timing",
+        "liquidity_cold_start"
+      ],
+      "properties": {
+        "problem_demand": {"$ref": "#/$defs/dimension"},
+        "monetization_economics": {"$ref": "#/$defs/dimension"},
+        "competitive_wedge": {"$ref": "#/$defs/dimension"},
+        "distribution_access": {"$ref": "#/$defs/dimension"},
+        "repeat_value_retention": {"$ref": "#/$defs/dimension"},
+        "timing": {"$ref": "#/$defs/dimension"},
+        "liquidity_cold_start": {"$ref": "#/$defs/dimension"}
+      }
+    },
+    "opportunity": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["low", "base", "high", "classification"],
+          "properties": {
+            "low": {"type": "integer", "minimum": 0, "maximum": 100},
+            "base": {"type": "integer", "minimum": 0, "maximum": 100},
+            "high": {"type": "integer", "minimum": 0, "maximum": 100},
+            "classification": {"enum": ["weak", "borderline", "attractive"]}
+          }
+        }
+      ]
+    },
+    "fatal_gates": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["code", "status", "evidence_ids"],
+        "properties": {
+          "code": {"enum": ["LEGAL_BLOCKED", "CORE_FEASIBILITY_BLOCKED", "PLATFORM_BLOCKED", "SAFETY_ETHICS_BLOCKED"]},
+          "status": {"enum": ["clear", "blocked", "unknown"]},
+          "evidence_ids": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    },
+    "riskiest_assumptions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["claim_id", "category", "impact", "uncertainty", "claim_grade", "product_specific_behavior", "disposition"],
+        "properties": {
+          "claim_id": {"type": "string"},
+          "category": {"enum": ["value", "usability", "technical_feasibility", "business_viability", "retention", "distribution", "regulation_safety", "liquidity"]},
+          "impact": {"type": "integer", "minimum": 1, "maximum": 3},
+          "uncertainty": {"type": "integer", "minimum": 1, "maximum": 3},
+          "claim_grade": {"enum": ["A", "B", "C", "D"]},
+          "product_specific_behavior": {"type": "boolean"},
+          "disposition": {"enum": ["untested", "supported", "contradicted", "partial"]}
+        }
+      }
+    },
+    "overall_evidence_grade": {"enum": ["A", "B", "C", "D"]},
+    "decision": {
+      "enum": ["ELENDIR", "BELIRSIZ", "TESTE_DEGER", "TEST_ONCELIKLI", "KILL", "PIVOT", "BUILD_SMALL", "TESTE_DEVAM", "SCALE", "ITERATE", "STOP"]
+    },
+    "status": {
+      "enum": ["DESK_RESEARCH_COMPLETE", "PREBUILD_PENDING", "PREBUILD_PASSED", "BUILDING", "POSTLAUNCH", "KILLED", "ARCHIVED", "LEGACY"]
+    },
+    "next_test": {"type": ["string", "null"]},
+    "stopping_rule": {"type": ["string", "null"]},
+    "post_mvp_result": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "consecutive_passing_cohorts",
+            "consecutive_value_or_retention_failures",
+            "value_activation_passed",
+            "retention_passed",
+            "economics_passed",
+            "remaining_failed_metrics"
+          ],
+          "properties": {
+            "consecutive_passing_cohorts": {"type": "integer", "minimum": 0},
+            "consecutive_value_or_retention_failures": {"type": "integer", "minimum": 0},
+            "value_activation_passed": {"type": "boolean"},
+            "retention_passed": {"type": "boolean"},
+            "economics_passed": {"type": "boolean"},
+            "remaining_failed_metrics": {"type": "integer", "minimum": 0}
+          }
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "dimension": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["low", "base", "high", "claim_ids"],
+          "properties": {
+            "low": {"type": "integer", "minimum": 1, "maximum": 5},
+            "base": {"type": "integer", "minimum": 1, "maximum": 5},
+            "high": {"type": "integer", "minimum": 1, "maximum": 5},
+            "claim_ids": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+          }
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"stage": {"const": "post_mvp"}}},
+      "then": {"properties": {"post_mvp_result": {"type": "object"}}},
+      "else": {"properties": {"post_mvp_result": {"type": "null"}}}
+    }
+  ]
+}

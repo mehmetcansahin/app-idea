@@ -1,232 +1,151 @@
-# Pipeline Tanimlari — 10 Faz
+# Pipeline Tanimlari — v4.0
 
-> Bu dosya her fazin KISA tanimini, girdisini, ciktisini ve gate kriterini icerir.
-> Detayli prompt sablonlari icin: `prompt-templates.md`
-> Detayli veri toplama adımlari icin: `data-collection-protocol.md`
+> Faz sahipligi ve gate'ler icin kanonik ozet. Puanlama:
+> `scoring-model.md`; kanit: `evidence-model.md`; Faz 5.5:
+> `pre-build-validation.md`.
 
----
+## Research Contract Preflight (Numarasiz)
+
+**Amac:** Problem, segment, geo, platform, asama, arketip ve risk modifier'larini
+kilitle.
+
+**Cikti:** `data/assessment.json` baslangic alanlari.
+
+**Gate:** Tek birincil arketip secilmis; belirsiz ve skoru degistiren secim
+kullaniciya sorulmus; hedef segment/geo acik.
 
 ## Faz 1: Problem Havuzu
 
-**Amac:** 20-30 somut, tekrarlayan, mobilde cozulebilir problem belirle
-**Girdi:** Kullanicinin belirttigi alan veya genel arama
-**Cikti:** Problem listesi (her biri: kim, ne sorunu, mobilde mantikli mi, sik mi, para verir mi)
-**Araclar:** Reddit, App Store 1-2 yildiz reviewlar, Google Trends, IndieHackers
-**Sure:** ~2-3 saat
+**Amac:** Somut, tekrarlanan ve mobilde anlamli problemleri bul.
 
-**Gate:** Min 15 problem, 3+ farkli kategori
-**Basarisizlik:** Reddit "I wish there was an app for..." aramalari, App Store kotu yorum taramasi, farkli kategorilere genisle
+**Cikti:** Kim, son ne zaman, status quo, harcanan zaman/para ve mobil uygunluk
+iceren problem listesi.
 
----
+**Gate:** Coklu fikir kesfinde min 15 problem ve 3 kategori. Tek fikir analizinde
+problemin en az bir spesifik segmenti ve ikameleri tanimli.
 
-## Faz 2: Keyword Cluster
+## Faz 2: Keyword ve Kanal Cluster
 
-**Amac:** Her problem icin 10-20 aranabilir keyword kumesi olustur
-**Girdi:** Faz 1 problem listesi
-**Cikti:** Keyword tablosu (5 tip: ana, kitle, sonuc, alternatif, uzun kuyruk)
-**Araclar:** App Store Search Suggest, Google Trends, rakip title/subtitle
-**Sure:** ~2-3 saat
+**Amac:** Arama terimlerini ve kullanicilarin gercekte bulundugu kanallari esle.
 
-**Gate:** Her problem icin min 10 keyword
-**Basarisizlik:** Autocomplete, rakip title'lari, Reddit basliklarindan tamamla
+**Cikti:** Keyword cluster + watering-hole + app disi ikame listesi.
 
----
+**Gate:** Her problem icin aranabilir terimler ve en az bir erisim kanali; yoksa
+dagitim claim'i `not_found_after_protocol` olarak kaydedilir.
 
-## Faz 3: Hizli Pazar Tarama
+## Faz 3: Hizli Pazar Taramasi
 
-**Amac:** Keyword cluster'larin gercek App Store verileriyle dogrulamasi
-**Girdi:** Faz 2 keyword cluster listesi
-**Cikti:** Her cluster icin lider app, rating, yildiz, fiyat, trend, hedef geo/Geo-LTV, pazar durumu
-**Araclar:** WebSearch (site:apps.apple.com), WebFetch (App Store sayfalari), Google Trends, RevenueCat/Adapty benchmark aramalari
-**Sure:** ~5 dk/cluster
+**Amac:** Pazar proxy'lerini, ikameleri ve fatal gate adaylarini erken tara.
 
-**Pazar siniflandirmasi:**
-- Rating > 10K = Guclu pazar
-- 2K-10K = Orta pazar
-- 500-2K = Mikro pazar (DIKKAT)
-- < 500 = Pazar yok (ELEN)
+**Cikti:** Lider/rakipler, storefront-bazli metadata, arama/trend, ikameler,
+hedef geo ve ilk evidence kayitlari.
 
-**Gate:** Min 8 cluster gecmeli
-**Basarisizlik:** Faz 1'e don, farkli kategorilerle genislet
+**Kural:** Rating fatal gate degildir; `E2/supporting` proxy'dir. Rakip app yoksa
+manuel workflow, web urunu ve hizmet aranir.
 
----
+## Faz 4: Rakip ve Davranis Analizi
 
-## Faz 4: Rakip Analizi
+**Amac:** Rakip, ikame, review, fiyat, JTBD, dagitim, reklam ve visual pattern'leri
+incele.
 
-**Amac:** Her cluster icin derinlemesine rakip incelemesi
-**Girdi:** Faz 3'ten gecen cluster'lar
-**Cikti:** Rakip matrisi, sikayet analizi, fiyat/ozellik karsilastirmasi, Reddit sentiment, reklam istihbarati, visual intelligence
-**Araclar:** App Store (WebFetch), Reddit (WebSearch), Google Play (cross-check), Ad library (FB/Google ATC — browser otomasyonu; WebFetch calismaz), Mobbin/App Store screenshot/Adapty Paywall Library/Codia
-**Sure:** ~30 dk/cluster
+**9 adim:**
 
-**9 Adim:**
-1. Tam rakip listesi (min 5, ideal 10)
-2. Her rakip icin tam metadata (App Store WebFetch)
-3. Kotu yorum analizi (1-2 yildiz, min 10-20 yorum/rakip)
-4. Reddit sentiment (min 3 farkli sorgu) + JTBD Forces mercegi (A3): goc neden oluyor — Push+Pull vs Anxiety+Habit
-5. Fiyat karsilastirma matrisi
-6. Ozellik karsilastirma matrisi
-   - 6.5 (A6): 2x2 stratejik konumlandirma — kullanici-degeri eksenlerinde bos pozisyon/wedge ara (Deep'te zorunlu)
-7. Google Play cross-check
-8. Reklam istihbarati (FB Ad Library keyword + top rakip advertiser, Google ATC; browser yoksa WebSearch fallback)
-9. Visual intelligence (App Store screenshot + Mobbin/onboarding/paywall + Adapty Paywall Library; Codia uretim yardimi)
+1. Rakip + ikame listesi
+2. Metadata ve storefront kaydi
+3. Stratified review mining
+4. Reddit/community + JTBD Forces
+5. Fiyat ve gercek odeme davranisi
+6. Ozellik/wedge ve Deep'te 2x2
+7. Platform cross-check
+8. Ad/channel intelligence
+9. Onboarding, paywall ve screenshot visual intelligence
 
-**Output sahipligi (Standard/Deep):**
-- `phases/02-competitor-analysis.md`: Faz 4 adim 1-2 ve 4-9
-- `phases/03-review-mining.md`: Yalnizca Faz 4 adim 3
+**Review minimumu (Standard/Deep):** Top 5 rakip, hedef 30/min 15 yorum; 1-2,
+3 ve 4-5 yildizdan en az 5'er; son 12 ay/surum/storefront kaydi.
 
-**Gate:** Her cluster icin min 5 rakip analiz edilmis
-**Basarisizlik:** Analizi tamamla, eksik veriyle puanlama yapma
+**Cikti sahipligi:**
 
----
+- `02-competitor-analysis.md`: adim 1-2, 4-9
+- `03-review-mining.md`: adim 3
 
-## Faz 5: Firsat Puanlama (3 Katmanli)
+## Faz 5: Iki Eksenli Degerlendirme
 
-**Amac:** Sistematik degerlendirme
-**Girdi:** Faz 3-4 verileri
-**Cikti:** Final skor tablosu
-**Detay:** `scoring-model.md`
-**Sure:** ~15 dk/cluster
+**Amac:** Arketip-bazli Firsat Cekiciligi ile Kanit Gucu'nu ayri hesapla.
 
-**3 Katman:**
-- K1: Pass/Fail (pazar var mi, erisilebilir mi, buyuyor mu, regulasyon asilabilir mi)
-- K2: Agirlikli skor /100 (talep %25, gelir %25, rekabet %20, retention %15, zamanlama %15)
-- K3: Fizibilite carpani (teknik x kurucu x regulasyon x MVP, her biri 0.6/0.8/1.0; regulasyon engeli yoksa 1.0 alir)
-- Final = K2 × K3
+**Cikti:** `04-scoring.md` + tamamlanmis `data/assessment.json`.
 
-**v3.4 ek sinyal:** Geo-LTV/hedef ulke uyumu Gelir ve Dagitim guvenini yorumlar; K2 formulu degismez ve indie gelir kaniti override'inin yerine gecmez.
+**Gate:** Fatal gate'ler kanitli; agirligi sifir olmayan boyutlar low/base/high
+puanli veya acikca `null`; en riskli uc varsayim dereceli.
 
-**Esikler:** 60+ Guclu | 45-59 Orta | 30-44 Zayif | <30 Elen
+**Masa basi kararlari:** `ELENDIR`, `BELIRSIZ`, `TESTE_DEGER`,
+`TEST_ONCELIKLI`. Masa basi arastirmasi GO veya BUILD karari vermez.
 
-**Gate:** Min 3 cluster 45+
-**Basarisizlik:** Override kurallarini kontrol et, gerekirse Faz 1'e don
+## Faz 5.5: Build-Oncesi Dogrulama
 
----
+**Amac:** En riskli varsayimi uygun davranis deneyiyle test et.
 
-## Faz 5.5: Build-Oncesi Talep Dogrulama (Opsiyonel-Onerilen)
+**Cikti:** Standard/Deep'te `06-prebuild-plan.md`; insan deneyi tamamlanirsa yeni
+evidence kayitlari ve assessment guncellemesi.
 
-**Amac:** Kod yazmadan once EN RISKLI varsayimi DAVRANISLA test et (cogu fikirde talep; landing page/fake-door + Mom-Test gorusmeleri)
-**Girdi:** Faz 5'ten GO/SARTLI-GO cikan aday(lar)
-**Cikti:** Davranis-bazli go/no-go + guven %; puanlama duzeltmeleri
-**Detay:** `pre-build-validation.md`
-**Sure:** ~20 saat (INSAN-aksiyonu; Claude landing kopyasi/gorusme kilavuzu yazar)
+**Gate:** `BUILD_SMALL` icin firsat low >=60, genel kanit B+, top risk B+ ve en az
+bir urun-spesifik E3+ davranis. Aksi `TESTE_DEVAM`, `PIVOT` veya `KILL`.
 
-**Adim 0 (A2 — Riskiest Assumption Test):** Test tasarlamadan once varsayimlari (Talep, Odeme-niyeti, Teknik, Retention, Regulasyon, Dagitim) etki x belirsizlik ile sirala; EN riskliyi once test et. Cogu tuketici app'inde bu TALEP'tir (asagidaki testler), ama farkliysa yontemi ona gore sec (`pre-build-validation.md` Adim 0).
-**Walling 2/20/200:** 2sa eleme (Faz 1-5) -> 20sa (en riskli varsayim) testi (bu faz) -> 200sa MVP (Faz 9)
+## Faz 6: Finalist Secimi
 
-**Gate:** GO icin guven >=%70 + en az 1 gercek davranis sinyali (sadece "kullanirim/begendim" YETMEZ -> RF-16)
-**Basarisizlik:** Sadece beyan -> Talep/Gelir override (MAX 3); problem hic dogrulanamadi -> SISP (RF-17), Faz 8'e/1'e don
-**Not:** Quick Scan'de opsiyonel; Standard/Deep'te GO adayi icin ZORUNLU. En gec Faz 9 oncesi tamamlanmali.
-**Cikti dosyasi (Standard/Deep):** `phases/06-prebuild-plan.md` -- Claude'un teslim ettigi plan (landing kopyasi + gorusme kilavuzu + ONCEDEN yazilmis esikler); rapor Durum'u "FAZ 5.5 BEKLIYOR" olur.
+**Amac:** Coklu fikirlerde test yatirimi yapilacak finalistleri sec.
 
----
+**Oncelik:** Fatal gate -> Kanit Gucu -> skor araligi -> top risk/test maliyeti ->
+kurucu/operasyon kisitlari.
 
-## Faz 6: En Iyi 5 Secim
+**Kural:** Farkli metodoloji surumleri ve arketipler ciplak skorla siralanmaz.
 
-**Amac:** 4 pratik filtre ile final secim
-**Girdi:** Faz 5'ten 45+ cluster'lar
-**Cikti:** En iyi 5 fikir (tanim, MVP suresi, fark, ucretli model)
+## Faz 7: Kanit Denetimi ve Karsi Kontrol
 
-**4 Filtre:** Anlatilabilirlik | MVP 2-4 hafta | Fark netligi | Ucretli model baglantisi
+**Amac:** Kritik claim'leri bagimsizlik, tazelik, karsit kanit ve construct
+validity acisindan denetle.
 
-**Gate:** Min 3 fikir gecmeli
-**Basarisizlik:** Faz 1'e don veya sinir degerlerini (40-44) yeniden incele
+**Kontroller:**
 
----
+1. Primary/public gozlem gercek ve baglami tam mi?
+2. Gelir/odeme kaniti iddia mi davranis mi?
+3. Goc Push+Pull > Anxiety+Habit mi?
+4. Pazar raporu dijital davranisla uyumlu mu?
+5. Iki URL ayni `independence_root` mu?
+6. Gozlemin claim relevance'i dogru mu?
 
-## Faz 7: Pazar Dogrulama
-
-**Amac:** Gercek veriyle zorunlu dogrulama
-**Girdi:** Faz 6'dan gecen finalistler
-**Cikti:** Her finalist icin 4 dogrulama raporu
-**Sure:** ~45 dk/finalist
-
-**4 Dogrulama:**
-1. Gercek rating kontrolu (App Store'dan teyit)
-2. Indie gelir kaniti (min 4 farkli sorgu; B5: Acquire/Flippa/Starter Story komparasyonu dahil)
-3. Kullanici goc sinyali (min 4 farkli sorgu) + JTBD Forces yorumu (A3): goc Push+Pull > Anxiety+Habit ise GERCEK, degilse fantezi (RF-7)
-4. Pazar raporu cross-check + Menopoz Testi
-
-**Gate:** Min 2/5 GECTI
-**Basarisizlik:** Veri kaynagi yetersizse derinlestir, fikirler zayifsa Faz 1'e don
-
----
+**Cikti:** `05-validation.md`. Adi tarihsel uyumluluk icin korunur; icerik pazar
+"dogrulamasi" degil evidence audit'tir.
 
 ## Faz 8: Capraz Karsilastirma
 
-**Amac:** Finalistler arasi net siralama
-**Girdi:** Faz 7'den gecen fikirler
-**Cikti:** Karsilastirma tablosu + #1 secimi
+**Amac:** Ayni metodoloji surumundeki finalistleri iki eksende karsilastir.
 
-**Oncelik sirasi:**
-1. Kanitlanmis Talep (lider rating)
-2. Indie Gelir Kaniti
-3. Final Skor
-4. Geo-LTV/dagitim guveni
-5. MVP Kolayligi
+**Cikti:** Arketip/agirlk farklarini gosteren tablo, tercih ve bir sonraki test.
 
-**Gate:** Net #1 veya max 2 finalist
-**Basarisizlik:** Detaylandir veya ek dogrulama topla
+## Faz 9: Brief, BUILD_SMALL Scope ve Ekonomi
 
----
+**Amac:** Yalniz Faz 5.5 sonucu izin veriyorsa sinirli urun plani hazirla.
 
-## Faz 9: Proje Brief + MVP + Moat
+**Cikti:** Lean Canvas, Quantified Value Prop, max 4 core ekran/3 ozellik,
+monetizasyon, first-party metrik plani, moat, security ve geo/cohort ekonomi.
 
-**Amac:** Kazanan icin eksiksiz proje dokumani
-**Girdi:** Faz 8'den secilen finalist + tum onceki faz verileri
-**Cikti:** Lean Canvas (1 sayfa), Quantified Value Prop, Proje brief, MVP scope (max 4 core product screen, 3 ozellik), Moat analizi, monetizasyon, ASO taslagi, visual/paywall hipotezi, Geo-LTV odagi, security preflight, gerekiyorsa Turkiye tesvik/payout notu
-
-**Lean Canvas (A1) — 9 blok, tek sayfa:** Problem | Musteri Segmenti | UVP (essiz deger onerisi) | Cozum | Kanallar | Gelir Akisi | Maliyet Yapisi | Anahtar Metrikler | Haksiz Avantaj (= Moat). Dagik parcalari (UVP, Anahtar Metrikler, Haksiz Avantaj su an ortuktu) tek gorsele toplar. Bos kalan blok = arastirma boslugu.
-
-**Quantified Value Prop (A5):** "Status quo'ya gore X saat / $Y / Z adim tasarruf" — degeri musterinin terimleriyle SAYISALLASTIR. Fiyatlandirma ve Talep argumanini besler.
-
-**Visual intelligence (v3.4):** App Store screenshot, Mobbin/onboarding-paywall ve Adapty Paywall Library pattern'lerinden ilk deger ani, paywall tetigi, screenshot mesajlari ve bos kalan aci cikar. Codia/screenshot-to-Figma yalnizca uretim yardimidir; pazar kaniti degildir.
-
-**Geo-LTV odagi (v3.4):** 3-5 oncelikli ulke sec; LTV/CAC, dil/ASO ve localization riskini yaz. 80+ ulkeye yayilma varsayimi first-party veri olmadan kullanilmaz.
-
-**Security + secret hygiene (v3.4):** Admin/auth, user ownership, frontend secret, RLS/Firestore/backend rules, protected fields ve public AI share secret scrub checklist'i doldur.
-
-**Micro-MVP sprint (v3.4):** Faz 5.5 dogrulanmis ve app basitse, max 4 core ekran + gerekiyorsa 1 paywall/upgrade ekran iceren 1 haftalik sprint opsiyonu ekle; K3 MVP suresi ankori degismez.
-
-**Moat turleri (0-3 puan):** Veri avantaji | Gecis maliyeti | Network etkisi | Hiz avantaji | Ekosistem kilit
-- <5: Zayif moat | 5-10: Orta moat | 10+: Guclu moat
-- (Lean Canvas'taki "Haksiz Avantaj" blogu ile ayni; tutarli doldur.)
-
-**Gate:** Tum alanlar dolu, Lean Canvas + Moat dahil
-**Basarisizlik:** Tamamla, eksik bolum birakma
-**Cikti dosyasi (Deep):** Lean Canvas + Quantified VP, `phases/10-project-brief.md` icine gomulu (yeni numarali dosya YOK).
-
----
+**Kural:** Faz 5.5 yurutulmediyse brief `PREBUILD_PENDING` kosullu taslaktir;
+gelistirme talimati degildir.
 
 ## Faz 10: Seytanin Avukati
 
-**Amac:** Varsayimlari kirma, kor noktalari bulma, Go/No-Go
-**Girdi:** Faz 9 proje brief + tum veriler
-**Cikti:** Varsayim tablosu, Menopoz Testi, en kotu senaryolar, Go/No-Go kontrol listesi
+**Amac:** Deger, usability, fizibilite, viability, dagitim, retention ve
+regulasyon varsayimlarini karsi kanitla kir.
 
-**5 Varsayim Testi:**
-1. Pazar buyuk ve buyuyor mu? (karsit kanit ara)
-2. Kullanicilar oder mu? (ucretsiz alternatif yeterli mi?)
-3. Farklilasma yeterli mi? (baskasi zaten yapti mi?)
-4. Teknik olarak yapabilir miyiz? (API sinirlamalari?)
-5. Zamanlama dogru mu? (buyuk rakip giriyor mu?)
+**Cikti:** Varsayim tablosu, fatal gate audit'i, worst case ve karar matrisi
+uygunluk kontrolu.
 
-**A2 baglantisi:** Bu varsayimlari etki x belirsizlik ile sirala; EN riskli olan(lar) Faz 5.5 Adim 0'da (RAT) davranisla test edilmis olmali. Faz 5.5 atlandiysa (Quick'te opsiyonel) en riskli varsayim hala test edilmemis sayilir → bu durumda Go vermeden once test sart. Test edilmemis yuksek-risk varsayim = olumcul kusur adayi.
+## MVP Sonrasi
 
-**Go/No-Go kontrol listesi:**
-- [ ] Olumcul kusur yok
-- [ ] Min 3 varsayim GUCLU kanita sahip
-- [ ] Indie gelir kaniti min 1
-- [ ] Menopoz testi 3/5+ Evet
-- [ ] En kotu senaryolarin hepsi icin Plan B var
+Onceden yazilan aktivasyon, retention ve ekonomi esikleri kohort bazli izlenir:
 
-**Gate:** Olumcul kusur yok
-**Basarisizlik:** Pivot (ayni pazar farkli aci) veya Kill (Faz 1'e don)
+- iki ardisik kohort tum esikleri gecer -> `SCALE`
+- deger/aktivasyon gecer, tek alt metrik kalir -> `ITERATE`
+- deger veya retention iki kohort kalir -> `STOP`
 
----
-
-## Faz 10 Sonrasi: Lansman
-
-GO karari + Faz 5.5 DOGRULANDI ise arastirma biter, uygulama basla(tila)bilir.
-Lansman stratejisi (pre-launch, ASO, kanal plani, metrikler) icin: `launch-playbook.md`
-Finansal hedef takibi icin Faz 9'da kurulan model (`financial-model-template.md`) kullanilir.
+Detay: `launch-playbook.md`.

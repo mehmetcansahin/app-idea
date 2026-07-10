@@ -1,31 +1,33 @@
 # Arastirma Scoreboard
 
-> Tum analizlerin merkezi ozeti. Her yeni rapor sonrasi guncellenir (CLAUDE.md "Nasil Calisir" adim 6).
-> Ayni konu yeniden analiz edildiginde eski satirin Durum'u ARSIV yapilir, yeni satir eklenir.
+> v4.0 satirlari yalniz ayni metodoloji surumu icinde karsilastirilir. v3.x
+> raporlari tarihsel kayittir; yeni skor/kanit modeline map edilmez.
 
-| Tarih | Konu | Mod | K2 | K3 | Final | Karar | Durum | Rapor |
-|-------|------|-----|----|----|-------|-------|-------|-------|
-| 2026-06-01 | Debt Payoff | Standard (v3.2) | 56 | 0.80 | **44.8** | SARTLI GO | **FAZ 5.5 BEKLIYOR** | [REPORT](2026-06-01-debt-payoff/REPORT.md) |
-| 2026-03-12 | Debt Payoff | Quick Scan | 64→59 | 0.80 | 51.2→47.2 | SARTLI GO | ARSIV (yerine 2026-06-01) | [REPORT](2026-03-12-debt-payoff/REPORT.md) |
-| 2026-03-12 | People Finder | Standard | 55 | 0.307 | 16.9 | ELENDIR (K1 FAIL: regulasyon) | TERK | [REPORT](2026-03-12-people-finder/REPORT.md) |
-| 2026-03-12 | Subscription Tracker | Quick Scan | 48 | 0.80 | 38.4 | NO-GO (Apple yerlesik tehdidi) | TERK | [REPORT](2026-03-12-subscription-tracker/REPORT.md) |
+| Tarih | Konu | Mod | Arketip | Firsat Skoru | Kanit | Karar | Asama | Durum | Metodoloji | Rapor |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 2026-06-01 | Debt Payoff | Standard | — | — | — | SARTLI GO (tarihsel) | legacy | **LEGACY** | v3.2 | [REPORT](2026-06-01-debt-payoff/REPORT.md) |
+| 2026-03-12 | Debt Payoff | Quick Scan | — | — | — | SARTLI GO (tarihsel) | legacy | **LEGACY** | v3.1 | [REPORT](2026-03-12-debt-payoff/REPORT.md) |
+| 2026-03-12 | People Finder | Standard | — | — | — | ELENDIR (tarihsel) | legacy | **LEGACY** | v3.1 | [REPORT](2026-03-12-people-finder/REPORT.md) |
+| 2026-03-12 | Subscription Tracker | Quick Scan | — | — | — | NO-GO (tarihsel) | legacy | **LEGACY** | v3.1 | [REPORT](2026-03-12-subscription-tracker/REPORT.md) |
 
-## Durum Lejanti
+## v4.0 Durumlari
 
-| Durum | Anlami |
-|-------|--------|
-| ARASTIRMA TAMAM | Rapor bitti, karar NO-GO/ELENDIR oldugu icin aksiyon yok |
-| FAZ 5.5 BEKLIYOR | GO/SARTLI GO cikti; build-oncesi davranis dogrulamasi (insan-aksiyonu) bekleniyor |
-| DOGRULANDI | Faz 5.5 gecti (guven >=%70 + davranis sinyali) — gelistirmeye baslanabilir |
-| TERK | NO-GO/ELENDIR veya Faz 5.5 basarisiz |
-| ARSIV | Ayni konunun daha yeni analizi var; bu satir tarihsel kayit |
-
-## Acik Aksiyonlar
-
-- [ ] **Debt Payoff Faz 5.5** (2026-06-01'den beri bekliyor): "messy-middle" icgorusunu r/debtfree + Ramsey ekosisteminde landing/fake-door + Mom-Test ile davranisla dogrula. Plan: [REPORT bolum 9](2026-06-01-debt-payoff/REPORT.md). Sonuca gore bu tabloda Durum'u DOGRULANDI veya TERK yap.
+| Durum | Anlam |
+|---|---|
+| DESK_RESEARCH_COMPLETE | Masa basi raporu bitti; build izni yok |
+| PREBUILD_PENDING | Insan davranis deneyi bekliyor |
+| PREBUILD_PASSED | BUILD_SMALL kosullari karsilandi |
+| BUILDING | Sinirli MVP insa ediliyor |
+| POSTLAUNCH | First-party kohort karari izleniyor |
+| KILLED | Fatal gate veya guclu olumsuz davranis sonucu durduruldu |
+| ARCHIVED | Ayni metodolojiyle daha yeni analiz var |
+| LEGACY | v3.x tarihsel raporu; v4 ile karsilastirilmaz |
 
 ## Tarihsel Notlar
 
-- Debt Payoff skor farki: Eski raporun (2026-03-12) icindeki yeniden puanlama (59 → 47.2) yalnizca Gelir duzeltmesini (3→2, OxbowSoft indie degil) icerir. Guncel analiz (2026-06-01) ek olarak Zamanlama'yi da duzeltir (3→2, yasam-dongusu kurali: Regular/duz): 64 → 59 → 56. **Gecerli skor: 44.8.**
-- 2026-03-12 People Finder: Standard mod ama `phases/` klasoru uretilmemis (v3.2.1 oncesi calisma; yapi kurali sonradan netlestirildi).
-- 2026-06-01 Debt Payoff: `phases/` dosya adlari eski sema (03-scoring, 04-faz5.5-validation; review-mining ayri dosya degil). v3.2.1 itibariyle zorunlu adlandirma: 01-market-scan … 06-prebuild-plan.
+- Debt Payoff icin eski Faz 5.5 aksiyonu aktif backlog degildir; iki rapor da legacy'dir.
+- v3.x K2/K3/final skorlari orijinal raporlarda korunur, bu tabloda v4 Firsat
+  Skoru gibi gosterilmez.
+- People Finder'in eski Standard raporu tarihsel output semasini kullanir.
+- Yeni analizler `REPORT.md` yaninda `data/assessment.json`, `data/evidence.jsonl`
+  ve `data/evidence-ledger.md` uretmelidir.

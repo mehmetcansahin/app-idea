@@ -1,16 +1,17 @@
 ---
-description: Coklu fikir karsilastirma — birden fazla fikri tarayip siralar
-argument-hint: <fikir 1>, <fikir 2>, ... (veya bos: "hangi alanda app yapmaliyim")
+description: Compare v4.0 — fikirleri iki eksenli ve arketip-baglamli karsilastir
+argument-hint: <fikir 1>, <fikir 2>, ...
 ---
 
 Fikirler: $ARGUMENTS
 
-CLAUDE.md'deki **Coklu Fikir Karsilastirma** modunu calistir:
+1. Her fikir icin ayni v4.0 metodolojisiyle Quick Scan calistir.
+2. Siralama: fatal gate -> Kanit Gucu -> firsat skor araligi -> top risk/test
+   maliyeti -> operasyon kisitlari.
+3. Farkli arketipleri ciplak skorla siralama; agirlik farkini tabloda goster.
+4. Top adaylar icin Standard test yatirimi oner.
+5. Her analiz icin ayri evidence/assessment uret ve validator calistir.
+6. Yalniz ayni metodoloji surumundeki yeni satirlari INDEX'te karsilastir.
 
-1. Her fikir icin Quick Scan (paralel agent'lar)
-2. Skorlari karsilastir (`output/INDEX.md` + onceki analizler dahil)
-3. Top 2-3 icin Standard analiz
-4. Capraz karsilastirma tablosu (oncelik: kanitlanmis talep > indie gelir kaniti > final skor > Geo-LTV/dagitim guveni > MVP kolayligi — `methodology/phases.md` Faz 8)
-5. Siralama + oneri sun; tum yeni analizleri `output/INDEX.md`'ye isle
-
-Fikir listesi bos/belirsizse once `methodology/phases.md` Faz 1-2 (problem havuzu + keyword cluster) ile aday uret, kullaniciya onayla.
+Fikir listesi yoksa Faz 1-2 ile aday uret; problem ve segmenti kullaniciya
+onaylatmadan arketip puanlama yapma.

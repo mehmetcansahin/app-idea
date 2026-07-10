@@ -1,16 +1,20 @@
 ---
-description: Deep analiz (~8-12 saat) — her sey dahil: feature matrix, ASO, finansal model, brief, seytanin avukati
+description: Deep v4.0 — Standard + feature, ASO, kohort ekonomi, brief, adversarial audit
 argument-hint: <app fikri/konu>
 ---
 
 Konu: $ARGUMENTS
 
-CLAUDE.md'deki **Deep** modunu bu konu icin calistir:
+`AGENTS.md` Deep workflow'unu uygula.
 
-1. Standard pipeline'in tamami (adim 1-6, `06-prebuild-plan.md` dahil)
-2. Paralel: Ozellik matrisi | ASO arastirmasi (6+ sorgu + visual intelligence/paywall pattern) | Finansal model (**sablon:** `methodology/financial-model-template.md`, 3 senaryo + Geo-LTV/LTV:CAC sensitivity)
-3. Proje brief + MVP scope (normal MVP: max 4 core product screen, 3 ozellik, "V1'de olmayacaklar"; micro-MVP sprint: max 4 core ekran + gerekiyorsa 1 paywall/upgrade ekran) + Moat analizi + security preflight + AI share/secret hygiene + gerekirse Turkiye tesvik/payout resmi dogrulama notu
-4. Seytanin avukati (`methodology/phases.md` Faz 10: 5 varsayim testi + Go/No-Go listesi)
-5. Rapor + `output/INDEX.md` guncelle. Karar GO ise Sonraki Adimlar'dan `methodology/launch-playbook.md`'ye yonlendir; Faz 5.5 DOGRULANDI + basit app ise 1 haftalik micro-MVP sprint opsiyonunu ekle.
+1. Standard pipeline'in tamamini calistir.
+2. Feature matrix, ASO/visual/paywall ve arketip-bazli distribution analizi ekle.
+3. `financial-model-template.md` ile 3 senaryo + geo/cohort unit economics yaz;
+   pre-launch benchmark'i en fazla C kanit kabul et.
+4. Brief/MVP/Lean Canvas/Moat/Security yalniz karar asamasinin izin verdigi dilde
+   yaz; Faz 5.5 yoksa kosullu taslak olarak isaretle.
+5. Devil's advocate ile fatal gate, en riskli varsayim ve karsit evidence audit yap.
+6. Tum phase dosyalari, assessment/evidence/ledger ve raw-search-results uret.
+7. Render + validate + INDEX guncellemesiyle bitir.
 
-**ZORUNLU cikti yapisi** (CLAUDE.md Deep bolumu): `phases/01 … 06` (Standard ile ayni; `02` Faz 4 adim 1-2 ve 4-9, `03` yalnizca Faz 4 adim 3) + `07-feature-matrix.md`, `08-aso-research.md`, `09-financial-model.md`, `10-project-brief.md`, `11-devils-advocate.md` + `data/raw-search-results.md`.
+BUILD_SMALL scope max 4 core ekran, 3 ana ozellik ve gerekiyorsa 1 paywall'dir.

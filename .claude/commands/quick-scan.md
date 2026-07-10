@@ -1,16 +1,19 @@
 ---
-description: Quick Scan (~30 dk) — app fikri icin hizli fizibilite analizi
+description: Quick Scan v4.0 — app fikri icin kanitli desk-research elemesi
 argument-hint: <app fikri/konu>
 ---
 
 Konu: $ARGUMENTS
 
-CLAUDE.md'deki **Quick Scan** modunu bu konu icin calistir:
+`AGENTS.md` Quick Scan workflow'unu uygula.
 
-1. Girdi analizi + disambiguation (konu belirsizse alt segmentleri sor)
-2. Paralel: App Store lider + top 5 rakip | Google Trends (WebSearch dolayli) | Reddit hizli tarama | hedef geo/Geo-LTV hizli kontrol
-3. 3 katmanli puanlama — `methodology/scoring-model.md` yetkili kaynak; override kurallarini MUTLAKA uygula; early termination kurallarina dikkat (K1 fail, K3 < 0.5)
-4. Rapor: `templates/report-template.md` formatinda `output/{bugun}-{konu}/REPORT.md` (Quick Scan'de Geo-LTV yalnizca Yonetici Ozeti satiri + Pazar Analizi'nde tek cumlelik uyari; tam 1.4 Geo-LTV tablosu yok)
-5. `output/INDEX.md`'ye satir ekle
+1. Research Contract Preflight: segment, geo, platform, birincil arketip ve modifier.
+2. Rakip + app-disi ikame top 5; trend/community; fatal gate ve dagitim taramasi.
+3. Her kritik iddiayi `methodology/evidence-model.md` ile JSONL'ye kaydet.
+4. `methodology/scoring-model.md` ile Firsat low/base/high + Kanit A-D hesapla.
+5. Yalniz desk karari ver: ELENDIR/BELIRSIZ/TESTE_DEGER/TEST_ONCELIKLI.
+6. `templates/report-template.md` ile REPORT + data/assessment.json + evidence.jsonl yaz.
+7. Ledger render et, output'u validate et ve `output/INDEX.md`'yi guncelle.
 
-Kalite kurallari (CLAUDE.md) zorunlu: veri etiketleri (KESIN/TAHMINI/DUSUK), ucgen kurali, menopoz testi, Mom Test, Geo-LTV notu. Karar GO/SARTLI GO ise Sonraki Adimlar'a Faz 5.5 onerisi ekle; basit app ise Faz 5.5 sonrasi micro-MVP sprint opsiyonunu not et.
+Rating fatal gate degildir. Bulunamayan veri yokluk, AI persona kullanici kaniti
+sayilmaz. Quick artik tek dosya degildir.
