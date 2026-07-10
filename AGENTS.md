@@ -35,7 +35,8 @@ Kisayol komutlari: `/quick-scan`, `/standard`, `/deep`, `/compare` (bkz. `.claud
 
 **Minimum rakip sayisi:** 5
 **Rapor bolumleri:** Yonetici Ozeti, Pazar Analizi, Rakip Analizi, Puanlama, Risk, Sonraki Adimlar, Kaynaklar
-**Raporda ATLANACAK bolumler:** Dogrulama (#5, 5.2 Faz 5.5 plani dahil), MVP Onerisi (#7), ASO (#8), Dagitim Fizibilitesi tam bolumu (1.3 — Quick'te sadece puanlama icinde kisa uygulanir) — bunlar Standard+ icin
+**Quick Geo-LTV:** Yonetici Ozeti'nde `Hedef Geo / Geo-LTV` satiri ve Pazar Analizi'nde tek cumlelik Geo-LTV uyarisi yeterlidir; tam `1.4 Geo-LTV` tablosu Standard+ icindir.
+**Raporda ATLANACAK bolumler:** Dogrulama (#5, 5.2 Faz 5.5 plani dahil), MVP Onerisi (#7), ASO (#8), Dagitim Fizibilitesi tam bolumu (1.3 — Quick'te sadece puanlama icinde kisa uygulanir), Geo-LTV tam tablosu (1.4) — bunlar Standard+ icin
 
 **Cikti:** Tek dosya — `output/{tarih}-{konu}/REPORT.md`
 
@@ -73,7 +74,7 @@ output/{tarih}-{konu}/
 ├── REPORT.md
 └── phases/
     ├── 01-market-scan.md          # kanonik Faz 3
-    ├── 02-competitor-analysis.md  # kanonik Faz 4 (adim 1-2, 4-8)
+    ├── 02-competitor-analysis.md  # kanonik Faz 4 (adim 1-2, 4-9)
     ├── 03-review-mining.md        # kanonik Faz 4 (adim 3)
     ├── 04-scoring.md              # kanonik Faz 5
     ├── 05-validation.md           # kanonik Faz 7
@@ -209,16 +210,16 @@ Faz 5.5'te otomatik talebi degil, EN RISKLI varsayimi test et. Varsayimlari (Tal
 Global/US varsayimi yapma. Her GO/SARTLI GO adayinda hedef ulkeleri acikca yaz ve ulke bazli LTV/CAC mantigini kontrol et. RevenueCat/Adapty benchmark'lari TAHMINI'dir; App Store Connect/RevenueCat kendi app verisi KESIN'dir. Yuksek LTV ulkeleri erisilemiyorsa veya hedef geo belirsizse gelir/paid UA guveni icin UYARI ekle. 80 ulkeye yayilma varsayimi, 3-5 oncelikli ulkede LTV:CAC kaniti olmadan kullanilmaz.
 
 ### 15. Visual Intelligence (Mobbin / App Store / Codia)
-Standard+ analizlerde rakiplerin sadece metadata'sini degil, onboarding, paywall ve screenshot mesajlarini da incele. Kaynaklar: App Store screenshot'lari (KESIN), Mobbin gibi 3. parti ekran kutuphaneleri (TAHMINI/tamamlayici), Adapty Paywall Library (pattern referansi), Codia AI Design veya screenshot-to-Figma araclari (uretim yardimi, pazar kaniti DEGIL). Cikti: hangi akisin incelendigi, hangi mesaj/pattern'in tekrarlandigi, hangi farklilasma acisinin bos kaldigi. Kopyalama yasak; sadece pattern ve bosluk cikar.
+Standard+ analizlerde rakiplerin sadece metadata'sini degil, onboarding, paywall ve screenshot mesajlarini da incele. Kaynaklar: App Store screenshot'lari (KESIN), Mobbin gibi 3. parti ekran kutuphaneleri (TAHMINI/tamamlayici), Adapty Paywall Library (pattern referansi), Codia AI Design veya screenshot-to-Figma araclari (uretim yardimi, pazar kaniti DEGIL). Her kayitta kaynak URL/tool, erisim tarihi, storefront/country, incelenen ekran/akis, gorulen metin, kanit etiketi ve varsa screenshot/file path yazilir. Cikti: hangi akisin incelendigi, hangi mesaj/pattern'in tekrarlandigi, hangi farklilasma acisinin bos kaldigi. Kopyalama yasak; sadece pattern ve bosluk cikar.
 
 ### 16. 1 Haftalik Micro-MVP Sprint
-Faz 5.5 davranisla DOGRULANDI ise ve app teknik/regulasyon olarak basitse, Sonraki Adimlar'a 1 haftalik sprint opsiyonu ekle: Pazartesi keyword/scope, Sali proje+onboarding, Carsamba max 5 ekran MVP, Persembe paywall+market fit, Cuma test+screenshots, Cumartesi submit, Pazar marketing. Bu sprint puanlama ankori degil; sadece dogrulanmis, dusuk karmasiklikli fikirler icin uygulama planidir.
+Normal MVP siniri max 4 core product screen ve 3 ana ozelliktir. Faz 5.5 davranisla DOGRULANDI ise ve app teknik/regulasyon olarak basitse, Sonraki Adimlar'a 1 haftalik sprint opsiyonu ekle: Pazartesi keyword/scope, Sali proje+onboarding, Carsamba max 4 core ekran MVP + gerekiyorsa 1 paywall/upgrade ekran, Persembe paywall+market fit, Cuma test+screenshots, Cumartesi submit, Pazar marketing. Bu sprint puanlama ankori degil; sadece dogrulanmis, dusuk karmasiklikli fikirler icin uygulama planidir.
 
 ### 17. Security Preflight + AI Share/Secret Hygiene
 MVP/launch planinda guvenlik checklist'i zorunlu: admin endpoint'leri koru, user content icin ID-only erisim kullanma, token/session auth uygula, API/admin token'larini frontend'e koyma, Supabase RLS/Firestore rules kontrol et, predictable ID riskini azalt, `isAdmin/role/credits` gibi korumali alanlari kullanici tarafindan update ettirme. ChatGPT/Codex/Claude public share linklerine API key, admin token, musteri verisi veya private repo icerigi koyma; paylasilacaksa once secret scrub yap.
 
 ### 18. Turkiye Tesvikleri ve App Store Connect Payout
-Turkiye sirketi/operasyonu veya Turkiye'den gider yazma soz konusuysa, reklam/tool/App Store komisyon tesvikleri ve App Store Connect banka/payout gereksinimleri ayri checklist olarak kontrol edilir. Tweet/blog bilgisi dogrudan kanit degildir; sadece resmi ve guncel kurum/mevzuat sayfasi KESIN sayilir. Tutar, limit, kapsam ve tarih degisebildigi icin hard-code etme; raporda "guncel resmi kaynakla dogrulanmali" notu kullan.
+Turkiye sirketi/operasyonu veya Turkiye'den gider yazma soz konusuysa, reklam/tool/App Store komisyon tesvikleri ve App Store Connect banka/payout gereksinimleri ayri checklist olarak kontrol edilir. Tesvik sorgularinda `site:gov.tr` filtresi kullanilir. Tweet/blog bilgisi dogrudan kanit degildir; sadece resmi ve guncel kurum/mevzuat sayfasi KESIN sayilir. Resmi kaynak yoksa sonuc BELIRSIZ yazilir; tweet/blog ile tutar/limit yazilmaz. Tutar, limit, kapsam ve tarih degisebildigi icin hard-code etme; raporda "guncel resmi kaynakla dogrulanmali" notu kullan.
 
 ---
 

@@ -63,6 +63,8 @@
 | Hedef geo'da LTV:CAC varsayimi | SAGLIKLI / DAR / BELIRSIZ | TAHMINI / KESIN |
 
 ### 1.4 Geo-LTV / Hedef Ulke ⚐ STANDARD+
+*Quick Scan'de tam tablo atlanir; Yonetici Ozeti'nde `Hedef Geo / Geo-LTV` satiri ve Pazar Analizi'nde tek cumlelik uyari yeterlidir.*
+
 | Ulke/Bolge | LTV Sinifi | Dil/ASO | CAC Riski | Kaynak | Not |
 |------------|------------|---------|-----------|--------|-----|
 | [US] | YUKSEK | EN | ORTA | [RevenueCat/Adapty/App Store Connect] | [not] |
@@ -91,9 +93,9 @@
 **Goc Dinamigi (JTBD Forces) ⚐ STANDARD+:** [Kullanicilar mevcut cozumden NEDEN ayriliyor/ayrilmiyor? Push (iten aci) + Pull (ceken vaat) vs Anxiety (gecis korkusu) + Habit (aliskanlik). Push+Pull > Anxiety+Habit ise goc gercek; degilse fantezi (RF-7).]
 
 ### Visual Intelligence ⚐ STANDARD+
-| Rakip | Kaynak | Incelenen Akis | Ilk Vaat / CTA | Paywall Pattern | Bos Kalan Aci |
-|-------|--------|----------------|-----------------|-----------------|---------------|
-| [app] | App Store / Mobbin / Adapty | Screenshot / Onboarding / Paywall | [mesaj] | [pattern] | [wedge] |
+| Rakip | Kaynak URL/Tool | Erisim Tarihi | Storefront/Country | Incelenen Ekran/Akis | Gorulen Metin | Kanit Etiketi | Screenshot/File Path | Paywall Pattern | Bos Kalan Aci |
+|-------|-----------------|---------------|--------------------|-----------------------|--------------|---------------|----------------------|-----------------|---------------|
+| [app] | App Store URL / Mobbin / Adapty | [YYYY-MM-DD] | [US/TR/global] | Screenshot / Onboarding / Paywall | [mesaj/CTA] | KESIN/TAHMINI/DUSUK | [path veya YOK] | [pattern] | [wedge] |
 
 **Not:** Codia/screenshot-to-Figma kullanildiysa kaynak olarak "uretim yardimi" diye yaz; pazar kaniti sayma.
 
@@ -234,6 +236,8 @@
 | Hard-coded tutar kullanildi mi? | HAYIR |
 | App Store Connect payout hazirligi | [banking/tax/contracts notu] |
 
+**Kural:** Tesvik kaniti icin `site:gov.tr` resmi kaynak ara. Resmi kaynak yoksa sonuc BELIRSIZ; tweet/blog ile tutar, limit veya kapsam yazma.
+
 ---
 
 ## 7. MVP Onerisi ⚐ STANDARD+
@@ -249,7 +253,7 @@
 
 *Bos kalan blok = kapatilmasi gereken arastirma boslugu.*
 
-### Ekranlar (Max 4)
+### Ekranlar (Normal MVP: Max 4 Core Product Screen)
 | # | Ekran | Ne Yapar |
 |---|-------|----------|
 | 1 | [ekran] | [aciklama] |
@@ -268,7 +272,7 @@
 |-----|-------|
 | Pazartesi | Keyword/final scope |
 | Sali | Proje kurulumu + onboarding |
-| Carsamba | Max 5 ekran MVP |
+| Carsamba | Max 4 core ekran MVP + gerekiyorsa 1 paywall/upgrade ekran |
 | Persembe | Paywall + market-fit copy |
 | Cuma | Test + screenshots |
 | Cumartesi | App Store submit |
@@ -306,7 +310,7 @@
 3. [ ] [adim 3]
 
 *Karar GO/SARTLI GO ise: ilk adim Faz 5.5 planinin (bolum 5.2) yurutulmesidir. Faz 5.5 DOGRULANDI ile biterse lansman hazirligi icin `methodology/launch-playbook.md` ile devam et.*
-*Basit app + Faz 5.5 DOGRULANDI ise: Sonraki Adimlar'a 1 haftalik micro-MVP sprint opsiyonunu ekle. Turkiye operasyonu varsa resmi tesvik/payout dogrulamasini ayri adim yap.*
+*Basit app + Faz 5.5 DOGRULANDI ise: Sonraki Adimlar'a max 4 core ekran + gerekiyorsa 1 paywall/upgrade ekranlik 1 haftalik micro-MVP sprint opsiyonunu ekle. Turkiye operasyonu varsa resmi tesvik/payout dogrulamasini ayri adim yap.*
 
 ---
 
@@ -340,7 +344,7 @@
 | Yonetici Ozeti (+Durum +Guven) | ✓ | ✓ | ✓ |
 | 1.1-1.2 Pazar Analizi (+yasam-dongusu, +regulasyon K1) | ✓ | ✓ | ✓ |
 | 1.3 Dagitim Fizibilitesi | — (puanlamada kisa) | ✓ | ✓ |
-| 1.4 Geo-LTV / Hedef Ulke | kisa | ✓ | ✓ + finansal model |
+| 1.4 Geo-LTV / Hedef Ulke | kisa ozet, tam tablo yok | ✓ | ✓ + finansal model |
 | 2. Rakip Analizi (+adlandirilmis icgoru) | ✓ (top 5) | ✓ (top 10) | ✓ (top 10+) |
 | Visual Intelligence | — | ✓ | ✓ |
 | 3. Firsat Puanlama (+regulasyon K3) | ✓ | ✓ | ✓ |

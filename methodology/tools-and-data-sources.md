@@ -168,11 +168,11 @@
 | Codia AI Design / screenshot-to-Figma | Screenshot'i duzenlenebilir Figma taslagina cevirme, screenshot uretim hizlandirma | ⚠️ Orta (uretim araci) | ASO screenshot veya onboarding taslagi uretirken kullanilabilir. Pazar kaniti DEGIL; kaynak olarak "uretim yardimi" diye etiketle. |
 | Figma / FigJam | Rakip akislari, 2x2 konumlandirma ve screenshot mesaj panosu | ✅ Yuksek (kendi sentezin) | Mobbin/App Store/Codia girdilerini tek board'da haritala; karar kaniti degil, analiz artefakti. |
 
-**Kayit formati (Standard+):**
+**Kayit formati (Standard+; her visual akis kaydi icin zorunlu alanlar):**
 
-| Rakip | Kaynak | Incelenen akis | Ilk vaat / CTA | Paywall pattern | Bos kalan aci |
-|-------|--------|----------------|-----------------|-----------------|---------------|
-| [App] | App Store / Mobbin | Onboarding / Paywall / Screenshot | [metin] | [trial, yearly default, social proof...] | [wedge] |
+| Rakip | Kaynak URL/Tool | Erisim Tarihi | Storefront/Country | Incelenen Ekran/Akis | Gorulen Metin | Kanit Etiketi | Screenshot/File Path | Paywall Pattern | Bos Kalan Aci |
+|-------|-----------------|---------------|--------------------|-----------------------|--------------|---------------|----------------------|-----------------|---------------|
+| [App] | App Store URL / Mobbin / Adapty Paywall Library / Codia | [YYYY-MM-DD] | [US/TR/global] | Onboarding / Paywall / Screenshot | [metin/CTA] | KESIN/TAHMINI/DUSUK | [path veya YOK] | [trial, yearly default, social proof...] | [wedge] |
 
 **Kural:** Visual intelligence, Rekabet Boslugu'nu ancak review/Reddit/fiyat verisiyle destekliyorsa guclendirir. Tek basina "screenshot kotu" demek Rekabet 4-5 icin yeterli degildir.
 
@@ -211,7 +211,9 @@
 | Muhasebe kayitlari | Fatura/dekont, reklam faturasi, komisyon kesintisi, odeme makbuzu | ✅ KESIN (kendi kaydin) |
 
 **Raporlama kuralı:**
+- Tesvik aramalarinda `site:gov.tr` filtresi kullan; resmi kurum/mevzuat sayfasi yoksa sonuc BELIRSIZ.
 - Tutar/limit/kapsam hard-code etme.
+- Tweet/blog/araci yorum ile tutar, limit veya kapsam yazma.
 - "Guncel resmi kaynakla dogrulanmali" notu kullan.
 - Turkiye tesviki, pazar GO kararinin yerine gecmez; yalnizca maliyet/launch fizibilitesi girdisidir.
 

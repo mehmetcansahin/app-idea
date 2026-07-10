@@ -10,7 +10,7 @@ CLAUDE.md'deki **Quick Scan** modunu bu konu icin calistir:
 1. Girdi analizi + disambiguation (konu belirsizse alt segmentleri sor)
 2. Paralel: App Store lider + top 5 rakip | Google Trends (WebSearch dolayli) | Reddit hizli tarama | hedef geo/Geo-LTV hizli kontrol
 3. 3 katmanli puanlama — `methodology/scoring-model.md` yetkili kaynak; override kurallarini MUTLAKA uygula; early termination kurallarina dikkat (K1 fail, K3 < 0.5)
-4. Rapor: `templates/report-template.md` formatinda `output/{bugun}-{konu}/REPORT.md` (Quick Scan'de atlanacak bolumler icin Mod Bazli Bolum Haritasi'na uy)
+4. Rapor: `templates/report-template.md` formatinda `output/{bugun}-{konu}/REPORT.md` (Quick Scan'de Geo-LTV yalnizca Yonetici Ozeti satiri + Pazar Analizi'nde tek cumlelik uyari; tam 1.4 Geo-LTV tablosu yok)
 5. `output/INDEX.md`'ye satir ekle
 
 Kalite kurallari (CLAUDE.md) zorunlu: veri etiketleri (KESIN/TAHMINI/DUSUK), ucgen kurali, menopoz testi, Mom Test, Geo-LTV notu. Karar GO/SARTLI GO ise Sonraki Adimlar'a Faz 5.5 onerisi ekle; basit app ise Faz 5.5 sonrasi micro-MVP sprint opsiyonunu not et.

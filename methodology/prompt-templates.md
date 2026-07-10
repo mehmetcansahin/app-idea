@@ -424,8 +424,9 @@ Oncelik sirasi (en onemliden en az onemliye):
 1. Kanitlanmis Talep (lider rating sayisi)
 2. Indie Gelir Kaniti (gercek rakamlar)
 3. Final Skor (3 katmanli puanlama)
-4. MVP Kolayligi (teknik zorluk)
-5. Kullanici Edinme Maliyeti (CPA)
+4. Geo-LTV/dagitim guveni (hedef ulkede LTV:CAC ve kesfedilebilirlik)
+5. MVP Kolayligi (teknik zorluk)
+6. Kullanici Edinme Maliyeti (CPA)
 
 Cikti formati:
 
@@ -434,6 +435,7 @@ Cikti formati:
 | Lider Rating | ... | ... | ... |
 | Indie Gelir Kaniti | ... | ... | ... |
 | Final Skor (Faz 5) | ... | ... | ... |
+| Geo-LTV/dagitim guveni | Guclu/Orta/Zayif/BELIRSIZ | ... | ... |
 | MVP Kolayligi | Kolay/Orta/Zor | ... | ... |
 | Tahmini CPA | ... | ... | ... |
 | Risk Seviyesi | Dusuk/Orta/Yuksek | ... | ... |
@@ -570,7 +572,7 @@ Moat skoru < 5 ise: MVP'ye veya v2'ye moat artirici ozellikler oner (veri birikt
 ## 1 Haftalik Micro-MVP Sprint (yalnizca Faz 5.5 dogrulandiysa ve app basitse)
 - Pazartesi: keyword/final scope
 - Sali: proje kurulumu + onboarding
-- Carsamba: max 5 ekran MVP
+- Carsamba: max 4 core ekran MVP + gerekiyorsa 1 paywall/upgrade ekran
 - Persembe: paywall + market-fit copy
 - Cuma: test + screenshots
 - Cumartesi: App Store submit

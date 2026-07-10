@@ -7,18 +7,18 @@ Pre-launch'tan post-launch analizine kadar her adim.
 
 ## FAZ 5.5 SONRASI: 1 HAFTALIK MICRO-MVP SPRINT
 
-Bu sprint sadece Faz 5.5 davranisla DOGRULANDI olan, teknik/regulasyon olarak basit ve max 5 ekranla cikabilecek app'ler icindir. Karmasik ML, agir regule veri, donanim entegrasyonu veya coklu backend bagimliligi varsa 8 haftalik pre-launch planini kullan.
+Bu sprint sadece Faz 5.5 davranisla DOGRULANDI olan, teknik/regulasyon olarak basit ve max 4 core ekran + gerekiyorsa 1 paywall/upgrade ekranla cikabilecek app'ler icindir. Karmasik ML, agir regule veri, donanim entegrasyonu veya coklu backend bagimliligi varsa 8 haftalik pre-launch planini kullan.
 
 **Uygunluk checklist'i:**
 - [ ] Faz 5.5 sonucu DOGRULANDI veya guven >=%70 + gercek davranis sinyali var
-- [ ] MVP max 5 ekran, 3 ana ozellik
+- [ ] MVP max 4 core ekran, 3 ana ozellik; sprintte gerekiyorsa ek 1 paywall/upgrade ekran
 - [ ] Paywall ilk versiyona eklenebilir
 - [ ] App Store privacy/policy riski basit
 - [ ] Security preflight'ta olumcul eksik yok
 
 | Gun | Odak | Cikti |
 |-----|------|-------|
-| Pazartesi | Keyword + final scope | App name/subtitle taslagi, max 5 ekran, V1 disi liste |
+| Pazartesi | Keyword + final scope | App name/subtitle taslagi, max 4 core ekran + gerekiyorsa 1 paywall/upgrade ekran, V1 disi liste |
 | Sali | Proje kurulumu + onboarding | Repo/app skeleton, ilk acilis akisi, analytics event taslagi |
 | Carsamba | MVP ekranlari | Core flow calisir, empty/error/loading durumlari var |
 | Persembe | Paywall + market-fit copy | RevenueCat/StoreKit/Adapty/Superwall entegrasyonu, paywall mesajlari |

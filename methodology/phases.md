@@ -71,6 +71,10 @@
 8. Reklam istihbarati (FB Ad Library keyword + top rakip advertiser, Google ATC; browser yoksa WebSearch fallback)
 9. Visual intelligence (App Store screenshot + Mobbin/onboarding/paywall + Adapty Paywall Library; Codia uretim yardimi)
 
+**Output sahipligi (Standard/Deep):**
+- `phases/02-competitor-analysis.md`: Faz 4 adim 1-2 ve 4-9
+- `phases/03-review-mining.md`: Yalnizca Faz 4 adim 3
+
 **Gate:** Her cluster icin min 5 rakip analiz edilmis
 **Basarisizlik:** Analizi tamamla, eksik veriyle puanlama yapma
 
@@ -158,7 +162,8 @@
 1. Kanitlanmis Talep (lider rating)
 2. Indie Gelir Kaniti
 3. Final Skor
-4. MVP Kolayligi
+4. Geo-LTV/dagitim guveni
+5. MVP Kolayligi
 
 **Gate:** Net #1 veya max 2 finalist
 **Basarisizlik:** Detaylandir veya ek dogrulama topla
@@ -169,7 +174,7 @@
 
 **Amac:** Kazanan icin eksiksiz proje dokumani
 **Girdi:** Faz 8'den secilen finalist + tum onceki faz verileri
-**Cikti:** Lean Canvas (1 sayfa), Quantified Value Prop, Proje brief, MVP scope (max 4 ekran, 3 ozellik), Moat analizi, monetizasyon, ASO taslagi, visual/paywall hipotezi, Geo-LTV odagi, security preflight, gerekiyorsa Turkiye tesvik/payout notu
+**Cikti:** Lean Canvas (1 sayfa), Quantified Value Prop, Proje brief, MVP scope (max 4 core product screen, 3 ozellik), Moat analizi, monetizasyon, ASO taslagi, visual/paywall hipotezi, Geo-LTV odagi, security preflight, gerekiyorsa Turkiye tesvik/payout notu
 
 **Lean Canvas (A1) — 9 blok, tek sayfa:** Problem | Musteri Segmenti | UVP (essiz deger onerisi) | Cozum | Kanallar | Gelir Akisi | Maliyet Yapisi | Anahtar Metrikler | Haksiz Avantaj (= Moat). Dagik parcalari (UVP, Anahtar Metrikler, Haksiz Avantaj su an ortuktu) tek gorsele toplar. Bos kalan blok = arastirma boslugu.
 
@@ -181,7 +186,7 @@
 
 **Security + secret hygiene (v3.4):** Admin/auth, user ownership, frontend secret, RLS/Firestore/backend rules, protected fields ve public AI share secret scrub checklist'i doldur.
 
-**Micro-MVP sprint (v3.4):** Faz 5.5 dogrulanmis ve app basitse, 1 haftalik sprint opsiyonu ekle; K3 MVP suresi ankori degismez.
+**Micro-MVP sprint (v3.4):** Faz 5.5 dogrulanmis ve app basitse, max 4 core ekran + gerekiyorsa 1 paywall/upgrade ekran iceren 1 haftalik sprint opsiyonu ekle; K3 MVP suresi ankori degismez.
 
 **Moat turleri (0-3 puan):** Veri avantaji | Gecis maliyeti | Network etkisi | Hiz avantaji | Ekosistem kilit
 - <5: Zayif moat | 5-10: Orta moat | 10+: Guclu moat

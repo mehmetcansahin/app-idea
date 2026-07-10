@@ -237,6 +237,7 @@ Uyari: [varsa — hedef geo belirsiz, localization gerekir, CAC yuksek...]
 ```
 
 **Kural:** Geo-LTV K2 formülünü degistirmez. Gelir ve Dagitim Fizibilitesi guvenini artiran/azaltan ek sinyaldir.
+Quick Scan'de tam `1.4 Geo-LTV` tablosu uretilmez; bu kayit Yonetici Ozeti'ndeki `Hedef Geo / Geo-LTV` satirina ve Pazar Analizi'ndeki tek cumlelik uyariya indirgenir.
 
 ---
 
@@ -650,15 +651,15 @@ Prompt: "Extract screenshot captions/messages and summarize the first 3 screensh
 - Adapty Paywall Library: benzer kategoride paywall pattern referanslari
 - Codia AI Design / screenshot-to-Figma: secilen referans screenshot'i uretim taslagina cevirmek icin, pazar kaniti olarak degil
 
-**Kayit formati:**
+**Kayit formati (her visual akis kaydi icin zorunlu alanlar):**
 ```
 === Visual Intelligence — [CLUSTER] ===
 Tarama tarihi: [tarih]
 Kaynaklar: App Store / Mobbin / Adapty Paywall Library / Codia
 
-| Rakip | Kaynak | Incelenen akis | Ilk vaat / CTA | Paywall pattern | Bos kalan aci |
-|-------|--------|----------------|-----------------|-----------------|---------------|
-| [App] | [kaynak] | Onboarding/Paywall/Screenshot | [mesaj] | [pattern] | [wedge] |
+| Rakip | Kaynak URL/Tool | Erisim Tarihi | Storefront/Country | Incelenen Ekran/Akis | Gorulen Metin | Kanit Etiketi | Screenshot/File Path | Paywall Pattern | Bos Kalan Aci |
+|-------|-----------------|---------------|--------------------|-----------------------|--------------|---------------|----------------------|-----------------|---------------|
+| [App] | [URL/tool] | [YYYY-MM-DD] | [US/TR/global] | Onboarding/Paywall/Screenshot | [mesaj/CTA] | KESIN/TAHMINI/DUSUK | [path veya YOK] | [pattern] | [wedge] |
 
 Sonuc:
 - Tekrarlanan mesaj/pattern:
@@ -672,7 +673,7 @@ Sonuc:
 
 ### Faz 4 Cikti Formati
 
-Her cluster icin asagidaki 8 ciktiyi hazirla:
+Her cluster icin asagidaki 8 ciktiyi hazirla. Dosya sahipligi: `02-competitor-analysis.md` 1 ve 3-8 numarali bloklari (Faz 4 adim 1-2 ve 4-9), `03-review-mining.md` yalnizca 2 numarali kotu yorum/sikayet blogunu (Faz 4 adim 3) sahiplenir.
 
 1. **Rakip Matrisi** (5-10 satir x 12+ kolon)
 2. **Kotu Yorum / Sikayet Ozeti** (top 5 tema + frekans sayilari)
@@ -1339,13 +1340,14 @@ Micro-MVP sprint uygunlugu: EVET / HAYIR
 Kosul kontrolu:
 - Faz 5.5 durumu:
 - Teknik/regulasyon karmasikligi:
-- Max 5 ekran mumkun mu:
+- Max 4 core ekran mumkun mu:
+- Gerekirse 1 paywall/upgrade ekran eklenebilir mi:
 - Paywall erken eklenebilir mi:
 
 1 haftalik sprint:
 Pazartesi: keyword/final scope
 Sali: proje kurulumu + onboarding
-Carsamba: max 5 ekran MVP
+Carsamba: max 4 core ekran MVP + gerekiyorsa 1 paywall/upgrade ekran
 Persembe: paywall + market-fit copy
 Cuma: test + screenshots
 Cumartesi: App Store submit
@@ -1376,8 +1378,8 @@ Bu sprint sadece Faz 5.5 davranisla dogrulanmis, dusuk karmasiklikli app'ler ici
 **Ne zaman:** Kurucu Turkiye'de sirket/operasyon yurutuyorsa, maliyetleri Turkiye'de gider yazacaksa veya tesvik kullanmayi planliyorsa.
 
 ```
-WebSearch: "mobil uygulama ihracat destekleri resmi site guncel"
-WebSearch: "dijital hizmet ihracati reklam komisyon destekleri resmi site"
+WebSearch: "site:gov.tr mobil uygulama ihracat destekleri guncel"
+WebSearch: "site:gov.tr dijital hizmet ihracati reklam komisyon destekleri"
 App Store Connect UI: Agreements, Tax, and Banking > Bank Accounts / Tax Forms
 ```
 
@@ -1390,7 +1392,7 @@ Hard-coded tutar kullanildi mi: HAYIR
 Payout hazirligi: [IBAN/SWIFT/vergi formu/banka sahibi notu]
 ```
 
-**Kural:** Tweet/blog/soylenti TAHMINI'dir. Resmi ve guncel kaynak yoksa "BELIRSIZ" yaz; GO kararini tesvige dayandirma.
+**Kural:** Tweet/blog/soylenti TAHMINI'dir. Resmi ve guncel kaynak yoksa "BELIRSIZ" yaz; tweet/blog ile tutar, limit veya kapsam yazma. GO kararini tesvige dayandirma.
 
 **Tahmini sure:** ~60 dakika (1 finalist icin)
 
@@ -1653,13 +1655,15 @@ Browser/insan: Mobbin onboarding/paywall akislari
 Browser/insan: Adapty Paywall Library benzer kategori pattern'leri
 Uretim yardimi: Codia AI Design / screenshot-to-Figma
 ```
+Kayit alanlari: kaynak URL/tool, erisim tarihi, storefront/country, incelenen ekran/akis, gorulen metin, kanit etiketi, varsa screenshot/file path.
 
 ### Turkiye Tesvik / Payout
 ```
-WebSearch: "mobil uygulama ihracat destekleri resmi site guncel"
-WebSearch: "dijital hizmet ihracati reklam komisyon destekleri resmi site"
+WebSearch: "site:gov.tr mobil uygulama ihracat destekleri guncel"
+WebSearch: "site:gov.tr dijital hizmet ihracati reklam komisyon destekleri"
 App Store Connect UI: Agreements, Tax, and Banking
 ```
+Resmi kaynak yoksa sonuc BELIRSIZ; tweet/blog ile tutar/limit/kapsam yazma.
 
 ### Karsit Kanit
 ```

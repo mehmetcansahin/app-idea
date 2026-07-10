@@ -153,7 +153,7 @@ Pazar buyuk olabilir ama yeni app KESFEDILEMEZSE olmaz. Puanlamadan once olc:
 **Carpan = Teknik × Kurucu × Regulasyon × MVP**
 
 > **Not:** Regulasyon 1.0 ise (engel yok), carpan onceki gibi 3 faktorlu kalir. Sadece regulasyon engeli olan pazarlarda 4. faktor devreye girer.
-> **v3.4 Notu:** 1 haftalik micro-MVP sprint, Faz 5.5 sonrasi uygulama planidir; K3 MVP suresi ankori degismez. Sprint yalnizca basit, dogrulanmis, max 5 ekranlik app'ler icin onerilir.
+> **v3.4 Notu:** 1 haftalik micro-MVP sprint, Faz 5.5 sonrasi uygulama planidir; K3 MVP suresi ankori degismez. Sprint yalnizca basit, dogrulanmis, max 4 core ekran + gerekiyorsa 1 paywall/upgrade ekranlik app'ler icin onerilir.
 
 ---
 
