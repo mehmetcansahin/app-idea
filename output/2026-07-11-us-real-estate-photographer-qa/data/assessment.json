@@ -1,0 +1,39 @@
+{
+  "methodology_version": "4.0",
+  "idea_id": "us-real-estate-photographer-qa",
+  "analysis_date": "2026-07-11",
+  "mode": "quick",
+  "stage": "desk_research",
+  "target_segment": "US independent real-estate photographers and small multi-shooter teams using iPhone as a field companion",
+  "target_geos": ["US"],
+  "primary_archetype": "b2b_prosumer",
+  "risk_modifiers": ["hardware_dependency", "platform_dependency"],
+  "dimensions": {
+    "problem_demand": {"low": 2, "base": 3, "high": 3, "claim_ids": ["claim-demand"]},
+    "monetization_economics": {"low": 1, "base": 2, "high": 2, "claim_ids": ["claim-economics"]},
+    "competitive_wedge": {"low": 1, "base": 2, "high": 2, "claim_ids": ["claim-wedge"]},
+    "distribution_access": {"low": 2, "base": 3, "high": 3, "claim_ids": ["claim-wedge"]},
+    "repeat_value_retention": {"low": 2, "base": 3, "high": 3, "claim_ids": ["claim-demand"]},
+    "timing": {"low": 1, "base": 2, "high": 3, "claim_ids": ["claim-demand"]},
+    "liquidity_cold_start": null
+  },
+  "opportunity": {"low": 31, "base": 51, "high": 52, "classification": "borderline"},
+  "fatal_gates": [
+    {"code": "LEGAL_BLOCKED", "status": "clear", "evidence_ids": ["photo-platform-apple"]},
+    {"code": "CORE_FEASIBILITY_BLOCKED", "status": "clear", "evidence_ids": ["photo-economics-spiro-price"]},
+    {"code": "PLATFORM_BLOCKED", "status": "clear", "evidence_ids": ["photo-platform-apple"]},
+    {"code": "SAFETY_ETHICS_BLOCKED", "status": "clear", "evidence_ids": ["photo-platform-apple"]}
+  ],
+  "riskiest_assumptions": [
+    {"claim_id": "claim-demand", "category": "value", "impact": 3, "uncertainty": 3, "claim_grade": "C", "product_specific_behavior": false, "disposition": "partial"},
+    {"claim_id": "claim-economics", "category": "business_viability", "impact": 3, "uncertainty": 3, "claim_grade": "C", "product_specific_behavior": false, "disposition": "partial"},
+    {"claim_id": "claim-wedge", "category": "usability", "impact": 3, "uncertainty": 3, "claim_grade": "D", "product_specific_behavior": false, "disposition": "untested"}
+  ],
+  "overall_evidence_grade": "D",
+  "decision": "BELIRSIZ",
+  "status": "DESK_RESEARCH_COMPLETE",
+  "next_test": "Seek upfront payment for a 10-live-job room and gear QA concierge before any product build",
+  "stopping_rule": "Do not proceed unless at least 6 of 10 use it on 5 live jobs and at least 4 buy a second $15 job pack",
+  "post_mvp_result": null
+}
+

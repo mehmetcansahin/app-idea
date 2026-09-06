@@ -1,0 +1,38 @@
+{
+  "methodology_version": "4.0",
+  "idea_id": "us-farrier-hoof-handoff",
+  "analysis_date": "2026-07-11",
+  "mode": "quick",
+  "stage": "desk_research",
+  "target_segment": "US independent farriers who handle therapeutic cases, coordinate with veterinarians, and use iPhone",
+  "target_geos": ["US"],
+  "primary_archetype": "b2b_prosumer",
+  "risk_modifiers": ["regulated", "sensitive_data", "platform_dependency"],
+  "dimensions": {
+    "problem_demand": {"low": 3, "base": 4, "high": 4, "claim_ids": ["claim-demand"]},
+    "monetization_economics": {"low": 1, "base": 2, "high": 3, "claim_ids": ["claim-economics"]},
+    "competitive_wedge": {"low": 1, "base": 2, "high": 3, "claim_ids": ["claim-wedge"]},
+    "distribution_access": {"low": 2, "base": 3, "high": 3, "claim_ids": ["claim-distribution"]},
+    "repeat_value_retention": {"low": 2, "base": 3, "high": 3, "claim_ids": ["claim-demand"]},
+    "timing": {"low": 2, "base": 2, "high": 3, "claim_ids": ["claim-timing"]},
+    "liquidity_cold_start": null
+  },
+  "opportunity": {"low": 37, "base": 56, "high": 65, "classification": "borderline"},
+  "fatal_gates": [
+    {"code": "LEGAL_BLOCKED", "status": "clear", "evidence_ids": ["farrier-safety-aaep"]},
+    {"code": "CORE_FEASIBILITY_BLOCKED", "status": "clear", "evidence_ids": ["farrier-wedge-hoofproof"]},
+    {"code": "PLATFORM_BLOCKED", "status": "clear", "evidence_ids": ["farrier-platform-apple"]},
+    {"code": "SAFETY_ETHICS_BLOCKED", "status": "clear", "evidence_ids": ["farrier-safety-aaep"]}
+  ],
+  "riskiest_assumptions": [
+    {"claim_id": "claim-demand", "category": "value", "impact": 3, "uncertainty": 3, "claim_grade": "B", "product_specific_behavior": false, "disposition": "partial"},
+    {"claim_id": "claim-economics", "category": "business_viability", "impact": 3, "uncertainty": 3, "claim_grade": "C", "product_specific_behavior": false, "disposition": "partial"},
+    {"claim_id": "claim-wedge", "category": "usability", "impact": 3, "uncertainty": 3, "claim_grade": "C", "product_specific_behavior": false, "disposition": "partial"}
+  ],
+  "overall_evidence_grade": "C",
+  "decision": "TESTE_DEGER",
+  "status": "PREBUILD_PENDING",
+  "next_test": "Sell a three-week $29 concierge pilot that creates standardized four-hoof before-and-after handoff packets for eight US farriers who regularly work with veterinarians",
+  "stopping_rule": "Stop if fewer than 4 pay, fewer than 3 use it for more than 10 real horses in two weeks, or fewer than 2 owners or veterinarians open and respond to the packet",
+  "post_mvp_result": null
+}

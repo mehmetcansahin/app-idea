@@ -1,0 +1,39 @@
+{
+  "methodology_version": "4.0",
+  "idea_id": "us-hybrid-trainer-triage",
+  "analysis_date": "2026-07-11",
+  "mode": "quick",
+  "stage": "desk_research",
+  "target_segment": "US independent hybrid personal trainers with 10-40 active clients and a paid coaching platform",
+  "target_geos": ["US"],
+  "primary_archetype": "b2b_prosumer",
+  "risk_modifiers": ["sensitive_data", "ai_variable_cost", "platform_dependency"],
+  "dimensions": {
+    "problem_demand": {"low": 3, "base": 3, "high": 4, "claim_ids": ["claim-demand"]},
+    "monetization_economics": {"low": 2, "base": 2, "high": 3, "claim_ids": ["claim-economics"]},
+    "competitive_wedge": {"low": 1, "base": 2, "high": 2, "claim_ids": ["claim-wedge"]},
+    "distribution_access": {"low": 3, "base": 3, "high": 3, "claim_ids": ["claim-wedge"]},
+    "repeat_value_retention": {"low": 3, "base": 3, "high": 3, "claim_ids": ["claim-demand"]},
+    "timing": {"low": 3, "base": 3, "high": 4, "claim_ids": ["claim-demand"]},
+    "liquidity_cold_start": null
+  },
+  "opportunity": {"low": 49, "base": 52, "high": 63, "classification": "borderline"},
+  "fatal_gates": [
+    {"code": "LEGAL_BLOCKED", "status": "clear", "evidence_ids": ["trainer-safety-ftc"]},
+    {"code": "CORE_FEASIBILITY_BLOCKED", "status": "clear", "evidence_ids": ["trainer-wedge-everfit-review"]},
+    {"code": "PLATFORM_BLOCKED", "status": "clear", "evidence_ids": ["trainer-platform-apple"]},
+    {"code": "SAFETY_ETHICS_BLOCKED", "status": "clear", "evidence_ids": ["trainer-safety-ftc", "trainer-platform-apple"]}
+  ],
+  "riskiest_assumptions": [
+    {"claim_id": "claim-demand", "category": "value", "impact": 3, "uncertainty": 3, "claim_grade": "C", "product_specific_behavior": false, "disposition": "partial"},
+    {"claim_id": "claim-economics", "category": "business_viability", "impact": 3, "uncertainty": 3, "claim_grade": "C", "product_specific_behavior": false, "disposition": "partial"},
+    {"claim_id": "claim-wedge", "category": "regulation_safety", "impact": 3, "uncertainty": 3, "claim_grade": "C", "product_specific_behavior": false, "disposition": "partial"}
+  ],
+  "overall_evidence_grade": "C",
+  "decision": "TESTE_DEGER",
+  "status": "PREBUILD_PENDING",
+  "next_test": "Run a $19 paid two-cycle check-in triage concierge with 8 qualified hybrid coaches",
+  "stopping_rule": "Stop on any privacy or harmful-advice incident, fewer than 5 payments, or fewer than 4 second-cycle users",
+  "post_mvp_result": null
+}
+

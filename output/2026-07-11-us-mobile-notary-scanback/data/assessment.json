@@ -1,0 +1,38 @@
+{
+  "methodology_version": "4.0",
+  "idea_id": "us-mobile-notary-scanback",
+  "analysis_date": "2026-07-11",
+  "mode": "quick",
+  "stage": "desk_research",
+  "target_segment": "US mobile notaries and loan-signing agents who perform scanback-required assignments on iPhone",
+  "target_geos": ["US"],
+  "primary_archetype": "b2b_prosumer",
+  "risk_modifiers": ["regulated", "sensitive_data", "ai_variable_cost", "platform_dependency"],
+  "dimensions": {
+    "problem_demand": {"low": 2, "base": 3, "high": 4, "claim_ids": ["claim-demand"]},
+    "monetization_economics": {"low": 1, "base": 2, "high": 3, "claim_ids": ["claim-economics"]},
+    "competitive_wedge": {"low": 1, "base": 1, "high": 2, "claim_ids": ["claim-wedge"]},
+    "distribution_access": {"low": 1, "base": 2, "high": 3, "claim_ids": ["claim-distribution"]},
+    "repeat_value_retention": {"low": 2, "base": 3, "high": 3, "claim_ids": ["claim-demand"]},
+    "timing": {"low": 2, "base": 2, "high": 3, "claim_ids": ["claim-timing"]},
+    "liquidity_cold_start": null
+  },
+  "opportunity": {"low": 29, "base": 45, "high": 62, "classification": "borderline"},
+  "fatal_gates": [
+    {"code": "LEGAL_BLOCKED", "status": "unknown", "evidence_ids": ["notary-permission-nna"]},
+    {"code": "CORE_FEASIBILITY_BLOCKED", "status": "clear", "evidence_ids": ["notary-wedge-signingos"]},
+    {"code": "PLATFORM_BLOCKED", "status": "unknown", "evidence_ids": ["notary-platform-apple"]},
+    {"code": "SAFETY_ETHICS_BLOCKED", "status": "clear", "evidence_ids": ["notary-safety-california"]}
+  ],
+  "riskiest_assumptions": [
+    {"claim_id": "claim-permission", "category": "regulation_safety", "impact": 3, "uncertainty": 3, "claim_grade": "D", "product_specific_behavior": false, "disposition": "untested"},
+    {"claim_id": "claim-wedge", "category": "usability", "impact": 3, "uncertainty": 3, "claim_grade": "D", "product_specific_behavior": false, "disposition": "partial"},
+    {"claim_id": "claim-economics", "category": "business_viability", "impact": 3, "uncertainty": 3, "claim_grade": "C", "product_specific_behavior": false, "disposition": "partial"}
+  ],
+  "overall_evidence_grade": "D",
+  "decision": "BELIRSIZ",
+  "status": "DESK_RESEARCH_COMPLETE",
+  "next_test": "Obtain written zero-retention or on-device scanback pilot permission from at least two of five title or signing services before testing users",
+  "stopping_rule": "Stop if fewer than two services provide written permission, any hiring party prohibits the workflow on a real assignment, or the later user test yields fewer than 4 of 8 paying $29",
+  "post_mvp_result": null
+}
