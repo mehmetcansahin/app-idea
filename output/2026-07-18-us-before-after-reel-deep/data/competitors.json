@@ -1,0 +1,180 @@
+{
+  "snapshot_date": "2026-07-18",
+  "geo": "US",
+  "storefront": "US",
+  "platform": "iOS",
+  "selection_rule": "İki fotoğraftan before/after görseli veya videosu üreten doğrudan uygulamalar; rating görünürlüğü ve güncel ürün konumlandırması birlikte kullanıldı. Ardından eski wedge'i doğrudan kapatan exact-feature yeni girişler eklendi.",
+  "rating_note": "Rating count, written-review count, install, revenue veya retention değildir.",
+  "direct_top_10": [
+    {
+      "rank": 1,
+      "name": "Photo Compare – Before & After",
+      "app_id": "1537250336",
+      "seller": "Devnex B.V.",
+      "url": "https://apps.apple.com/us/app/photo-compare-before-after/id1537250336",
+      "rating": 4.48,
+      "rating_count": 2580,
+      "last_update": "2026-07-08",
+      "price_observation": "$1.99–$4.99 weekly; $2.99–$9.99 monthly; $9.49 six-month",
+      "core_promise": "Hızlı side-by-side foto karşılaştırma ve layout'lar"
+    },
+    {
+      "rank": 2,
+      "name": "BeforeAfter, Instant Watermark",
+      "app_id": "1023269035",
+      "seller": "Daniel Widjaja",
+      "url": "https://apps.apple.com/us/app/beforeafter-instant-watermark/id1023269035",
+      "rating": 4.759,
+      "rating_count": 2218,
+      "last_update": "2020-08-01",
+      "price_observation": "$0.99–$3.99 one-time feature IAP",
+      "core_promise": "Hazır before/after görseli, business watermark ve censor bar"
+    },
+    {
+      "rank": 3,
+      "name": "Before and after compare photo",
+      "app_id": "1500915148",
+      "seller": "Victor Babitskiy",
+      "url": "https://apps.apple.com/us/app/before-and-after-compare-photo/id1500915148",
+      "rating": 4.678,
+      "rating_count": 2074,
+      "last_update": "2021-06-14",
+      "price_observation": "$2.99–$5.49 weekly; $7.49 monthly; $29.49–$34.99 yearly; $39.99–$59.99 lifetime",
+      "core_promise": "Format, hız ve animasyon seçilen fotoğraf veya video"
+    },
+    {
+      "rank": 4,
+      "name": "Before After Effect Collage BA",
+      "app_id": "1474009694",
+      "seller": "Ringtones LLC (U.S.)",
+      "url": "https://apps.apple.com/us/app/before-after-effect-collage-ba/id1474009694",
+      "rating": 4.565,
+      "rating_count": 382,
+      "last_update": "2025-08-11",
+      "price_observation": "Listing $3.99 weekly, $19.99 yearly, $39.99 lifetime diyor; görünen SKU listesi $3.99–$84.99",
+      "core_promise": "Animasyon, boyut, müzik ve proje geçmişiyle video"
+    },
+    {
+      "rank": 5,
+      "name": "Photo compare before and after",
+      "app_id": "1584081351",
+      "seller": "Zhansaya Tolepbergenova",
+      "url": "https://apps.apple.com/us/app/photo-compare-before-and-after/id1584081351",
+      "rating": 4.713,
+      "rating_count": 223,
+      "last_update": "2022-01-29",
+      "price_observation": "$5.49 weekly; $9.49 monthly; $29.49 yearly",
+      "core_promise": "Logo, müzik, transition ve boyut kontrollü video"
+    },
+    {
+      "rank": 6,
+      "name": "Before/After: Photo Compare",
+      "app_id": "1557149461",
+      "seller": "Fancygames, Ltd.",
+      "url": "https://apps.apple.com/us/app/before-after-photo-compare/id1557149461",
+      "rating": 4.577,
+      "rating_count": 196,
+      "last_update": "2025-06-11",
+      "price_observation": "$4.99 weekly; $12.99 monthly; $19.99/$44.99 annual SKU",
+      "core_promise": "Sosyal post/story ve client proof için yüksek kaliteli animasyon"
+    },
+    {
+      "rank": 7,
+      "name": "Before after photo compare",
+      "app_id": "1638492218",
+      "seller": "Sergey Stepanov",
+      "url": "https://apps.apple.com/us/app/before-after-photo-compare/id1638492218",
+      "rating": 4.782,
+      "rating_count": 55,
+      "last_update": "2026-05-28",
+      "price_observation": "$4.49 weekly; $9.99 monthly; $29.99 yearly; $59.99 lifetime",
+      "core_promise": "Template, text, logo, effect ve music ile video/foto kolaj"
+    },
+    {
+      "rank": 8,
+      "name": "Doposler: Before after video",
+      "app_id": "1644995915",
+      "seller": "Ivan Zinovev",
+      "url": "https://apps.apple.com/us/app/doposler-before-after-video/id1644995915",
+      "rating": 4.897,
+      "rating_count": 29,
+      "last_update": "2026-01-14",
+      "price_observation": "$0.99/$1.99/$5.99/$17.99 Pro SKU; cadence listing'de net değil",
+      "core_promise": "Boyut ve animasyon yönü seçilen basit comparison video"
+    },
+    {
+      "rank": 9,
+      "name": "Before & After Photo: DiffPix",
+      "app_id": "6749657709",
+      "seller": "Codepaint Inc.",
+      "url": "https://apps.apple.com/us/app/before-after-photo-diffpix/id6749657709",
+      "rating": null,
+      "rating_count": 0,
+      "last_update": "2026-07-08",
+      "price_observation": "$3.49 weekly; $7.99 monthly; $19.99/$24.99/$49.99 lifetime SKU",
+      "core_promise": "4K JPG veya 7 saniyelik 1080p slider Reel; on-device"
+    },
+    {
+      "rank": 10,
+      "name": "Before and After Video Maker",
+      "app_id": "6761030222",
+      "seller": "MOMENTUMLABAI PTY LTD",
+      "url": "https://apps.apple.com/us/app/before-and-after-video-maker/id6761030222",
+      "rating": null,
+      "rating_count": 0,
+      "last_update": "2026-05-16",
+      "price_observation": "$7.99 weekly; $19.99 monthly; $99.99 lifetime",
+      "core_promise": "Dört comparison modu, 9:16/GIF/slideshow, 100+ template; on-device"
+    }
+  ],
+  "exact_feature_entrants": [
+    {
+      "name": "Progress Pics Photo Then & Now",
+      "app_id": "6758411454",
+      "url": "https://apps.apple.com/us/app/progress-pics-photo-then-now/id6758411454",
+      "rating_count": 9,
+      "observed_features": ["ghost overlay", "timelapse", "side-by-side", "slider", "metrics", "bulk import", "local/iCloud", "Face ID"],
+      "price_observation": "Builder post: $4.99 monthly, $29.99 yearly, $99.99 lifetime"
+    },
+    {
+      "name": "Body Tracker - Progress Photos",
+      "app_id": "6758867697",
+      "url": "https://apps.apple.com/us/app/body-tracker-progress-photos/id6758867697",
+      "rating": 4.67,
+      "rating_count": 33,
+      "observed_features": ["pose-detection auto-alignment", "timeline", "timelapse", "local processing"]
+    },
+    {
+      "name": "Progress Pic Photos: Metamorph",
+      "app_id": "6544789120",
+      "url": "https://apps.apple.com/us/app/progress-pic-photos-metamorph/id6544789120",
+      "rating": 4.36,
+      "rating_count": 66,
+      "observed_features": ["automatic alignment", "overlays", "reminders", "timelapse/GIF/video", "local/iCloud"]
+    },
+    {
+      "name": "SideLens - Before After Photos",
+      "app_id": "6759226438",
+      "url": "https://apps.apple.com/us/app/sidelens-before-after-photos/id6759226438",
+      "rating": 5.0,
+      "rating_count": 3,
+      "observed_features": ["ghost overlay", "multi-stage timeline", "Play Journey", "portrait video", "local processing"],
+      "price_observation": "$3.99 monthly, $29.99 yearly, $69.99 lifetime"
+    },
+    {
+      "name": "Evogram",
+      "app_id": "6760971385",
+      "url": "https://apps.apple.com/fr/app/evogram/id6760971385",
+      "rating_count": null,
+      "observed_features": ["renovation/progress collections", "ghost overlay", "timelapse", "local processing"],
+      "price_observation": "Builder post: $2.99 one-time; $0.99 launch"
+    },
+    {
+      "name": "MatchFrame Camera Overlay",
+      "app_id": "6780443451",
+      "url": "https://apps.apple.com/us/app/matchframe-camera-overlay/id6780443451",
+      "rating_count": 1,
+      "observed_features": ["ghost overlay", "projects", "photo/video", "slideshow/GIF", "local processing"]
+    }
+  ]
+}

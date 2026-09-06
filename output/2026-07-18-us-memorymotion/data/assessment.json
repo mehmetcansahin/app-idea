@@ -1,0 +1,38 @@
+{
+  "methodology_version": "4.0",
+  "idea_id": "us-memorymotion",
+  "analysis_date": "2026-07-18",
+  "mode": "quick",
+  "stage": "desk_research",
+  "target_segment": "US iPhone users who want a short, respectful animation of an old family photo and reject novelty dancing, identity distortion and confusing AI credit systems",
+  "target_geos": ["US"],
+  "primary_archetype": "consumer_utility",
+  "risk_modifiers": ["sensitive_data", "ai_variable_cost", "platform_dependency"],
+  "dimensions": {
+    "problem_demand": {"low": 3, "base": 4, "high": 5, "claim_ids": ["memory-demand"]},
+    "monetization_economics": {"low": 2, "base": 3, "high": 4, "claim_ids": ["memory-economics"]},
+    "competitive_wedge": {"low": 2, "base": 3, "high": 4, "claim_ids": ["memory-wedge"]},
+    "distribution_access": {"low": 2, "base": 3, "high": 4, "claim_ids": ["memory-distribution"]},
+    "repeat_value_retention": {"low": 1, "base": 2, "high": 3, "claim_ids": ["memory-retention"]},
+    "timing": {"low": 4, "base": 4, "high": 5, "claim_ids": ["memory-timing"]},
+    "liquidity_cold_start": null
+  },
+  "opportunity": {"low": 48, "base": 66, "high": 86, "classification": "borderline"},
+  "fatal_gates": [
+    {"code": "LEGAL_BLOCKED", "status": "clear", "evidence_ids": ["memory-scope-boundary"]},
+    {"code": "CORE_FEASIBILITY_BLOCKED", "status": "clear", "evidence_ids": ["memory-runway-pricing", "memory-fal-pricing"]},
+    {"code": "PLATFORM_BLOCKED", "status": "clear", "evidence_ids": ["memory-ai-video-leader"]},
+    {"code": "SAFETY_ETHICS_BLOCKED", "status": "clear", "evidence_ids": ["memory-scope-boundary"]}
+  ],
+  "riskiest_assumptions": [
+    {"claim_id": "memory-quality", "category": "technical_feasibility", "impact": 3, "uncertainty": 3, "claim_grade": "C", "product_specific_behavior": false, "disposition": "partial"},
+    {"claim_id": "memory-economics", "category": "business_viability", "impact": 3, "uncertainty": 3, "claim_grade": "C", "product_specific_behavior": false, "disposition": "partial"},
+    {"claim_id": "memory-wedge", "category": "usability", "impact": 3, "uncertainty": 3, "claim_grade": "C", "product_specific_behavior": false, "disposition": "partial"}
+  ],
+  "overall_evidence_grade": "C",
+  "decision": "TESTE_DEGER",
+  "status": "PREBUILD_PENDING",
+  "next_test": "Run a 40-photo technical RAT across portrait, group and damaged-image cases with two providers; only after the quality and cost gate passes, test 12 users and a refundable five-clip credit pack preorder",
+  "stopping_rule": "Pivot or park if fewer than 80% of photos are acceptable within one retry, any severe wrong-person identity swap occurs, or mean delivered inference cost exceeds $1.20; after technical pass require at least 4 of 12 refundable preorders before further build",
+  "post_mvp_result": null
+}

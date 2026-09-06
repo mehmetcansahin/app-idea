@@ -1,0 +1,38 @@
+{
+  "methodology_version": "4.0",
+  "idea_id": "us-occasion-reel",
+  "analysis_date": "2026-07-18",
+  "mode": "quick",
+  "stage": "desk_research",
+  "target_segment": "US iPhone users who want to turn 8-30 personal photos into a polished birthday, memorial, graduation or anniversary video without editing skills",
+  "target_geos": ["US"],
+  "primary_archetype": "consumer_utility",
+  "risk_modifiers": ["sensitive_data", "platform_dependency"],
+  "dimensions": {
+    "problem_demand": {"low": 3, "base": 4, "high": 5, "claim_ids": ["occasion-demand"]},
+    "monetization_economics": {"low": 2, "base": 3, "high": 4, "claim_ids": ["occasion-economics"]},
+    "competitive_wedge": {"low": 2, "base": 3, "high": 4, "claim_ids": ["occasion-wedge"]},
+    "distribution_access": {"low": 2, "base": 3, "high": 4, "claim_ids": ["occasion-distribution"]},
+    "repeat_value_retention": {"low": 1, "base": 2, "high": 3, "claim_ids": ["occasion-retention"]},
+    "timing": {"low": 3, "base": 3, "high": 4, "claim_ids": ["occasion-timing"]},
+    "liquidity_cold_start": null
+  },
+  "opportunity": {"low": 46, "base": 64, "high": 84, "classification": "borderline"},
+  "fatal_gates": [
+    {"code": "LEGAL_BLOCKED", "status": "clear", "evidence_ids": ["occasion-scope-boundary"]},
+    {"code": "CORE_FEASIBILITY_BLOCKED", "status": "clear", "evidence_ids": ["occasion-local-feasibility"]},
+    {"code": "PLATFORM_BLOCKED", "status": "clear", "evidence_ids": ["occasion-slideshow-leader"]},
+    {"code": "SAFETY_ETHICS_BLOCKED", "status": "clear", "evidence_ids": ["occasion-scope-boundary"]}
+  ],
+  "riskiest_assumptions": [
+    {"claim_id": "occasion-wedge", "category": "usability", "impact": 3, "uncertainty": 3, "claim_grade": "C", "product_specific_behavior": false, "disposition": "partial"},
+    {"claim_id": "occasion-economics", "category": "business_viability", "impact": 3, "uncertainty": 3, "claim_grade": "C", "product_specific_behavior": false, "disposition": "partial"},
+    {"claim_id": "occasion-distribution", "category": "distribution", "impact": 3, "uncertainty": 3, "claim_grade": "C", "product_specific_behavior": false, "disposition": "partial"}
+  ],
+  "overall_evidence_grade": "C",
+  "decision": "TESTE_DEGER",
+  "status": "PREBUILD_PENDING",
+  "next_test": "Have 12 US iPhone users with a real occasion in the next 30 days make a reel from 8-30 personal photos, observe completion and real sharing, then offer a clearly disclosed $9.99 refundable preorder",
+  "stopping_rule": "Park the idea if fewer than 8 of 12 export within five minutes, fewer than 6 actually share the video, or fewer than 4 place the refundable preorder; a pass advances only to a second-cycle test and rescoring",
+  "post_mvp_result": null
+}

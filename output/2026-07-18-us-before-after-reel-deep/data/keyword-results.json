@@ -1,0 +1,47 @@
+{
+  "snapshot_date": "2026-07-18",
+  "storefront": "US",
+  "platform": "iOS",
+  "protocol": {
+    "api": "Apple iTunes Search API",
+    "parameters": "country=us, entity=software, limit=20",
+    "classification": "İlgili sonucu analist, listing'in before/after compare, progress-photo tracking veya video/GIF/timelapse işini açıkça desteklemesine göre kodladı.",
+    "warning": "API response ordering App Store istemcisi organik rank'i değildir; result count/rating query volume, download veya revenue değildir."
+  },
+  "queries": [
+    {"query":"before after video","returned_n":18,"relevant_n":15,"explicit_video_or_timelapse_n":12,"strict_exact_title_n":3,"top_3":["Before After Effect Collage BA","Doposler","PhotoGrid"],"top_3_rating_counts":[382,29,116568],"verdict":"primary"},
+    {"query":"before and after video maker","returned_n":20,"relevant_n":7,"explicit_video_or_timelapse_n":6,"strict_exact_title_n":2,"top_3":["Before and After Video Maker","Before & After Video Maker","T-Jam"],"top_3_rating_counts":[0,0,10669],"verdict":"primary_long_tail"},
+    {"query":"progress video","returned_n":19,"relevant_n":4,"explicit_video_or_timelapse_n":1,"strict_exact_title_n":0,"top_3":["Combine Videos","VideoNext","VideoCam+"],"top_3_rating_counts":[24743,4,4227],"verdict":"avoid_broad"},
+    {"query":"transformation video","returned_n":18,"relevant_n":0,"explicit_video_or_timelapse_n":0,"strict_exact_title_n":0,"top_3":["Filmora","DigiArt","YouCam Video"],"top_3_rating_counts":[89165,12178,14267],"verdict":"avoid_wrong_intent"},
+    {"query":"photo comparison","returned_n":18,"relevant_n":5,"explicit_video_or_timelapse_n":null,"strict_exact_title_n":1,"top_3":["Photo Compare","Pic Stitch","Side by Side Photo Editor"],"top_3_rating_counts":[2580,65225,7946],"verdict":"secondary"},
+    {"query":"before after reel","returned_n":18,"relevant_n":12,"explicit_video_or_timelapse_n":9,"strict_exact_title_n":0,"top_3":["After Effects Tutorials","ReelSa","DiffPix"],"top_3_rating_counts":[18,7,0],"verdict":"creative_copy_until_volume_verified"},
+    {"query":"progress photo","returned_n":19,"relevant_n":18,"explicit_video_or_timelapse_n":4,"strict_exact_title_n":1,"top_3":["Metamorph","Progress Body Tracker","Selfie A Day"],"top_3_rating_counts":[66,9247,4002],"verdict":"primary"},
+    {"query":"glow up video","returned_n":18,"relevant_n":0,"explicit_video_or_timelapse_n":0,"strict_exact_title_n":0,"top_3":["GlowUp Makeup","GlowUp Photo Editor","PrettyMe"],"top_3_rating_counts":[13491,1180,0],"verdict":"avoid_wrong_intent"},
+    {"query":"fitness progress video","returned_n":19,"relevant_n":4,"explicit_video_or_timelapse_n":1,"strict_exact_title_n":0,"top_3":["AFLETE","Macrofit","Pvolve"],"top_3_rating_counts":[12884,5770,9098],"verdict":"creative_segment_not_primary_keyword"},
+    {"query":"home renovation progress","returned_n":18,"relevant_n":1,"explicit_video_or_timelapse_n":0,"strict_exact_title_n":0,"top_3":["Property Brothers game","Renovation Day game","House Renovation Master"],"top_3_rating_counts":[520583,12887,3600],"verdict":"channel_segment_not_aso"},
+    {"query":"hair growth progress","returned_n":17,"relevant_n":8,"explicit_video_or_timelapse_n":0,"strict_exact_title_n":0,"top_3":["Shea","Hair Growth Journal","Follicle"],"top_3_rating_counts":[80,0,0],"verdict":"secondary_tracker_intent"}
+  ],
+  "autocomplete_observations": [
+    {"prefix":"before a","suggestions":["before and after video","before and after photo compare","before after photo"]},
+    {"prefix":"progress p","suggestions":["progress photo tracker","body progress photos","progress photos","progress pics"]},
+    {"prefix":"hair growth","suggestions":["hair growth tracker","hair growth journal","hair growth AI","hair growth timelapse"]},
+    {"prefix":"before after r","suggestions":[]},
+    {"prefix":"transformation v","suggestions":[]}
+  ],
+  "search_popularity": {
+    "status": "structurally_unobservable",
+    "known_definition": "Apple Ads Search Popularity 1–5; 5 en yüksek",
+    "available_in_workspace": false,
+    "missing": ["Apple Ads keyword recommendations","Search Popularity 1-5 export","search-term export","impression","tap","install","CPT","CPA","exact monthly organic query count"]
+  },
+  "recommended_metadata_hypothesis": {
+    "name": "Progress Reel: Before & After",
+    "name_characters": 29,
+    "subtitle": "Align Photos Into Timelapses",
+    "subtitle_characters": 28,
+    "keyword_field": "video,maker,compare,tracker,pics,fitness,body,hair,growth,renovation,home,journey",
+    "primary_set": ["before after video","before and after video","progress photo","progress photos","progress photo tracker","progress pics","before after photo compare"],
+    "secondary_set": ["hair growth tracker","hair growth timelapse","fitness progress tracker","body progress photos","home renovation before after","photo comparison"],
+    "avoid_initially": ["transformation video","glow up video","progress video","home renovation progress"]
+  }
+}

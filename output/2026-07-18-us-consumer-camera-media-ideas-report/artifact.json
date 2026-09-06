@@ -1,0 +1,393 @@
+{
+  "surface": "report",
+  "manifest": {
+    "version": 1,
+    "title": "ABD iOS Consumer Camera ve Media Fikirleri — Karar Raporu",
+    "description": "Dört consumer camera/media fikrinin v4.0 fatal-gate, kanıt, fırsat ve solo-operasyon karşılaştırması.",
+    "generatedAt": "2026-07-18T18:30:00+03:00",
+    "surface": "report",
+    "sources": [
+      {
+        "id": "score_scenarios",
+        "label": "Validated v4.0 Consumer Utility opportunity-score scenarios",
+        "query": {
+          "description": "Low, base and high Consumer Utility weighted judgment scores from four validated Quick Scan assessments.",
+          "executed_at": "2026-07-18T18:30:00+03:00",
+          "engine": "SQLite",
+          "language": "SQL",
+          "sql": "WITH scores(rank, idea, archetype, scenario, scenario_order, score, decision) AS (VALUES (1, 'Occasion Reel', 'Consumer Utility', 'Low', 1, 46, 'TESTE_DEGER'), (1, 'Occasion Reel', 'Consumer Utility', 'Base', 2, 64, 'TESTE_DEGER'), (1, 'Occasion Reel', 'Consumer Utility', 'High', 3, 84, 'TESTE_DEGER'), (2, 'MemoryMotion', 'Consumer Utility', 'Low', 1, 48, 'TESTE_DEGER'), (2, 'MemoryMotion', 'Consumer Utility', 'Base', 2, 66, 'TESTE_DEGER'), (2, 'MemoryMotion', 'Consumer Utility', 'High', 3, 86, 'TESTE_DEGER'), (3, 'Before/After Reel', 'Consumer Utility', 'Low', 1, 42, 'TESTE_DEGER'), (3, 'Before/After Reel', 'Consumer Utility', 'Base', 2, 60, 'TESTE_DEGER'), (3, 'Before/After Reel', 'Consumer Utility', 'High', 3, 80, 'TESTE_DEGER'), (4, 'RoomCheck', 'Consumer Utility', 'Low', 1, 46, 'BELIRSIZ'), (4, 'RoomCheck', 'Consumer Utility', 'Base', 2, 64, 'BELIRSIZ'), (4, 'RoomCheck', 'Consumer Utility', 'High', 3, 79, 'BELIRSIZ')) SELECT * FROM scores ORDER BY rank, scenario_order;",
+          "tables_used": [
+            "output/2026-07-18-us-occasion-reel/data/assessment.json",
+            "output/2026-07-18-us-memorymotion/data/assessment.json",
+            "output/2026-07-18-us-before-after-reel/data/assessment.json",
+            "output/2026-07-18-us-roomcheck/data/assessment.json"
+          ],
+          "metric_definitions": [
+            "Opportunity score is the v4.0 Consumer Utility weighted sum of six 1-5 judgments, scaled to 0-100 and rounded half-up.",
+            "Low, base and high are evidence-bounded judgment scenarios, not forecasts, probabilities or statistical confidence intervals.",
+            "Fatal gates and overall evidence override raw score when assigning the desk decision."
+          ]
+        }
+      },
+      {
+        "id": "decision_summary",
+        "label": "Fatal-gate and solo-operation adjusted candidate summary",
+        "query": {
+          "description": "Product order after fatal gates, evidence strength, score interval, test cost and one-person operating burden.",
+          "executed_at": "2026-07-18T18:30:00+03:00",
+          "engine": "SQLite",
+          "language": "SQL",
+          "sql": "WITH decisions(rank, idea, gate_status, score_interval, evidence, desk_decision, solo_operations, first_action, main_risk) AS (VALUES (1, 'Occasion Reel', 'all clear', '46 / 64 / 84', 'C', 'TESTE_DEGER', 'Low', '12-user real-occasion task', 'Free editors may already be sufficient'), (2, 'MemoryMotion', 'all desk gates clear', '48 / 66 / 86', 'C', 'TESTE_DEGER', 'Medium-high', '40-photo two-provider technical RAT', 'Identity failures and delivered AI cost'), (3, 'Before/After Reel', 'all clear', '42 / 60 / 80', 'C', 'TESTE_DEGER', 'Low', '12-user auto-align task', 'Direct newcomers and free editors'), (4, 'RoomCheck', 'core feasibility unknown', '46 / 64 / 79', 'D', 'BELIRSIZ', 'Medium', '20-room controlled technical RAT', 'Incomplete iOS visibility and false reassurance')) SELECT * FROM decisions ORDER BY rank;",
+          "tables_used": [
+            "four validated Quick Scan assessments",
+            "methodology/scoring-model.md",
+            "output/2026-07-18-us-consumer-camera-media-ideas-compare.md"
+          ],
+          "metric_definitions": [
+            "Candidate rank applies fatal-gate status and founder operating burden before raw score.",
+            "TESTE_DEGER and BELIRSIZ are desk decisions; neither authorizes a build."
+          ]
+        }
+      },
+      {
+        "id": "test_contracts",
+        "label": "Exploratory uncertainty-reduction contracts",
+        "query": {
+          "description": "The next test, sample, pass threshold, payment behavior and fail action for each candidate.",
+          "executed_at": "2026-07-18T18:30:00+03:00",
+          "engine": "SQLite",
+          "language": "SQL",
+          "sql": "WITH tests(rank, idea, sample_target, first_action, payment_offer, pass_gate, fail_action) AS (VALUES (1, 'MemoryMotion', '40 photos across portrait, group and damaged cases', 'Compare two providers under a fixed three-motion rubric', 'Five-clip refundable preorder only after technical pass', '>=80% acceptable within one retry; 0 severe identity swaps; <=$1.20 mean delivered inference cost', 'Provider/scope pivot or park'), (2, 'Occasion Reel', '12 users with a real occasion inside 30 days', 'Make and export from 8-30 real photos', '$9.99 refundable preorder', '8 exports under five minutes; 6 real shares; 4 preorders', 'Park if any threshold fails'), (3, 'Before/After Reel', '12 users and 20 real progress sets', 'Compare auto-align with current editor', '$9.99 refundable preorder', '8 exports under two minutes; 6 real uses/shares; 4 preorders', 'Park or narrow use-case pivot'), (4, 'RoomCheck', '20 rooms and 30 known cameras plus normal electronics', 'Controlled visible-subset accuracy and disclosure RAT', 'No payment until technical pass', '>=80% inspect flag on visible cameras; <=10% high-risk false positive; 100% insufficient-data disclosure', 'Remove detector claim or eliminate')) SELECT * FROM tests ORDER BY rank;",
+          "tables_used": [
+            "methodology/pre-build-validation.md",
+            "four validated Quick Scan reports"
+          ],
+          "metric_definitions": [
+            "Thresholds are exploratory because baseline and MDE are unavailable; they cannot by themselves authorize BUILD_SMALL.",
+            "A refundable preorder counts only when unbuilt status, refund terms and data use are explicitly disclosed."
+          ]
+        }
+      },
+      {
+        "id": "problem_pool",
+        "label": "Eighteen-problem consumer camera/media discovery pool",
+        "query": {
+          "description": "Broad discovery pool across privacy camera, photo-to-video/AI and capture/edit utility categories.",
+          "executed_at": "2026-07-18T18:30:00+03:00",
+          "engine": "SQLite",
+          "language": "SQL",
+          "sql": "WITH pool(id, category, problem, outcome) AS (VALUES (1, 'Privacy camera', 'Guided hidden-camera/privacy inspection', 'RoomCheck shortlist'), (2, 'Privacy camera', 'Covert or background recorder', 'Eliminate: platform, safety and legal risk'), (3, 'Privacy camera', 'Camera/microphone access timeline', 'Smaller utility; weak scale signal'), (4, 'Privacy camera', 'Privacy incident evidence pack', 'Possible RoomCheck module'), (5, 'Photo choice', 'Best group shot across burst or Live Photo', 'Technically plausible; weaker demand evidence'), (6, 'AI photo/video', 'Respectful old-family-photo animation', 'MemoryMotion shortlist'), (7, 'Photo/video', 'Occasion photo reel', 'Occasion Reel shortlist'), (8, 'Photo/video', 'Baby or pet growth morph', 'Possible Before/After use case'), (9, 'Photo/video', 'Auto-aligned progress transformation video', 'Before/After Reel shortlist'), (10, 'Seller media', 'Product photo to sales reel', 'Prosumer; outside requested consumer class'), (11, 'Photo/video', 'Generic slideshow', 'Demand proven; generic position saturated'), (12, 'Photo/video', 'Live Photo or wallpaper animator', 'OS and commodity risk'), (13, 'Camera filter', 'Vintage camera', 'Strong incumbents; no named wedge'), (14, 'Camera ritual', 'Delayed disposable roll', 'Proven behavior; differentiation burden'), (15, 'Shared camera', 'QR party guest camera', 'Backend, UGC and event-support burden'), (16, 'Capture', 'Stop-motion or brickfilm camera', 'Strong incumbent and smaller ceiling'), (17, 'Video utility', 'Exact-size video compression', 'Solo viable but outside aspirational class'), (18, 'Memory', 'Photo scanner to family story', 'Strong category; larger scope and incumbents')) SELECT * FROM pool ORDER BY id;",
+          "tables_used": [
+            "parallel App Store and platform scans collected 2026-07-18",
+            "output/2026-07-18-us-consumer-camera-media-ideas-compare.md"
+          ],
+          "metric_definitions": [
+            "Pool outcome is a screening disposition, not a market forecast."
+          ]
+        }
+      },
+      {"id": "apple_chart", "label": "US iPhone Photo & Video free chart", "href": "https://apps.apple.com/us/iphone/charts/6008?chart=top-free"},
+      {"id": "ai_video", "label": "AI Video: AI Video Generator — US App Store", "href": "https://apps.apple.com/us/app/ai-video-ai-video-generator/id6478868302"},
+      {"id": "slideshow_leader", "label": "SlideShow Maker Photo to Video — US App Store", "href": "https://apps.apple.com/us/app/slideshow-maker-photo-to-video/id924826256"},
+      {"id": "dazz_cam", "label": "Dazz Cam — Vintage Camera — US App Store", "href": "https://apps.apple.com/us/app/dazz-cam-vintage-camera/id1422471180"},
+      {"id": "motionleap", "label": "Motionleap: 3D Photo Animator — US App Store", "href": "https://apps.apple.com/us/app/motionleap-3d-photo-animator/id1381206010"},
+      {"id": "before_compare", "label": "Before and After: Compare Photo — US App Store", "href": "https://apps.apple.com/us/app/before-and-after-compare-photo/id1500915148"},
+      {"id": "hidden_finder", "label": "Hidden Spy Camera Finder Pro — US App Store", "href": "https://apps.apple.com/us/app/hidden-spy-camera-finder-pro/id1560989782"},
+      {"id": "runway_pricing", "label": "Runway official API pricing", "href": "https://docs.dev.runwayml.com/guides/pricing/"},
+      {"id": "fal_pricing", "label": "fal.ai image-to-video API catalog", "href": "https://fal.ai/explore/image-to-video-apis"},
+      {"id": "apple_tn3111", "label": "Apple TN3111: iOS Wi-Fi API overview", "href": "https://developer.apple.com/documentation/technotes/tn3111-ios-wifi-api-overview"},
+      {"id": "apple_tn3179", "label": "Apple TN3179: Understanding local network privacy", "href": "https://developer.apple.com/documentation/technotes/tn3179-understanding-local-network-privacy"},
+      {"id": "apple_corebluetooth", "label": "Apple Core Bluetooth overview", "href": "https://developer.apple.com/documentation/corebluetooth/"},
+      {"id": "apple_guidelines", "label": "Apple App Review Guidelines", "href": "https://developer.apple.com/app-store/review/guidelines/"}
+    ],
+    "blocks": [
+      {"id": "title", "type": "markdown", "body": "# ABD iOS Consumer Camera ve Media Fikirleri — Karar Raporu"},
+      {
+        "id": "executive_summary",
+        "type": "markdown",
+        "body": "## Executive Summary\n\nAranan ürün sınıfı artık doğru: geniş consumer davranışı olan kamera/fotoğraf/video uygulamaları. **Occasion Reel**, en yüksek ham skora sahip olduğu için değil, tüm fatal gate'leri açık, local çalışabilir ve tek kişinin AI/backend maliyeti olmadan gerçek kullanıcı davranışıyla test edilebilir olduğu için birinci adaydır. **MemoryMotion** en yüksek ticari/viral tavana sahiptir; kimlik kalitesi ve delivered inference maliyeti geçmeden build edilmemelidir. **Before/After Reel** en hızlı prototiptir. **RoomCheck** yüksek talep sinyaline rağmen iOS görünürlük sınırları nedeniyle `BELIRSIZ`dir. Hiçbiri bugün build izni almıyor.",
+        "sourceId": "decision_summary"
+      },
+      {
+        "id": "reframing",
+        "type": "markdown",
+        "body": "## Aradığın fikri yeniden tanımlama\n\nÖnceki shortlist'ler çözülmesi mümkün mikro problemlerdi ama istenen ürün sınıfına uymuyordu. Bu çalışmanın filtresi: App Store ekranında bir cümlede anlaşılır consumer promise; kamera/fotoğraf/video ile anında çıktı; paylaşma, anı veya mahremiyet gibi güçlü niyet; tek geliştiriciye uygun bounded workflow. Marketplace, fiziksel operasyon, public feed ve sürekli moderation dışarıda."
+      },
+      {"id": "decision_table_block", "type": "table", "tableId": "decision_table", "layout": "full"},
+      {
+        "id": "score_explanation",
+        "type": "markdown",
+        "body": "## Ham skor ile ürün sırası neden farklı?\n\nDört fikir aynı Consumer Utility ağırlıklarıyla hesaplandı. MemoryMotion 66 base ile ham skor lideri; fakat provider maliyeti, retry, refund, sensitive photo lifecycle ve support yükü tek kişilik işletmeyi ağırlaştırıyor. RoomCheck'in 64 base skoru da ilerleme izni değildir: core feasibility `unknown` ve genel kanıt D olduğu için karar matrisi `BELIRSIZ` üretir. Ürün sırası fatal gate, Kanıt Gücü ve solo operasyonu ham skorun önüne koyar.",
+        "sourceId": "score_scenarios"
+      },
+      {"id": "score_chart_block", "type": "chart", "chartId": "opportunity_scenarios", "layout": "full"},
+      {
+        "id": "occasion_detail",
+        "type": "markdown",
+        "body": "## 1. Occasion Reel — en dengeli bahis\n\n8–30 kişisel fotoğrafı doğum günü, anma, mezuniyet veya yıldönümü videosuna beş dakikada dönüştürür. Wedge generic template değil: local/no-account, autosave, otomatik crop ve açık one-time pricing. [SlideShow Maker](https://apps.apple.com/us/app/slideshow-maker-photo-to-video/id924826256) yaklaşık 104K rating ve weekly purchase seçenekleriyle yerleşik davranışı; görünür yorumlar ise project-loss, ödeme ve cancellation problemlerini destekliyor. En güçlü karşı kanıt ücretsiz iMovie/Photos/Canva/CapCut ikamesidir.",
+        "sourceId": "slideshow_leader"
+      },
+      {
+        "id": "memory_detail",
+        "type": "markdown",
+        "body": "## 2. MemoryMotion — en yüksek tavan\n\nEski aile fotoğrafına yalnız üç ciddi, konuşmasız hareket verir; prompt, dans ve public-figure deepfake yoktur. Identity check ve failed-job automatic refund ürünün çekirdeğidir. [AI Video](https://apps.apple.com/us/app/ai-video-ai-video-generator/id6478868302) yaklaşık 24K rating ve aktif chart görünürlüğü gösterdi; görünür bir review daha ciddi old-photo animation istedi. Buna karşılık identity distortion, failed processing ve extra-credit şikâyetleri bu fırsatın aynı zamanda killer riskidir.",
+        "sourceId": "ai_video"
+      },
+      {
+        "id": "ai_economics",
+        "type": "markdown",
+        "body": "### AI ekonomisi\n\n[Runway resmî fiyatları](https://docs.dev.runwayml.com/guides/pricing/) seçili modellerde beş saniye için kabaca $0.25–$0.60 provider cost; [fal.ai kataloğu](https://fal.ai/explore/image-to-video-apis) seçilen modellere göre yaklaşık $0.35–$2.00 aralığı gösteriyor. Bunlar delivered clip cost değildir: retry, failed job, storage, payment fee, refund ve support eklenir. Bu nedenle pricing sayfası değil 40-fotoğraf RAT'ı ekonomi kapısını belirler.",
+        "sourceId": "runway_pricing"
+      },
+      {
+        "id": "before_detail",
+        "type": "markdown",
+        "body": "## 3. Before/After Reel — en hızlı prototip\n\n2–24 progress fotoğrafını yüz, nesne veya oda anchor'ına göre hizalar ve tarihli 9:16 video üretir. [Before and After: Compare Photo](https://apps.apple.com/us/app/before-and-after-compare-photo/id1500915148) yaklaşık 2.1K rating ile doğrudan kategori davranışı gösteriyor. Ancak yeni offline/one-time rakipler ve ücretsiz editörler var; local/privacy tek başına wedge değildir. Görev testi auto-align'ın gerçekten iki dakikadan kısa sürede daha iyi sonuç üretip üretmediğini ölçmelidir.",
+        "sourceId": "before_compare"
+      },
+      {
+        "id": "room_detail",
+        "type": "markdown",
+        "body": "## 4. RoomCheck — talep var, ürün kararı yok\n\nBeş dakikalık guided privacy inspection yapar ve yalnız `normal`, `incelemeye değer`, `yetersiz veri` sonuçlarını verir. [Hidden Spy Camera Finder Pro](https://apps.apple.com/us/app/hidden-spy-camera-finder-pro/id1560989782) yaklaşık 12K rating ve subscription seçenekleriyle güçlü category intent gösteriyor; fakat görünür review'lar bilinen test kamerasını kaçırma ve açıklanamayan scan sonuçları bildiriyor. [Apple TN3111](https://developer.apple.com/documentation/technotes/tn3111-ios-wifi-api-overview), [TN3179](https://developer.apple.com/documentation/technotes/tn3179-understanding-local-network-privacy) ve Core Bluetooth sınırları universal detection vaadini desteklemiyor.",
+        "sourceId": "apple_tn3111"
+      },
+      {
+        "id": "covert_rejection",
+        "type": "markdown",
+        "body": "## Hidden camera recorder neden shortlist'te değil?\n\nCovert/background recording, talep sinyali olsa bile solo ürün için gereksiz platform, güven ve hukuk riski taşır. Apple App Review Guidelines kayıt için açık kullanıcı onayı ve görünür/işitilebilir gösterge ister. Bu nedenle `hidden camera app` talebi yalnız dürüst privacy inspection olarak ele alındı; gizli kayıt veya 'her kamerayı bulur' vaadi bilinçli biçimde elendi.",
+        "sourceId": "apple_guidelines"
+      },
+      {
+        "id": "pool_intro",
+        "type": "markdown",
+        "body": "## Geniş problem havuzu\n\nShortlist tek oturuşta uydurulmadı. Privacy camera, photo-to-video/AI ve capture/edit utility kategorilerinde 18 problem tarandı; generic veya güçlü-incumbent fikirler, ağır backend/UGC operasyonu ve kullanıcının istediği consumer sınıfından sapan prosumer ürünler elendi.",
+        "sourceId": "problem_pool"
+      },
+      {"id": "problem_pool_block", "type": "table", "tableId": "problem_pool_table", "layout": "full"},
+      {
+        "id": "research_order",
+        "type": "markdown",
+        "body": "## Bir sonraki gerçek kapı\n\nÜrün sırası ile öğrenme sırası aynı değildir. Önce MemoryMotion'ın ucuz teknik RAT'ı provider ve unit-cost belirsizliğini kapatabilir; paralelde Occasion Reel'in gerçek occasion görevi consumer talebini sınar. Before/After ancak bu testlere erişim pahalıysa hızlı prototip alternatifi olur. RoomCheck'in ödeme testi teknik corpus geçmeden yapılmaz. Waitlist tek başına karar kanıtı değildir.",
+        "sourceId": "test_contracts"
+      },
+      {"id": "test_table_block", "type": "table", "tableId": "test_table", "layout": "full"},
+      {
+        "id": "recommendation",
+        "type": "markdown",
+        "body": "## Net tercih\n\n**Tek bir consumer app davranış testi seç:** Occasion Reel. **Maksimum upside için önce 1–2 günlük teknik spike seç:** MemoryMotion. **En kısa sürede çalışan local prototype seç:** Before/After Reel. **Hidden camera kategorisine gir:** yalnız RoomCheck accuracy/disclosure RAT'ı; covert recorder değil."
+      },
+      {
+        "id": "limitations",
+        "type": "markdown",
+        "body": "## Kanıt sınırları\n\nApp Store rating, fiyat ve chart konumu revenue, retention veya yeni ürün başarısı değildir. Görünür yorumlar random/stratified sample değildir. API list price delivered unit cost değildir. Exact feature boşluğu savunulabilir avantaj değildir. Low/base/high skorlar başarı olasılığı değildir. Baseline ve MDE olmayan test eşikleri exploratory'dir; sonuçlar yeniden evidence kayıtlarına işlenmeden hiçbir fikir BUILD_SMALL almaz."
+      }
+    ],
+    "charts": [
+      {
+        "id": "opportunity_scenarios",
+        "title": "Fırsat skoru senaryoları",
+        "subtitle": "Ham skor ürün sırası değildir; fatal gate ve solo operasyon ayrıca uygulanır",
+        "intent": "comparison",
+        "question": "Aynı Consumer Utility ağırlıklarıyla dört adayın low, base ve high skorları nasıl ayrışıyor?",
+        "rationale": "Skor aralıklarını aynı ölçekte gösterir; karar tablosundaki gate ve kanıt sütunlarıyla birlikte okunmalıdır.",
+        "type": "bar",
+        "dataset": "scores_long",
+        "sourceId": "score_scenarios",
+        "encodings": {
+          "x": {"field": "idea", "type": "nominal", "label": "Fikir"},
+          "y": {"field": "score", "type": "quantitative", "format": "number", "label": "Fırsat skoru"},
+          "color": {"field": "scenario", "type": "nominal", "label": "Senaryo"},
+          "tooltip": [
+            {"field": "scenario", "type": "text", "label": "Senaryo"},
+            {"field": "score", "type": "quantitative", "format": "number", "label": "Skor"},
+            {"field": "evidence", "type": "text", "label": "Kanıt"},
+            {"field": "decision", "type": "text", "label": "Desk kararı"}
+          ]
+        },
+        "settings": {"orientation": "vertical", "groupMode": "grouped", "showValues": true, "categoryLabelPolicy": "wrap"},
+        "legend": {"position": "bottom", "title": "Senaryo"},
+        "layout": "full",
+        "labels": {"values": "all"},
+        "palette": {"kind": "categorical", "name": "tableau10"},
+        "surface": {"surface": "card", "showControls": false, "viewMode": "visualization"}
+      }
+    ],
+    "tables": [
+      {
+        "id": "decision_table",
+        "title": "Gate-aware ürün adayları",
+        "subtitle": "Sıra ham skor değil; fatal gate, kanıt ve tek kişilik işletme yükünü birlikte kullanır.",
+        "dataset": "decisions",
+        "sourceId": "decision_summary",
+        "defaultSort": {"field": "rank", "direction": "asc"},
+        "density": "dense",
+        "layout": "full",
+        "columns": [
+          {"field": "rank", "label": "Sıra", "format": "number"},
+          {"field": "idea", "label": "Fikir", "type": "text"},
+          {"field": "gate_status", "label": "Fatal gate", "type": "text"},
+          {"field": "score_interval", "label": "Low / Base / High", "type": "text"},
+          {"field": "evidence", "label": "Kanıt", "type": "text"},
+          {"field": "desk_decision", "label": "Desk kararı", "type": "text"},
+          {"field": "solo_operations", "label": "Solo operasyon", "type": "text"},
+          {"field": "main_risk", "label": "Killer risk", "type": "text"}
+        ]
+      },
+      {
+        "id": "problem_pool_table",
+        "title": "18 problemden shortlist'e",
+        "subtitle": "Üç consumer camera/media kategorisindeki screening disposition'ları.",
+        "dataset": "problem_pool",
+        "sourceId": "problem_pool",
+        "defaultSort": {"field": "id", "direction": "asc"},
+        "density": "dense",
+        "layout": "full",
+        "columns": [
+          {"field": "id", "label": "#", "format": "number"},
+          {"field": "category", "label": "Kategori", "type": "text"},
+          {"field": "problem", "label": "Problem", "type": "text"},
+          {"field": "outcome", "label": "Sonuç", "type": "text"}
+        ]
+      },
+      {
+        "id": "test_table",
+        "title": "Önerilen öğrenme sırası",
+        "subtitle": "En pahalı build değil, en ucuz kritik belirsizlik azaltma aksiyonu önce gelir.",
+        "dataset": "tests",
+        "sourceId": "test_contracts",
+        "defaultSort": {"field": "rank", "direction": "asc"},
+        "density": "dense",
+        "layout": "full",
+        "columns": [
+          {"field": "rank", "label": "Aksiyon", "format": "number"},
+          {"field": "idea", "label": "Fikir", "type": "text"},
+          {"field": "sample_target", "label": "Örneklem", "type": "text"},
+          {"field": "first_action", "label": "İlk iş", "type": "text"},
+          {"field": "payment_offer", "label": "Ödeme testi", "type": "text"},
+          {"field": "pass_gate", "label": "Directional geçiş", "type": "text"},
+          {"field": "fail_action", "label": "Fail aksiyonu", "type": "text"}
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "id": "score_scenarios",
+      "label": "Validated v4.0 opportunity-score scenarios",
+      "query": {
+        "description": "Scores from four validated Quick Scan assessments.",
+        "executed_at": "2026-07-18T18:30:00+03:00",
+        "engine": "SQLite",
+        "language": "SQL",
+        "sql": "WITH scores(rank, idea, scenario, score) AS (VALUES (1, 'Occasion Reel', 'Low', 46), (1, 'Occasion Reel', 'Base', 64), (1, 'Occasion Reel', 'High', 84), (2, 'MemoryMotion', 'Low', 48), (2, 'MemoryMotion', 'Base', 66), (2, 'MemoryMotion', 'High', 86), (3, 'Before/After Reel', 'Low', 42), (3, 'Before/After Reel', 'Base', 60), (3, 'Before/After Reel', 'High', 80), (4, 'RoomCheck', 'Low', 46), (4, 'RoomCheck', 'Base', 64), (4, 'RoomCheck', 'High', 79)) SELECT * FROM scores ORDER BY rank;",
+        "tables_used": ["four validated assessment.json files"],
+        "metric_definitions": ["Scores are evidence-bounded judgments, not forecasts."]
+      }
+    },
+    {
+      "id": "decision_summary",
+      "label": "Fatal-gate-aware candidate summary",
+      "query": {
+        "description": "Candidate order after fatal gates and founder constraints.",
+        "executed_at": "2026-07-18T18:30:00+03:00",
+        "engine": "SQLite",
+        "language": "SQL",
+        "sql": "WITH decisions(rank, idea, decision) AS (VALUES (1, 'Occasion Reel', 'TESTE_DEGER'), (2, 'MemoryMotion', 'TESTE_DEGER'), (3, 'Before/After Reel', 'TESTE_DEGER'), (4, 'RoomCheck', 'BELIRSIZ')) SELECT * FROM decisions ORDER BY rank;",
+        "tables_used": ["four validated Quick Scan assessments"],
+        "metric_definitions": ["Fatal gates and founder burden override raw score."]
+      }
+    },
+    {
+      "id": "test_contracts",
+      "label": "Exploratory uncertainty-reduction contracts",
+      "query": {
+        "description": "Next tests and stopping rules.",
+        "executed_at": "2026-07-18T18:30:00+03:00",
+        "engine": "SQLite",
+        "language": "SQL",
+        "sql": "WITH tests(rank, idea, action) AS (VALUES (1, 'MemoryMotion', 'technical RAT'), (2, 'Occasion Reel', 'real-occasion behavior test'), (3, 'Before/After Reel', 'auto-align behavior test'), (4, 'RoomCheck', 'controlled technical RAT')) SELECT * FROM tests ORDER BY rank;",
+        "tables_used": ["four validated Quick Scan reports"],
+        "metric_definitions": ["Thresholds are exploratory, not population estimates."]
+      }
+    },
+    {
+      "id": "problem_pool",
+      "label": "Eighteen-problem discovery pool",
+      "query": {
+        "description": "Discovery pool screening dispositions.",
+        "executed_at": "2026-07-18T18:30:00+03:00",
+        "engine": "SQLite",
+        "language": "SQL",
+        "sql": "WITH pool(category, count) AS (VALUES ('Privacy camera', 4), ('Photo-to-video and AI', 8), ('Capture and edit utility', 6)) SELECT * FROM pool;",
+        "tables_used": ["parallel market scans collected 2026-07-18"],
+        "metric_definitions": ["Screening count is not market size."]
+      }
+    },
+    {"id": "apple_chart", "label": "US iPhone Photo & Video free chart", "href": "https://apps.apple.com/us/iphone/charts/6008?chart=top-free"},
+    {"id": "ai_video", "label": "AI Video — US App Store", "href": "https://apps.apple.com/us/app/ai-video-ai-video-generator/id6478868302"},
+    {"id": "slideshow_leader", "label": "SlideShow Maker Photo to Video — US App Store", "href": "https://apps.apple.com/us/app/slideshow-maker-photo-to-video/id924826256"},
+    {"id": "dazz_cam", "label": "Dazz Cam — US App Store", "href": "https://apps.apple.com/us/app/dazz-cam-vintage-camera/id1422471180"},
+    {"id": "motionleap", "label": "Motionleap — US App Store", "href": "https://apps.apple.com/us/app/motionleap-3d-photo-animator/id1381206010"},
+    {"id": "before_compare", "label": "Before and After: Compare Photo — US App Store", "href": "https://apps.apple.com/us/app/before-and-after-compare-photo/id1500915148"},
+    {"id": "hidden_finder", "label": "Hidden Spy Camera Finder Pro — US App Store", "href": "https://apps.apple.com/us/app/hidden-spy-camera-finder-pro/id1560989782"},
+    {"id": "runway_pricing", "label": "Runway API pricing", "href": "https://docs.dev.runwayml.com/guides/pricing/"},
+    {"id": "fal_pricing", "label": "fal.ai image-to-video API catalog", "href": "https://fal.ai/explore/image-to-video-apis"},
+    {"id": "apple_tn3111", "label": "Apple TN3111", "href": "https://developer.apple.com/documentation/technotes/tn3111-ios-wifi-api-overview"},
+    {"id": "apple_tn3179", "label": "Apple TN3179", "href": "https://developer.apple.com/documentation/technotes/tn3179-understanding-local-network-privacy"},
+    {"id": "apple_corebluetooth", "label": "Apple Core Bluetooth", "href": "https://developer.apple.com/documentation/corebluetooth/"},
+    {"id": "apple_guidelines", "label": "Apple App Review Guidelines", "href": "https://developer.apple.com/app-store/review/guidelines/"}
+  ],
+  "snapshot": {
+    "version": 1,
+    "generatedAt": "2026-07-18T18:30:00+03:00",
+    "status": "ready",
+    "datasets": {
+      "scores_long": [
+        {"rank": 1, "idea": "Occasion Reel", "archetype": "Consumer Utility", "scenario": "Low", "scenario_order": 1, "score": 46, "evidence": "C", "decision": "TESTE_DEGER"},
+        {"rank": 1, "idea": "Occasion Reel", "archetype": "Consumer Utility", "scenario": "Base", "scenario_order": 2, "score": 64, "evidence": "C", "decision": "TESTE_DEGER"},
+        {"rank": 1, "idea": "Occasion Reel", "archetype": "Consumer Utility", "scenario": "High", "scenario_order": 3, "score": 84, "evidence": "C", "decision": "TESTE_DEGER"},
+        {"rank": 2, "idea": "MemoryMotion", "archetype": "Consumer Utility", "scenario": "Low", "scenario_order": 1, "score": 48, "evidence": "C", "decision": "TESTE_DEGER"},
+        {"rank": 2, "idea": "MemoryMotion", "archetype": "Consumer Utility", "scenario": "Base", "scenario_order": 2, "score": 66, "evidence": "C", "decision": "TESTE_DEGER"},
+        {"rank": 2, "idea": "MemoryMotion", "archetype": "Consumer Utility", "scenario": "High", "scenario_order": 3, "score": 86, "evidence": "C", "decision": "TESTE_DEGER"},
+        {"rank": 3, "idea": "Before/After Reel", "archetype": "Consumer Utility", "scenario": "Low", "scenario_order": 1, "score": 42, "evidence": "C", "decision": "TESTE_DEGER"},
+        {"rank": 3, "idea": "Before/After Reel", "archetype": "Consumer Utility", "scenario": "Base", "scenario_order": 2, "score": 60, "evidence": "C", "decision": "TESTE_DEGER"},
+        {"rank": 3, "idea": "Before/After Reel", "archetype": "Consumer Utility", "scenario": "High", "scenario_order": 3, "score": 80, "evidence": "C", "decision": "TESTE_DEGER"},
+        {"rank": 4, "idea": "RoomCheck", "archetype": "Consumer Utility", "scenario": "Low", "scenario_order": 1, "score": 46, "evidence": "D", "decision": "BELIRSIZ"},
+        {"rank": 4, "idea": "RoomCheck", "archetype": "Consumer Utility", "scenario": "Base", "scenario_order": 2, "score": 64, "evidence": "D", "decision": "BELIRSIZ"},
+        {"rank": 4, "idea": "RoomCheck", "archetype": "Consumer Utility", "scenario": "High", "scenario_order": 3, "score": 79, "evidence": "D", "decision": "BELIRSIZ"}
+      ],
+      "decisions": [
+        {"rank": 1, "idea": "Occasion Reel", "gate_status": "all clear", "score_interval": "46 / 64 / 84", "evidence": "C", "desk_decision": "TESTE_DEGER", "solo_operations": "Low", "first_action": "12-user real-occasion task", "main_risk": "Free editors may already be sufficient"},
+        {"rank": 2, "idea": "MemoryMotion", "gate_status": "all desk gates clear", "score_interval": "48 / 66 / 86", "evidence": "C", "desk_decision": "TESTE_DEGER", "solo_operations": "Medium-high", "first_action": "40-photo two-provider RAT", "main_risk": "Identity failures and delivered AI cost"},
+        {"rank": 3, "idea": "Before/After Reel", "gate_status": "all clear", "score_interval": "42 / 60 / 80", "evidence": "C", "desk_decision": "TESTE_DEGER", "solo_operations": "Low", "first_action": "12-user auto-align task", "main_risk": "Direct newcomers and free editors"},
+        {"rank": 4, "idea": "RoomCheck", "gate_status": "core feasibility unknown", "score_interval": "46 / 64 / 79", "evidence": "D", "desk_decision": "BELIRSIZ", "solo_operations": "Medium", "first_action": "20-room controlled RAT", "main_risk": "Incomplete iOS visibility and false reassurance"}
+      ],
+      "tests": [
+        {"rank": 1, "idea": "MemoryMotion", "sample_target": "40 photos; portrait, group and damaged cases", "first_action": "Compare two providers under fixed rubric", "payment_offer": "Five-clip refundable preorder after technical pass", "pass_gate": ">=80% acceptable; 0 severe identity swaps; <=$1.20 delivered mean cost", "fail_action": "Provider/scope pivot or park"},
+        {"rank": 2, "idea": "Occasion Reel", "sample_target": "12 users with a real occasion inside 30 days", "first_action": "Export from 8-30 real photos", "payment_offer": "$9.99 refundable preorder", "pass_gate": "8 fast exports; 6 real shares; 4 preorders", "fail_action": "Park if any threshold fails"},
+        {"rank": 3, "idea": "Before/After Reel", "sample_target": "12 users and 20 real progress sets", "first_action": "Compare auto-align with current editor", "payment_offer": "$9.99 refundable preorder", "pass_gate": "8 fast exports; 6 real uses/shares; 4 preorders", "fail_action": "Park or narrow use-case pivot"},
+        {"rank": 4, "idea": "RoomCheck", "sample_target": "20 rooms; 30 cameras plus normal electronics", "first_action": "Visible-subset accuracy and disclosure RAT", "payment_offer": "None until technical pass", "pass_gate": ">=80% inspect flag; <=10% high-risk false positive; full disclosure", "fail_action": "Remove detector claim or eliminate"}
+      ],
+      "problem_pool": [
+        {"id": 1, "category": "Privacy camera", "problem": "Guided hidden-camera/privacy inspection", "outcome": "RoomCheck shortlist"},
+        {"id": 2, "category": "Privacy camera", "problem": "Covert or background recorder", "outcome": "Eliminate: platform, safety and legal risk"},
+        {"id": 3, "category": "Privacy camera", "problem": "Camera/microphone access timeline", "outcome": "Smaller utility; weak scale signal"},
+        {"id": 4, "category": "Privacy camera", "problem": "Privacy incident evidence pack", "outcome": "Possible RoomCheck module"},
+        {"id": 5, "category": "Photo choice", "problem": "Best group shot across burst or Live Photo", "outcome": "Plausible; weaker demand evidence"},
+        {"id": 6, "category": "AI photo/video", "problem": "Respectful old-family-photo animation", "outcome": "MemoryMotion shortlist"},
+        {"id": 7, "category": "Photo/video", "problem": "Occasion photo reel", "outcome": "Occasion Reel shortlist"},
+        {"id": 8, "category": "Photo/video", "problem": "Baby or pet growth morph", "outcome": "Possible Before/After use case"},
+        {"id": 9, "category": "Photo/video", "problem": "Auto-aligned progress transformation video", "outcome": "Before/After Reel shortlist"},
+        {"id": 10, "category": "Seller media", "problem": "Product photo to sales reel", "outcome": "Prosumer; outside requested class"},
+        {"id": 11, "category": "Photo/video", "problem": "Generic slideshow", "outcome": "Demand proven; generic position saturated"},
+        {"id": 12, "category": "Photo/video", "problem": "Live Photo or wallpaper animator", "outcome": "OS and commodity risk"},
+        {"id": 13, "category": "Camera filter", "problem": "Vintage camera", "outcome": "Strong incumbents; no named wedge"},
+        {"id": 14, "category": "Camera ritual", "problem": "Delayed disposable roll", "outcome": "Proven behavior; differentiation burden"},
+        {"id": 15, "category": "Shared camera", "problem": "QR party guest camera", "outcome": "Backend, UGC and support burden"},
+        {"id": 16, "category": "Capture", "problem": "Stop-motion or brickfilm camera", "outcome": "Strong incumbent and smaller ceiling"},
+        {"id": 17, "category": "Video utility", "problem": "Exact-size video compression", "outcome": "Solo viable; outside aspirational class"},
+        {"id": 18, "category": "Memory", "problem": "Photo scanner to family story", "outcome": "Strong category; larger scope"}
+      ]
+    }
+  }
+}

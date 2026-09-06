@@ -1,0 +1,38 @@
+{
+  "methodology_version": "4.0",
+  "idea_id": "us-roomcheck",
+  "analysis_date": "2026-07-18",
+  "mode": "quick",
+  "stage": "desk_research",
+  "target_segment": "US iPhone users checking a hotel, rental or changing space for privacy risks who need an explainable inspection rather than an unverifiable universal camera detector",
+  "target_geos": ["US"],
+  "primary_archetype": "consumer_utility",
+  "risk_modifiers": ["sensitive_data", "platform_dependency"],
+  "dimensions": {
+    "problem_demand": {"low": 3, "base": 4, "high": 4, "claim_ids": ["room-demand"]},
+    "monetization_economics": {"low": 2, "base": 3, "high": 4, "claim_ids": ["room-economics"]},
+    "competitive_wedge": {"low": 2, "base": 3, "high": 4, "claim_ids": ["room-wedge"]},
+    "distribution_access": {"low": 2, "base": 3, "high": 4, "claim_ids": ["room-distribution"]},
+    "repeat_value_retention": {"low": 1, "base": 2, "high": 3, "claim_ids": ["room-retention"]},
+    "timing": {"low": 3, "base": 3, "high": 4, "claim_ids": ["room-timing"]},
+    "liquidity_cold_start": null
+  },
+  "opportunity": {"low": 46, "base": 64, "high": 79, "classification": "borderline"},
+  "fatal_gates": [
+    {"code": "LEGAL_BLOCKED", "status": "clear", "evidence_ids": ["room-scope-boundary"]},
+    {"code": "CORE_FEASIBILITY_BLOCKED", "status": "unknown", "evidence_ids": ["room-tn3111-limit", "room-tn3179-limit", "room-bluetooth-limit"]},
+    {"code": "PLATFORM_BLOCKED", "status": "clear", "evidence_ids": ["room-app-review", "room-finder-leader"]},
+    {"code": "SAFETY_ETHICS_BLOCKED", "status": "clear", "evidence_ids": ["room-scope-boundary", "room-app-review"]}
+  ],
+  "riskiest_assumptions": [
+    {"claim_id": "room-core-feasibility", "category": "technical_feasibility", "impact": 3, "uncertainty": 3, "claim_grade": "D", "product_specific_behavior": false, "disposition": "untested"},
+    {"claim_id": "room-wedge", "category": "usability", "impact": 3, "uncertainty": 3, "claim_grade": "C", "product_specific_behavior": false, "disposition": "partial"},
+    {"claim_id": "room-economics", "category": "business_viability", "impact": 3, "uncertainty": 3, "claim_grade": "C", "product_specific_behavior": false, "disposition": "partial"}
+  ],
+  "overall_evidence_grade": "D",
+  "decision": "BELIRSIZ",
+  "status": "DESK_RESEARCH_COMPLETE",
+  "next_test": "Run a controlled technical RAT over 20 rooms with 30 known cameras plus non-camera electronics and report only normal, inspect-further or insufficient-data outcomes",
+  "stopping_rule": "Strip the detector claim or eliminate the idea if fewer than 80% of technically visible cameras are flagged for inspection, high-risk false positives exceed 10%, or any invisible case is presented without an explicit insufficient-data disclosure",
+  "post_mvp_result": null
+}

@@ -1,0 +1,160 @@
+{
+  "methodology_version": "4.0",
+  "idea_id": "us-before-after-reel-deep",
+  "analysis_date": "2026-07-18",
+  "mode": "deep",
+  "stage": "desk_research",
+  "target_segment": "ABD'de camera roll'unda gerçek before/after çifti bulunan ve bunu kısa dikey videoya dönüştürmek isteyen iPhone kullanıcısı; ilk davranış testi Art/DIY segmentinde",
+  "target_geos": [
+    "US"
+  ],
+  "primary_archetype": "consumer_utility",
+  "risk_modifiers": [
+    "sensitive_data",
+    "platform_dependency"
+  ],
+  "dimensions": {
+    "problem_demand": {
+      "low": 2,
+      "base": 3,
+      "high": 4,
+      "claim_ids": [
+        "before-demand",
+        "before-review-pains"
+      ]
+    },
+    "monetization_economics": {
+      "low": 1,
+      "base": 2,
+      "high": 3,
+      "claim_ids": [
+        "before-paid-demand"
+      ]
+    },
+    "competitive_wedge": {
+      "low": 1,
+      "base": 2,
+      "high": 3,
+      "claim_ids": [
+        "before-wedge-preference"
+      ]
+    },
+    "distribution_access": {
+      "low": 1,
+      "base": 2,
+      "high": 3,
+      "claim_ids": [
+        "before-distribution"
+      ]
+    },
+    "repeat_value_retention": {
+      "low": 2,
+      "base": 3,
+      "high": 4,
+      "claim_ids": [
+        "before-repeat"
+      ]
+    },
+    "timing": {
+      "low": 2,
+      "base": 3,
+      "high": 3,
+      "claim_ids": [
+        "before-timing"
+      ]
+    },
+    "liquidity_cold_start": null
+  },
+  "opportunity": {
+    "low": 28,
+    "base": 48,
+    "high": 66,
+    "classification": "borderline"
+  },
+  "fatal_gates": [
+    {
+      "code": "LEGAL_BLOCKED",
+      "status": "clear",
+      "evidence_ids": [
+        "deep-app-review-legal"
+      ]
+    },
+    {
+      "code": "CORE_FEASIBILITY_BLOCKED",
+      "status": "clear",
+      "evidence_ids": [
+        "deep-vision-registration",
+        "deep-avassetwriter"
+      ]
+    },
+    {
+      "code": "PLATFORM_BLOCKED",
+      "status": "clear",
+      "evidence_ids": [
+        "deep-photos-picker",
+        "deep-avassetwriter"
+      ]
+    },
+    {
+      "code": "SAFETY_ETHICS_BLOCKED",
+      "status": "clear",
+      "evidence_ids": [
+        "deep-safety-no-warp",
+        "deep-app-review-legal"
+      ]
+    }
+  ],
+  "riskiest_assumptions": [
+    {
+      "claim_id": "before-wedge-preference",
+      "category": "usability",
+      "impact": 3,
+      "uncertainty": 3,
+      "claim_grade": "C",
+      "product_specific_behavior": false,
+      "disposition": "partial"
+    },
+    {
+      "claim_id": "before-paid-demand",
+      "category": "business_viability",
+      "impact": 3,
+      "uncertainty": 3,
+      "claim_grade": "C",
+      "product_specific_behavior": false,
+      "disposition": "partial"
+    },
+    {
+      "claim_id": "before-distribution",
+      "category": "distribution",
+      "impact": 3,
+      "uncertainty": 3,
+      "claim_grade": "C",
+      "product_specific_behavior": false,
+      "disposition": "partial"
+    },
+    {
+      "claim_id": "before-autoalign-feasibility",
+      "category": "technical_feasibility",
+      "impact": 3,
+      "uncertainty": 2,
+      "claim_grade": "C",
+      "product_specific_behavior": false,
+      "disposition": "partial"
+    },
+    {
+      "claim_id": "before-repeat",
+      "category": "retention",
+      "impact": 2,
+      "uncertainty": 3,
+      "claim_grade": "C",
+      "product_specific_behavior": false,
+      "disposition": "untested"
+    }
+  ],
+  "overall_evidence_grade": "C",
+  "decision": "TESTE_DEGER",
+  "status": "PREBUILD_PENDING",
+  "next_test": "Önce 80 izinli gerçek çiftte 5 günlük cihaz-içi teknik RAT; geçerse yalnız Art/DIY segmentinde 12 ABD'li kullanıcıyla mevcut yöntem karşılaştırması, gerçek export/share ve en az 4 adet $5 iade edilebilir founding-license depozitosu.",
+  "stopping_rule": "Teknik RAT'ta statik çiftlerde kör değerlendirmede daha iyi/eşit hizalama yüzde 85'in altında, yüksek güvenli catastrophic warp yüzde 2 veya üstü ya da 200 exportta crash varsa davranış testine geçme. Davranış testinde 8/12 iki dakikada export, 6/12 gerçek kullanım/paylaşım ve 4/12 depozito eşiklerinden biri karşılanmaz veya çoğunluk mevcut aracını tercih ederse fikri park et.",
+  "post_mvp_result": null
+}

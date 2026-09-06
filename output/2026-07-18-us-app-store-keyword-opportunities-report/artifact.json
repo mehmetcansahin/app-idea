@@ -1,0 +1,274 @@
+{
+  "surface": "report",
+  "manifest": {
+    "version": 1,
+    "title": "US iOS Niş ve Satın Alma Niyetli Keyword Fırsatları",
+    "description": "Kamuya açık Apple sinyalleriyle 15 iOS keyword adayının hacim proxy, ödeme niyeti, rekabet ve solo geliştirici uyumu karşılaştırması.",
+    "generatedAt": "2026-07-18T21:30:00+03:00",
+    "surface": "report",
+    "sources": [
+      {
+        "id": "keyword_scoring",
+        "label": "Validated public-proxy keyword scoring dataset",
+        "query": {
+          "description": "Fifteen US iOS keywords scored on relative public volume, purchase intent, competition, solo fit and wedge clarity.",
+          "executed_at": "2026-07-18T21:30:00+03:00",
+          "engine": "SQLite",
+          "language": "SQL",
+          "sql": "WITH keywords(rank, keyword, volume_proxy, purchase_intent, competition, solo_fit, wedge_clarity, opportunity_proxy, disposition) AS (VALUES (1, 'before after video', 3, 5, 2, 5, 4, 84, 'SHORTLIST'), (2, 'birthday video maker', 3, 4, 2, 5, 4, 79, 'SHORTLIST'), (3, 'video compressor', 4, 4, 4, 5, 5, 79, 'SHORTLIST'), (4, 'memorial slideshow', 2, 4, 2, 5, 5, 79, 'QUERY_TEST_ONLY'), (5, 'scan old photos', 4, 4, 4, 4, 5, 76, 'SHORTLIST'), (6, 'add watermark to photos', 4, 4, 4, 5, 4, 75, 'SHORTLIST_ADJACENT'), (7, 'old photo colorizer', 3, 5, 3, 3, 4, 74, 'TECH_ECONOMICS_RAT'), (8, 'passport photo', 4, 5, 5, 4, 4, 73, 'COMPLIANCE_RAT'), (9, 'animate old photos', 4, 5, 4, 2, 4, 71, 'TECH_ECONOMICS_RAT'), (10, 'slideshow maker', 5, 5, 5, 5, 1, 68, 'DO_NOT_TARGET_GENERIC'), (11, 'hidden camera detector', 4, 5, 4, 2, 3, 67, 'TECH_TRUST_RAT_ONLY'), (12, 'photo scanner', 5, 4, 5, 4, 2, 64, 'DO_NOT_TARGET_GENERIC'), (13, 'video to live photo', 4, 4, 5, 5, 2, 63, 'WATCH_NOT_BUILD'), (14, 'background remover', 5, 4, 5, 5, 1, 63, 'DO_NOT_TARGET_GENERIC'), (15, 'photo restoration', 5, 5, 5, 2, 1, 59, 'DO_NOT_TARGET_GENERIC')) SELECT * FROM keywords ORDER BY opportunity_proxy DESC, rank;",
+          "tables_used": [
+            "output/2026-07-18-us-app-store-keyword-opportunities-report/data/keyword_candidates.json",
+            "US App Store public listings and Apple Search API results accessed 2026-07-18"
+          ],
+          "metric_definitions": [
+            "Relative public volume proxy is a 1-5 judgment from result relevance, dedicated-app density, rating accumulation and visible chart presence; it is not monthly search volume.",
+            "Purchase-intent proxy is a 1-5 judgment from paid apps, IAP ladders, credits and task urgency; it is not revenue.",
+            "Competition is 1-5 with 5 most difficult. Solo fit and wedge clarity are 1-5 with 5 strongest.",
+            "Opportunity proxy = 4*volume + 5*purchase intent + 3*solo fit + 4*wedge clarity + 4*(6-competition). It is a triage index, not a forecast or v4 opportunity score."
+          ]
+        }
+      },
+      {
+        "id": "validation_pack",
+        "label": "Exact keyword validation pack",
+        "query": {
+          "description": "Exact-match candidate, long-tail variant and head-control keywords for an Apple Ads Search Popularity export.",
+          "executed_at": "2026-07-18T21:30:00+03:00",
+          "engine": "SQLite",
+          "language": "SQL",
+          "sql": "WITH pack(cluster, keyword, role) AS (VALUES ('before-after', 'before after video', 'core'), ('before-after', 'before and after video', 'variant'), ('before-after', 'progress photo video', 'variant'), ('occasion', 'birthday video maker', 'core'), ('occasion', 'birthday slideshow', 'variant'), ('occasion', 'memorial slideshow', 'core'), ('occasion', 'funeral slideshow maker', 'variant'), ('compression', 'video compressor', 'core'), ('compression', 'compress video to 25mb', 'variant'), ('compression', 'compress video for email', 'variant'), ('archive', 'scan old photos', 'core'), ('archive', 'old photo scanner', 'variant'), ('watermark', 'add watermark to photos', 'core'), ('passport', 'passport photo', 'core'), ('passport', 'baby passport photo', 'variant'), ('old-photo-ai', 'old photo colorizer', 'core'), ('old-photo-ai', 'animate old photos', 'core'), ('privacy', 'hidden camera detector', 'risk control'), ('head-control', 'slideshow maker', 'head control'), ('head-control', 'photo scanner', 'head control'), ('head-control', 'photo restoration', 'head control')) SELECT * FROM pack ORDER BY cluster, role, keyword;",
+          "tables_used": [
+            "public-proxy shortlist"
+          ],
+          "metric_definitions": [
+            "Core keywords express the product job; variants test narrower language; head controls benchmark larger but saturated demand."
+          ]
+        }
+      },
+      {"id": "apple_ads_metrics", "label": "Apple Ads reporting definitions", "href": "https://ads.apple.com/app-store/help/reporting/0023-reporting-options-and-definitions"},
+      {"id": "apple_keyword_guide", "label": "Apple Ads keyword guidance", "href": "https://ads.apple.com/app-store/help/keywords/0014-add-and-manage-keywords"},
+      {"id": "apple_search_measurement", "label": "Apple Developer App Store search measurement", "href": "https://developer.apple.com/app-store/search/"},
+      {"id": "before_after_app", "label": "Before and after compare photo — US App Store", "href": "https://apps.apple.com/us/app/before-and-after-compare-photo/id1500915148"},
+      {"id": "compressor_app", "label": "Compress Videos & Resize Video — US App Store", "href": "https://apps.apple.com/us/app/compress-videos-resize-video/id1473857051"},
+      {"id": "birthday_app", "label": "Birthday Video — US App Store", "href": "https://apps.apple.com/us/app/birthday-video/id1544604029"},
+      {"id": "scanner_app", "label": "Photo Scanner Plus — US App Store", "href": "https://apps.apple.com/us/app/photo-scanner-plus/id951627022"},
+      {"id": "passport_app", "label": "Passport Photo - ID Photo — US App Store", "href": "https://apps.apple.com/us/app/passport-photo-id-photo/id917389447"},
+      {"id": "passport_rules", "label": "US Department of State passport photo rules", "href": "https://travel.state.gov/content/travel/en/passports/how-apply/photos.html"},
+      {"id": "colorizer_app", "label": "Colorize - Color to Old Photos — US App Store", "href": "https://apps.apple.com/us/app/colorize-color-to-old-photos/id1464665765"},
+      {"id": "motionleap_app", "label": "Motionleap — US App Store", "href": "https://apps.apple.com/us/app/motionleap-3d-photo-animator/id1381206010"},
+      {"id": "hidden_camera_app", "label": "Hidden Camera Detector - Peek — US App Store", "href": "https://apps.apple.com/us/app/hidden-camera-detector-peek/id1571925628"},
+      {"id": "apple_wifi", "label": "Apple TN3111 iOS Wi-Fi API overview", "href": "https://developer.apple.com/documentation/technotes/tn3111-ios-wifi-api-overview"}
+    ],
+    "blocks": [
+      {"id": "title", "type": "markdown", "body": "# US iOS Niş ve Satın Alma Niyetli Keyword Fırsatları"},
+      {
+        "id": "executive_summary",
+        "type": "markdown",
+        "body": "## Executive Summary\n\nKamuya açık sinyallerle en iyi denge `before after video` kelimesinde: doğrudan çıktı niyeti, agresif fakat kanıtlanmış ödeme merdiveni, daha düşük incumbent yoğunluğu ve tamamen cihaz üzerinde yapılabilir bir ürün. `video compressor`, `birthday video maker`, `scan old photos` ve `add watermark to photos` da exact-keyword testine değer. `passport photo` ödeme niyetinde güçlü fakat compliance ve rekabet yükü yüksek. `animate old photos` ile `hidden camera detector` satın alma çekse de teknik/işletme veya güven gate'i geçmeden build adayı değildir.",
+        "sourceId": "keyword_scoring"
+      },
+      {
+        "id": "volume_gap",
+        "type": "markdown",
+        "body": "## Kesin hacim neden henüz yok?\n\nApple exact aylık organik arama hacmini kamuya açmıyor. Apple Ads, keyword popülerliğini App Store aramalarına dayalı 1–5 `Search Popularity` olarak gösteriyor; 5 en popüler düzey. Bu hesaba veya export'a erişim olmadığı için rapordaki hacim 1–5 değeri yalnız public proxy'dir. Rating, chart ve IAP sinyalleri zayıf verinin yerine geçirilmedi; yalnız shortlist üretmek için kullanıldı.",
+        "sourceId": "apple_ads_metrics"
+      },
+      {"id": "opportunity_chart_block", "type": "chart", "chartId": "opportunity_rank", "layout": "full"},
+      {
+        "id": "score_method",
+        "type": "markdown",
+        "body": "## Endeks nasıl okunmalı?\n\nEndeks hacim proxy (%20), satın alma niyeti (%25), solo-fit (%15), wedge netliği (%20) ve ters rekabeti (%20) birleştirir. Yüksek skor tek başına ürün kararı değildir: `memorial slideshow` 79 puana rağmen direct volume proxy 2 olduğu için yalnız query testidir; `hidden camera detector` güçlü ödeme sinyaline rağmen iOS görünürlük ve yanlış güven riski nedeniyle teknik/trust RAT'ına gönderilir.",
+        "sourceId": "keyword_scoring"
+      },
+      {"id": "keyword_table_block", "type": "table", "tableId": "keyword_table", "layout": "full"},
+      {
+        "id": "visual_candidates",
+        "type": "markdown",
+        "body": "## Aranan görsel/viral ürün sınıfına en yakın adaylar\n\n`before after video` ilk tercih; wedge auto-align, tarih/ölçü etiketi ve branded progress proof. `birthday video maker` ikinci; 12 fotoğraf + isim + voice message ile iki dakikalık bounded flow. `old photo colorizer` ve `animate old photos` ödeme niyeti daha güçlü AI yönleri; ancak model kalitesi, identity ve delivered inference maliyeti teknik RAT gerektirir. `memorial slideshow` duygusal aciliyeti yüksek ama hacmi Apple Ads olmadan varsayılamaz.",
+        "sourceId": "keyword_scoring"
+      },
+      {
+        "id": "commercial_candidates",
+        "type": "markdown",
+        "body": "## En sağlam solo ekonomi adayları\n\n`video compressor` generic klon olarak değil, Share Sheet'ten exact MB hedefi ve metadata/tarih koruma ile en bounded utility'dir. `scan old photos` ancak front/back pairing, batch family archive ve local ZIP export wedge'iyle anlamlıdır. `passport photo` transaction intent'i çok yüksek; fakat ürün resmi ölçüm/crop rehberi olmalı, beautification veya kabul garantisi vermemelidir.",
+        "sourceId": "keyword_scoring"
+      },
+      {
+        "id": "avoid_head_terms",
+        "type": "markdown",
+        "body": "## Hacimli ama yanlış savaş alanları\n\n`slideshow maker`, `photo scanner`, `background remover` ve `photo restoration` büyük rating birikimi ve ödeme davranışı gösteriyor; bu onları iyi ürün pozisyonu değil, iyi head-control kelimeleri yapıyor. Büyük specialist'ler, ücretsiz platform uygulamaları ve multi-feature editor'ler karşısında dar bir search job olmadan generic giriş önerilmiyor. `video to live photo` da yüksek talep sinyaline rağmen 112K rating'li incumbent ve iOS davranış bağımlılığı nedeniyle izleme listesinde.",
+        "sourceId": "keyword_scoring"
+      },
+      {
+        "id": "validation_plan",
+        "type": "markdown",
+        "body": "## Apple Ads doğrulama paketi\n\nAşağıdaki terimler US Search Results ad group'unda exact match olarak ayrı kümelerde incelenmeli. İlk masa başı filtresi: Search Popularity 4–5 tutulur; 3 yalnız purchase intent ve wedge güçlüyse tutulur; 1–2 paid conversion bunu telafi etmezse park edilir. Bu eşikler Apple standardı değil, araştırma heuristic'idir. Head kontroller nişlerle aynı bütçede karıştırılmamalıdır.",
+        "sourceId": "validation_pack"
+      },
+      {"id": "validation_table_block", "type": "table", "tableId": "validation_table", "layout": "full"},
+      {
+        "id": "recommendation",
+        "type": "markdown",
+        "body": "## Net araştırma sırası\n\nÖnce `before after video`; sonra `video compressor` + `compress video to 25mb`; ardından `birthday video maker`, `scan old photos`, `passport photo` + `baby passport photo` ve `old photo colorizer`. Kullanıcının istediği tarza göre ilk ürün konsepti `before after video`; maksimum AI upside testi `animate old photos`; hidden-camera alanı ise yalnız dürüst guided room-check corpus'u için tutulmalı.",
+        "sourceId": "validation_pack"
+      },
+      {
+        "id": "limitations",
+        "type": "markdown",
+        "body": "## Kanıt sınırları\n\nRating revenue, retention, yeni indirme hızı veya keyword volume değildir. Public Search API sırası uygulama içi organik rank olarak kullanılmadı. Görünür review'lar random/stratified sample değildir. IAP listesi teklif mimarisidir, satış miktarı değildir. Search Popularity ve search-term export gelmeden `yüksek hacim doğrulandı` denemez. Bu masa başı rapor hiçbir aday için build izni vermez.",
+        "sourceId": "apple_ads_metrics"
+      }
+    ],
+    "charts": [
+      {
+        "id": "opportunity_rank",
+        "title": "Keyword opportunity proxy score",
+        "subtitle": "Niş/intent dengesi baş sorgu hacminden daha değerlidir; skor build kararı değildir",
+        "intent": "comparison",
+        "question": "Public-proxy shortlist ve risk adayları aynı 0-100 triage ölçeğinde nasıl sıralanıyor?",
+        "rationale": "Uzun keyword etiketleri için yatay ranked bar, göreli tarama puanlarını en okunur biçimde karşılaştırır.",
+        "type": "bar",
+        "dataset": "chart_keywords",
+        "sourceId": "keyword_scoring",
+        "encodings": {
+          "x": {"field": "keyword", "type": "nominal", "label": "Keyword"},
+          "y": {"field": "opportunity_proxy", "type": "quantitative", "format": "number", "label": "Fırsat proxy"},
+          "tooltip": [
+            {"field": "opportunity_proxy", "type": "quantitative", "format": "number", "label": "Fırsat proxy"},
+            {"field": "relative_volume_proxy", "type": "quantitative", "format": "number", "label": "Hacim proxy"},
+            {"field": "purchase_intent_proxy", "type": "quantitative", "format": "number", "label": "Satın alma"},
+            {"field": "competition", "type": "quantitative", "format": "number", "label": "Rekabet"},
+            {"field": "disposition", "type": "text", "label": "Karar"}
+          ]
+        },
+        "settings": {"orientation": "horizontal", "showValues": true, "categoryLabelPolicy": "wrap", "xDomain": [0, 100]},
+        "layout": "full",
+        "labels": {"values": "all"},
+        "surface": {"surface": "card", "showControls": false, "viewMode": "visualization"}
+      }
+    ],
+    "tables": [
+      {
+        "id": "keyword_table",
+        "title": "US iOS keyword triage tablosu",
+        "subtitle": "Hacim public proxy'dir; rekabette 5 en zor, diğer olumlu boyutlarda 5 en güçlü düzeydir.",
+        "dataset": "keywords",
+        "sourceId": "keyword_scoring",
+        "defaultSort": {"field": "rank", "direction": "asc"},
+        "density": "dense",
+        "layout": "full",
+        "columns": [
+          {"field": "rank", "label": "Sıra", "format": "number"},
+          {"field": "keyword", "label": "Keyword", "type": "text"},
+          {"field": "relative_volume_proxy", "label": "Hacim", "format": "number"},
+          {"field": "purchase_intent_proxy", "label": "Satın alma", "format": "number"},
+          {"field": "competition", "label": "Rekabet", "format": "number"},
+          {"field": "solo_fit", "label": "Solo", "format": "number"},
+          {"field": "opportunity_proxy", "label": "Fırsat proxy", "format": "number"},
+          {"field": "disposition", "label": "Karar", "type": "text"}
+        ]
+      },
+      {
+        "id": "validation_table",
+        "title": "Apple Ads exact-keyword validation pack",
+        "subtitle": "Core, long-tail variant, risk-control ve head-control terimleri ayrı kümelerde değerlendirilir.",
+        "dataset": "validation_keywords",
+        "sourceId": "validation_pack",
+        "defaultSort": {"field": "order", "direction": "asc"},
+        "density": "dense",
+        "layout": "full",
+        "columns": [
+          {"field": "order", "label": "#", "format": "number"},
+          {"field": "cluster", "label": "Küme", "type": "text"},
+          {"field": "keyword", "label": "Exact keyword", "type": "text"},
+          {"field": "role", "label": "Rol", "type": "text"}
+        ]
+      }
+    ]
+  },
+  "snapshot": {
+    "version": 1,
+    "generatedAt": "2026-07-18T21:30:00+03:00",
+    "status": "partial",
+    "accessIssues": [
+      {
+        "source": "Apple Ads account/export",
+        "issue": "Search Popularity 1-5 and paid search-term performance are unavailable in the current workspace.",
+        "impact": "Keyword volume can only be labeled as a relative public proxy, not Apple-confirmed high volume.",
+        "resolution": "Provide an Apple Ads keyword recommendation or search-term export for the US storefront."
+      }
+    ],
+    "datasets": {
+      "chart_keywords": [
+        {"keyword": "before after video", "opportunity_proxy": 84, "relative_volume_proxy": 3, "purchase_intent_proxy": 5, "competition": 2, "disposition": "SHORTLIST"},
+        {"keyword": "birthday video maker", "opportunity_proxy": 79, "relative_volume_proxy": 3, "purchase_intent_proxy": 4, "competition": 2, "disposition": "SHORTLIST"},
+        {"keyword": "video compressor", "opportunity_proxy": 79, "relative_volume_proxy": 4, "purchase_intent_proxy": 4, "competition": 4, "disposition": "SHORTLIST"},
+        {"keyword": "memorial slideshow", "opportunity_proxy": 79, "relative_volume_proxy": 2, "purchase_intent_proxy": 4, "competition": 2, "disposition": "QUERY_TEST_ONLY"},
+        {"keyword": "scan old photos", "opportunity_proxy": 76, "relative_volume_proxy": 4, "purchase_intent_proxy": 4, "competition": 4, "disposition": "SHORTLIST"},
+        {"keyword": "add watermark to photos", "opportunity_proxy": 75, "relative_volume_proxy": 4, "purchase_intent_proxy": 4, "competition": 4, "disposition": "SHORTLIST_ADJACENT"},
+        {"keyword": "old photo colorizer", "opportunity_proxy": 74, "relative_volume_proxy": 3, "purchase_intent_proxy": 5, "competition": 3, "disposition": "TECH_ECONOMICS_RAT"},
+        {"keyword": "passport photo", "opportunity_proxy": 73, "relative_volume_proxy": 4, "purchase_intent_proxy": 5, "competition": 5, "disposition": "COMPLIANCE_RAT"},
+        {"keyword": "animate old photos", "opportunity_proxy": 71, "relative_volume_proxy": 4, "purchase_intent_proxy": 5, "competition": 4, "disposition": "TECH_ECONOMICS_RAT"},
+        {"keyword": "hidden camera detector", "opportunity_proxy": 67, "relative_volume_proxy": 4, "purchase_intent_proxy": 5, "competition": 4, "disposition": "TECH_TRUST_RAT_ONLY"}
+      ],
+      "keywords": [
+        {"rank": 1, "keyword": "before after video", "relative_volume_proxy": 3, "purchase_intent_proxy": 5, "competition": 2, "solo_fit": 5, "opportunity_proxy": 84, "disposition": "SHORTLIST"},
+        {"rank": 2, "keyword": "birthday video maker", "relative_volume_proxy": 3, "purchase_intent_proxy": 4, "competition": 2, "solo_fit": 5, "opportunity_proxy": 79, "disposition": "SHORTLIST"},
+        {"rank": 3, "keyword": "video compressor", "relative_volume_proxy": 4, "purchase_intent_proxy": 4, "competition": 4, "solo_fit": 5, "opportunity_proxy": 79, "disposition": "SHORTLIST"},
+        {"rank": 4, "keyword": "memorial slideshow", "relative_volume_proxy": 2, "purchase_intent_proxy": 4, "competition": 2, "solo_fit": 5, "opportunity_proxy": 79, "disposition": "QUERY_TEST_ONLY"},
+        {"rank": 5, "keyword": "scan old photos", "relative_volume_proxy": 4, "purchase_intent_proxy": 4, "competition": 4, "solo_fit": 4, "opportunity_proxy": 76, "disposition": "SHORTLIST"},
+        {"rank": 6, "keyword": "add watermark to photos", "relative_volume_proxy": 4, "purchase_intent_proxy": 4, "competition": 4, "solo_fit": 5, "opportunity_proxy": 75, "disposition": "SHORTLIST_ADJACENT"},
+        {"rank": 7, "keyword": "old photo colorizer", "relative_volume_proxy": 3, "purchase_intent_proxy": 5, "competition": 3, "solo_fit": 3, "opportunity_proxy": 74, "disposition": "TECH_ECONOMICS_RAT"},
+        {"rank": 8, "keyword": "passport photo", "relative_volume_proxy": 4, "purchase_intent_proxy": 5, "competition": 5, "solo_fit": 4, "opportunity_proxy": 73, "disposition": "COMPLIANCE_RAT"},
+        {"rank": 9, "keyword": "animate old photos", "relative_volume_proxy": 4, "purchase_intent_proxy": 5, "competition": 4, "solo_fit": 2, "opportunity_proxy": 71, "disposition": "TECH_ECONOMICS_RAT"},
+        {"rank": 10, "keyword": "slideshow maker", "relative_volume_proxy": 5, "purchase_intent_proxy": 5, "competition": 5, "solo_fit": 5, "opportunity_proxy": 68, "disposition": "DO_NOT_TARGET_GENERIC"},
+        {"rank": 11, "keyword": "hidden camera detector", "relative_volume_proxy": 4, "purchase_intent_proxy": 5, "competition": 4, "solo_fit": 2, "opportunity_proxy": 67, "disposition": "TECH_TRUST_RAT_ONLY"},
+        {"rank": 12, "keyword": "photo scanner", "relative_volume_proxy": 5, "purchase_intent_proxy": 4, "competition": 5, "solo_fit": 4, "opportunity_proxy": 64, "disposition": "DO_NOT_TARGET_GENERIC"},
+        {"rank": 13, "keyword": "video to live photo", "relative_volume_proxy": 4, "purchase_intent_proxy": 4, "competition": 5, "solo_fit": 5, "opportunity_proxy": 63, "disposition": "WATCH_NOT_BUILD"},
+        {"rank": 14, "keyword": "background remover", "relative_volume_proxy": 5, "purchase_intent_proxy": 4, "competition": 5, "solo_fit": 5, "opportunity_proxy": 63, "disposition": "DO_NOT_TARGET_GENERIC"},
+        {"rank": 15, "keyword": "photo restoration", "relative_volume_proxy": 5, "purchase_intent_proxy": 5, "competition": 5, "solo_fit": 2, "opportunity_proxy": 59, "disposition": "DO_NOT_TARGET_GENERIC"}
+      ],
+      "validation_keywords": [
+        {"order": 1, "cluster": "before-after", "keyword": "before after video", "role": "core"},
+        {"order": 2, "cluster": "before-after", "keyword": "before and after video", "role": "variant"},
+        {"order": 3, "cluster": "before-after", "keyword": "progress photo video", "role": "variant"},
+        {"order": 4, "cluster": "occasion", "keyword": "birthday video maker", "role": "core"},
+        {"order": 5, "cluster": "occasion", "keyword": "birthday slideshow", "role": "variant"},
+        {"order": 6, "cluster": "occasion", "keyword": "memorial slideshow", "role": "core"},
+        {"order": 7, "cluster": "occasion", "keyword": "funeral slideshow maker", "role": "variant"},
+        {"order": 8, "cluster": "compression", "keyword": "video compressor", "role": "core"},
+        {"order": 9, "cluster": "compression", "keyword": "compress video to 25mb", "role": "variant"},
+        {"order": 10, "cluster": "compression", "keyword": "compress video for email", "role": "variant"},
+        {"order": 11, "cluster": "archive", "keyword": "scan old photos", "role": "core"},
+        {"order": 12, "cluster": "archive", "keyword": "old photo scanner", "role": "variant"},
+        {"order": 13, "cluster": "watermark", "keyword": "add watermark to photos", "role": "core"},
+        {"order": 14, "cluster": "passport", "keyword": "passport photo", "role": "core"},
+        {"order": 15, "cluster": "passport", "keyword": "baby passport photo", "role": "variant"},
+        {"order": 16, "cluster": "old-photo-ai", "keyword": "old photo colorizer", "role": "core"},
+        {"order": 17, "cluster": "old-photo-ai", "keyword": "animate old photos", "role": "core"},
+        {"order": 18, "cluster": "privacy", "keyword": "hidden camera detector", "role": "risk control"},
+        {"order": 19, "cluster": "head-control", "keyword": "slideshow maker", "role": "head control"},
+        {"order": 20, "cluster": "head-control", "keyword": "photo scanner", "role": "head control"},
+        {"order": 21, "cluster": "head-control", "keyword": "photo restoration", "role": "head control"}
+      ]
+    }
+  },
+  "sources": [
+    {
+      "id": "keyword_scoring",
+      "label": "Validated public-proxy keyword dataset",
+      "path": "output/2026-07-18-us-app-store-keyword-opportunities-report/data/keyword_candidates.json",
+      "query": {
+        "description": "Notebook-validated keyword proxy scores and dispositions.",
+        "executed_at": "2026-07-18T21:30:00+03:00",
+        "engine": "Python 3 standard library",
+        "language": "Python",
+        "tables_used": ["data/keyword_candidates.json"],
+        "metric_definitions": ["Opportunity proxy is a deterministic triage index; Apple exact volume remains unavailable."]
+      }
+    },
+    {"id": "apple_ads_metrics", "label": "Apple Ads reporting definitions", "href": "https://ads.apple.com/app-store/help/reporting/0023-reporting-options-and-definitions"},
+    {"id": "apple_keyword_guide", "label": "Apple Ads keyword guidance", "href": "https://ads.apple.com/app-store/help/keywords/0014-add-and-manage-keywords"},
+    {"id": "apple_search_measurement", "label": "Apple Developer App Store search measurement", "href": "https://developer.apple.com/app-store/search/"}
+  ]
+}

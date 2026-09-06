@@ -1,0 +1,38 @@
+{
+  "methodology_version": "4.0",
+  "idea_id": "us-before-after-reel",
+  "analysis_date": "2026-07-18",
+  "mode": "quick",
+  "stage": "desk_research",
+  "target_segment": "US iPhone users documenting fitness, renovation, art, garden, restoration or personal progress who want an automatically aligned vertical before-after video",
+  "target_geos": ["US"],
+  "primary_archetype": "consumer_utility",
+  "risk_modifiers": ["sensitive_data", "platform_dependency"],
+  "dimensions": {
+    "problem_demand": {"low": 2, "base": 3, "high": 4, "claim_ids": ["before-demand"]},
+    "monetization_economics": {"low": 2, "base": 3, "high": 4, "claim_ids": ["before-economics"]},
+    "competitive_wedge": {"low": 2, "base": 3, "high": 4, "claim_ids": ["before-wedge"]},
+    "distribution_access": {"low": 2, "base": 3, "high": 4, "claim_ids": ["before-distribution"]},
+    "repeat_value_retention": {"low": 2, "base": 3, "high": 4, "claim_ids": ["before-retention"]},
+    "timing": {"low": 3, "base": 3, "high": 4, "claim_ids": ["before-timing"]},
+    "liquidity_cold_start": null
+  },
+  "opportunity": {"low": 42, "base": 60, "high": 80, "classification": "borderline"},
+  "fatal_gates": [
+    {"code": "LEGAL_BLOCKED", "status": "clear", "evidence_ids": ["before-scope-boundary"]},
+    {"code": "CORE_FEASIBILITY_BLOCKED", "status": "clear", "evidence_ids": ["before-local-newcomer"]},
+    {"code": "PLATFORM_BLOCKED", "status": "clear", "evidence_ids": ["before-compare-leader", "before-watermark-leader"]},
+    {"code": "SAFETY_ETHICS_BLOCKED", "status": "clear", "evidence_ids": ["before-scope-boundary"]}
+  ],
+  "riskiest_assumptions": [
+    {"claim_id": "before-wedge", "category": "usability", "impact": 3, "uncertainty": 3, "claim_grade": "C", "product_specific_behavior": false, "disposition": "partial"},
+    {"claim_id": "before-economics", "category": "business_viability", "impact": 3, "uncertainty": 3, "claim_grade": "C", "product_specific_behavior": false, "disposition": "partial"},
+    {"claim_id": "before-distribution", "category": "distribution", "impact": 3, "uncertainty": 3, "claim_grade": "C", "product_specific_behavior": false, "disposition": "partial"}
+  ],
+  "overall_evidence_grade": "C",
+  "decision": "TESTE_DEGER",
+  "status": "PREBUILD_PENDING",
+  "next_test": "Give 12 US iPhone users 20 real progress-photo sets and compare an auto-align prototype with their current editor, then offer a clearly disclosed $9.99 refundable preorder",
+  "stopping_rule": "Park the idea if fewer than 8 of 12 finish within two minutes, fewer than 6 actually share or use the result, or fewer than 4 place the refundable preorder",
+  "post_mvp_result": null
+}
