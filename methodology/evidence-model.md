@@ -53,6 +53,24 @@ kaynak sayilir. Ornek: RevenueCat raporu ve o raporu ozetleyen iki haberin ucu d
 - Gozlemden pazar/urun sonucu cikariliyorsa B+ icin bagimsiz kok gerekir.
 - `synthetic` kaynaklar bagimsiz kok sayimina girmez.
 
+### Kok Granulerligi
+
+Bir analiz kok granulerligini secer ve rapor icinde sabit tutar:
+
+- `document`: kok tek bir artefakti tanimlar (bir store listing, bir dokumantasyon
+  sayfasi, bir review feed). Ayni saticinin iki listing'i ayri kok alir.
+- `publisher`: kok yayinciyi tanimlar. Ayni yayincinin tum artefaktlari tek kok
+  olur; yayincinin kendi urunu veya platformu hakkindaki iddialari birbirini
+  dogrulamaz.
+
+`publisher` daha muhafazakardir ve bagimsizligi asla sismez; vendor kendi
+kabiliyetini iddia ediyorsa bu granulerlik kullanilir. Farkli granulerlik kullanan
+analizlerin kokleri birbiriyle karsilastirilmaz.
+
+Portable destek yuzeyleri (`artifact.json` tasiyan, tek fikri puanlamayan analizler)
+`data/evidence.jsonl` uretmez; kaynak koklerini kendi veri dosyasindaki
+`source_roots` kaydinda tutar ve `granularity` alanini belirtir.
+
 ## 5. Bulunamayan Veri
 
 `status` degerleri:

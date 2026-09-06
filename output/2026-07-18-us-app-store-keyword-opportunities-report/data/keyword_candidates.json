@@ -25,6 +25,46 @@
       "competition_inverse": 20
     }
   },
+  "source_roots": {
+    "granularity": "document",
+    "note": "Each entry maps a source to the primary artifact it comes from; sources sharing a root are one source, not independent corroboration. Granularity is document-level: two listings by the same seller get separate roots because seller identity was not collected in this pass. Do not compare these roots with analyses that use publisher-level roots.",
+    "map": {
+      "https://apps.apple.com/us/app/before-and-after-compare-photo/id1500915148": "apple-before-after-1500915148",
+      "https://apps.apple.com/us/app/birthday-video/id1544604029": "apple-birthday-video-1544604029",
+      "https://apps.apple.com/us/app/colorize-color-to-old-photos/id1464665765": "apple-colorize-color-1464665765",
+      "https://apps.apple.com/us/app/compress-videos-resize-video/id1473857051": "apple-compress-videos-1473857051",
+      "https://apps.apple.com/us/app/hidden-camera-detector-peek/id1571925628": "apple-hidden-camera-1571925628",
+      "https://apps.apple.com/us/app/intolive-live-wallpapers/id1061859052": "apple-intolive-live-1061859052",
+      "https://apps.apple.com/us/app/motionleap-3d-photo-animator/id1381206010": "apple-motionleap-1381206010",
+      "https://apps.apple.com/us/app/passport-photo-id-photo/id917389447": "apple-passport-photo-917389447",
+      "https://apps.apple.com/us/app/photo-revive-ai-photo-restore/id6738237021": "apple-photo-revive-6738237021",
+      "https://apps.apple.com/us/app/photo-scan-app-by-photomyne/id1037784828": "apple-photo-scan-1037784828",
+      "https://apps.apple.com/us/app/photo-scanner-plus/id951627022": "apple-photo-scanner-951627022",
+      "https://apps.apple.com/us/app/photoroom-ai-photo-editor/id1455009060": "apple-photoroom-ai-1455009060",
+      "https://apps.apple.com/us/app/photoscan-by-google-photos/id1165525994": "apple-photoscan-by-1165525994",
+      "https://apps.apple.com/us/app/remini-ai-photo-enhancer/id1470373330": "apple-remini-ai-1470373330",
+      "https://apps.apple.com/us/app/slideshow-maker-photo-to-video/id924826256": "apple-slideshow-maker-924826256",
+      "https://apps.apple.com/us/app/slideshow-maker-video-photo/id1471839831": "apple-slideshow-maker-1471839831",
+      "https://apps.apple.com/us/app/watermark-maker-add-signature/id1160624432": "apple-watermark-maker-1160624432",
+      "https://developer.apple.com/documentation/technotes/tn3111-ios-wifi-api-overview": "apple-tn3111",
+      "https://developer.apple.com/documentation/technotes/tn3179-understanding-local-network-privacy": "apple-tn3179",
+      "https://itunes.apple.com/search?term=animate%20old%20photos&country=us&entity=software&limit=10": "Apple Search API",
+      "https://itunes.apple.com/search?term=background%20remover&country=us&entity=software&limit=10": "Apple Search API",
+      "https://itunes.apple.com/search?term=before%20after%20video&country=us&entity=software&limit=10": "Apple Search API",
+      "https://itunes.apple.com/search?term=birthday%20video%20maker&country=us&entity=software&limit=10": "Apple Search API",
+      "https://itunes.apple.com/search?term=hidden%20camera%20detector&country=us&entity=software&limit=10": "Apple Search API",
+      "https://itunes.apple.com/search?term=memorial%20slideshow&country=us&entity=software&limit=10": "Apple Search API",
+      "https://itunes.apple.com/search?term=old%20photo%20colorizer&country=us&entity=software&limit=10": "Apple Search API",
+      "https://itunes.apple.com/search?term=passport%20photo&country=us&entity=software&limit=10": "Apple Search API",
+      "https://itunes.apple.com/search?term=photo%20restoration&country=us&entity=software&limit=10": "Apple Search API",
+      "https://itunes.apple.com/search?term=photo%20scanner&country=us&entity=software&limit=10": "Apple Search API",
+      "https://itunes.apple.com/search?term=scan%20old%20photos&country=us&entity=software&limit=10": "Apple Search API",
+      "https://itunes.apple.com/search?term=slideshow%20maker&country=us&entity=software&limit=10": "Apple Search API",
+      "https://itunes.apple.com/search?term=video%20compressor&country=us&entity=software&limit=10": "Apple Search API",
+      "https://itunes.apple.com/search?term=video%20to%20live%20photo&country=us&entity=software&limit=10": "Apple Search API",
+      "https://travel.state.gov/content/travel/en/passports/how-apply/photos.html": "state-dept-passport-photo-requirements"
+    }
+  },
   "candidates": [
     {
       "rank": 1,

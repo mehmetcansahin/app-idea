@@ -128,3 +128,4 @@ Kullanıcının aradığı daha görsel/viral ürün sınıfına en yakın adayl
 - IAP listesi teklif mimarisini gösterir; satış miktarını göstermez.
 - `Search Popularity 1–5` ve paid search-term export gelmeden “yüksek hacim doğrulandı” denemez.
 - Bu rapor masa başı keyword taramasıdır; hiçbir aday için build izni değildir.
+- Kaynak bağımsızlığı `data/keyword_candidates.json` içindeki `source_roots` kaydında tutulur; granülerlik `document`. 14 farklı Apple Search API sorgusu tek kök sayılır, bağımsız 14 kaynak değildir.

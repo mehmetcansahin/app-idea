@@ -321,6 +321,7 @@ Bu sıra ürün geliştirme sırası değil, **en az para ve zamanda en çok bel
 - Bu çalışma formal Standard değildir; top-5 rakip başına stratified minimum review örneklemi tamamlanmadı.
 - Yalnız Before/After, Occasion Reel ve MemoryMotion için formal v4 Quick Scan vardır. Bunların skorları sırasıyla 42/60/80, 46/64/84 ve 48/66/86; üçü de `borderline`, Kanıt `C`, masa başı kararı `TESTE_DEGER`dir. Ham skor ürün sırası değildir.
 - Baseline/MDE bulunmayan insan testlerinin eşikleri exploratory/directional’dır. Sonuçlar evidence kayıtlarına işlenmeden hiçbir aday `BUILD_SMALL` alamaz.
+- Kaynak bağımsızlığı `data/candidate_analysis.json` içindeki `source_roots` kaydında tutulur; granülerlik `document`. Aynı satıcının iki listing'i ayrı kök alır, bu yüzden bu kökler publisher-level kök kullanan analizlerle karşılaştırılmaz.
 
 ## Destekleyici dosyalar
 
