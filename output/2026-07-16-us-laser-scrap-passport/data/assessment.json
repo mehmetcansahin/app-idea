@@ -1,0 +1,38 @@
+{
+  "methodology_version": "4.0",
+  "idea_id": "us-laser-scrap-passport",
+  "analysis_date": "2026-07-16",
+  "mode": "quick",
+  "stage": "desk_research",
+  "target_segment": "US iPhone-owning product-selling solo laser microbusinesses that retain at least thirty reusable sheet-material offcuts",
+  "target_geos": ["US"],
+  "primary_archetype": "b2b_prosumer",
+  "risk_modifiers": ["hardware_dependency"],
+  "dimensions": {
+    "problem_demand": {"low": 3, "base": 3, "high": 4, "claim_ids": ["claim-demand"]},
+    "monetization_economics": {"low": 2, "base": 3, "high": 3, "claim_ids": ["claim-economics"]},
+    "competitive_wedge": {"low": 2, "base": 3, "high": 3, "claim_ids": ["claim-wedge", "claim-usability"]},
+    "distribution_access": {"low": 3, "base": 3, "high": 3, "claim_ids": ["claim-distribution"]},
+    "repeat_value_retention": {"low": 3, "base": 3, "high": 3, "claim_ids": ["claim-retention"]},
+    "timing": {"low": 3, "base": 3, "high": 3, "claim_ids": ["claim-timing"]},
+    "liquidity_cold_start": null
+  },
+  "opportunity": {"low": 52, "base": 60, "high": 65, "classification": "borderline"},
+  "fatal_gates": [
+    {"code": "LEGAL_BLOCKED", "status": "clear", "evidence_ids": ["laser-scope-boundary"]},
+    {"code": "CORE_FEASIBILITY_BLOCKED", "status": "clear", "evidence_ids": ["laser-platform-offcuts", "laser-scope-boundary"]},
+    {"code": "PLATFORM_BLOCKED", "status": "clear", "evidence_ids": ["laser-platform-offcuts"]},
+    {"code": "SAFETY_ETHICS_BLOCKED", "status": "clear", "evidence_ids": ["laser-scope-boundary"]}
+  ],
+  "riskiest_assumptions": [
+    {"claim_id": "claim-usability", "category": "usability", "impact": 3, "uncertainty": 3, "claim_grade": "C", "product_specific_behavior": false, "disposition": "partial"},
+    {"claim_id": "claim-economics", "category": "business_viability", "impact": 3, "uncertainty": 3, "claim_grade": "C", "product_specific_behavior": false, "disposition": "partial"},
+    {"claim_id": "claim-wedge", "category": "value", "impact": 3, "uncertainty": 3, "claim_grade": "C", "product_specific_behavior": false, "disposition": "partial"}
+  ],
+  "overall_evidence_grade": "C",
+  "decision": "TESTE_DEGER",
+  "status": "PREBUILD_PENDING",
+  "next_test": "Concierge-catalog twenty scraps for each of eight makers with at least thirty offcuts, observe retrieval across three real jobs, and offer a clearly disclosed $19 refundable deposit",
+  "stopping_rule": "Stop if fewer than four deposit, fewer than five keep at least fifteen records current through three jobs, or fewer than four avoid a new sheet by retrieving a cataloged scrap; a pass advances only to a capture-friction and repeat-cycle test",
+  "post_mvp_result": null
+}

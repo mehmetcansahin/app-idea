@@ -1,0 +1,250 @@
+{
+  "surface": "report",
+  "manifest": {
+    "version": 1,
+    "surface": "report",
+    "title": "Tamamen Dijital Solo iOS Fikirleri — Karar Raporu",
+    "description": "ABD iPhone pazarı için fiziksel operasyon gerektirmeyen üç solo app fikrinin v4.0 Quick Scan karşılaştırması, fatal-gate kararı ve doğrulama sırası.",
+    "generatedAt": "2026-07-16T13:32:41+03:00",
+    "sources": [
+      {
+        "id": "score_scenarios",
+        "label": "Validated v4.0 opportunity-score scenarios",
+        "query": {
+          "description": "Low, base and high B2B/Prosumer weighted judgment scores from the three validated Quick Scan assessments.",
+          "executed_at": "2026-07-16T13:32:41+03:00",
+          "engine": "SQLite",
+          "language": "SQL",
+          "sql": "WITH scores(rank, idea, archetype, scenario, scenario_order, score, decision) AS (VALUES (1, 'Vertical Video Preflight', 'B2B / Prosumer', 'Low', 1, 52, 'TESTE_DEGER'), (1, 'Vertical Video Preflight', 'B2B / Prosumer', 'Base', 2, 63, 'TESTE_DEGER'), (1, 'Vertical Video Preflight', 'B2B / Prosumer', 'High', 3, 72, 'TESTE_DEGER'), (2, 'Shortcuts Payload Inspector', 'B2B / Prosumer', 'Low', 1, 43, 'TESTE_DEGER'), (2, 'Shortcuts Payload Inspector', 'B2B / Prosumer', 'Base', 2, 60, 'TESTE_DEGER'), (2, 'Shortcuts Payload Inspector', 'B2B / Prosumer', 'High', 3, 63, 'TESTE_DEGER'), (3, 'Voice Memo Archive', 'B2B / Prosumer', 'Low', 1, 52, 'BELIRSIZ'), (3, 'Voice Memo Archive', 'B2B / Prosumer', 'Base', 2, 66, 'BELIRSIZ'), (3, 'Voice Memo Archive', 'B2B / Prosumer', 'High', 3, 72, 'BELIRSIZ')) SELECT * FROM scores ORDER BY rank, scenario_order;",
+          "tables_used": [
+            "output/2026-07-16-us-vertical-video-preflight/data/assessment.json",
+            "output/2026-07-16-us-shortcuts-payload-inspector/data/assessment.json",
+            "output/2026-07-16-us-voice-memo-archive/data/assessment.json"
+          ],
+          "metric_definitions": [
+            "Opportunity score is the v4.0 B2B/Prosumer weighted sum of six 1–5 judgments, scaled to 0–100 and rounded half-up.",
+            "Low, base and high are evidence-bounded judgment scenarios, not forecasts, probabilities or statistical confidence intervals.",
+            "Fatal gates override score when assigning a desk decision."
+          ]
+        }
+      },
+      {
+        "id": "decision_summary",
+        "label": "Fatal-gate-aware candidate summary",
+        "query": {
+          "description": "Candidate order after fatal gates, evidence strength, score interval, founder constraints, and solo-operation burden.",
+          "executed_at": "2026-07-16T13:32:41+03:00",
+          "engine": "SQLite",
+          "language": "SQL",
+          "sql": "WITH decisions(rank, idea, gate_status, score_interval, evidence, desk_decision, solo_operations, next_action, main_risk) AS (VALUES (1, 'Vertical Video Preflight', 'all clear', '52 / 63 / 72', 'C', 'TESTE_DEGER', 'Medium', '12-editor behavior test', 'False positives and incumbent expansion'), (2, 'Shortcuts Payload Inspector', 'all clear', '43 / 60 / 63', 'C', 'TESTE_DEGER', 'Low', 'Native-substitute RAT', 'Built-in and free tools may be enough'), (3, 'Voice Memo Archive', 'core feasibility unknown', '52 / 66 / 72', 'C', 'BELIRSIZ', 'Low only after RAT', '50-file and 2 GB technical RAT', 'Nullable dates and extension batch limits')) SELECT * FROM decisions ORDER BY rank;",
+          "tables_used": [
+            "three validated Quick Scan assessments",
+            "methodology/scoring-model.md",
+            "output/2026-07-16-us-digital-solo-app-ideas-compare.md"
+          ],
+          "metric_definitions": [
+            "Candidate rank applies fatal-gate status before raw score.",
+            "TESTE_DEGER and BELIRSIZ are desk decisions; neither authorizes a build."
+          ]
+        }
+      },
+      {
+        "id": "test_contracts",
+        "label": "Exploratory uncertainty-reduction contracts",
+        "query": {
+          "description": "The cheapest next action, pass threshold, payment behavior, and fail action for each idea.",
+          "executed_at": "2026-07-16T13:32:41+03:00",
+          "engine": "SQLite",
+          "language": "SQL",
+          "sql": "WITH tests(rank, idea, sample_target, first_action, payment_offer, pass_gate, fail_action) AS (VALUES (1, 'Voice Memo Archive', '50 memos plus 2 GB batch', 'Metadata and resume technical RAT', '$9.99 refundable preorder only after technical pass', '>=95% correct date coverage, 0 wrong dates, 100% missing flags, lossless resume', 'ELENDIR if any core threshold fails'), (2, 'Vertical Video Preflight', '12 editors and >=60 videos', 'Accuracy plus repeat-use test', '$9.99 refundable preorder', '>=90% controlled-issue recall, <=10% false critical, 6 repeats, 4 preorders', 'Stop if any behavioral threshold fails'), (3, 'Shortcuts Payload Inspector', '10 power users', 'Native/free benchmark comparison', '$4.99 refundable preorder', '6 novel useful findings, 5 repeat sessions, 4 preorders', 'Park if native tools are sufficient')) SELECT * FROM tests ORDER BY rank;",
+          "tables_used": [
+            "methodology/pre-build-validation.md",
+            "three validated Quick Scan reports"
+          ],
+          "metric_definitions": [
+            "Thresholds are exploratory because baseline and MDE are unavailable; they are directional and cannot by themselves authorize BUILD_SMALL.",
+            "A refundable preorder counts only when the unbuilt status and refund terms are explicitly disclosed."
+          ]
+        }
+      },
+      {"id": "memo_problem", "label": "Voice Memos metadata-loss report", "href": "https://www.reddit.com/r/iphone/comments/1tg52vy/metadata_is_no_longer_preserved_when_saving_to/"},
+      {"id": "apple_extension_limits", "label": "Apple app-extension performance guidance", "href": "https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/ExtensionCreation.html"},
+      {"id": "aurloom", "label": "Aurloom audio archive — US App Store", "href": "https://apps.apple.com/us/app/aurloom-audio-archive/id6762100529"},
+      {"id": "clip_problem", "label": "Shorts mobile UI covering desktop-positioned captions", "href": "https://www.reddit.com/r/NewTubers/comments/1tei9ym/what_do_yall_use_to_make_sure_your_shorts/"},
+      {"id": "previewly", "label": "Previewly safe-zone app — US App Store", "href": "https://apps.apple.com/us/app/previewly-video-safe-zone/id6748048131"},
+      {"id": "codec_audit", "label": "CodecAudit media inspector — US App Store", "href": "https://apps.apple.com/us/app/codecaudit-media-metadata/id6759266682"},
+      {"id": "shortcuts_problem", "label": "Shortcuts input-type inconsistency report", "href": "https://www.reddit.com/r/shortcuts/comments/1bd4mis"},
+      {"id": "logger", "label": "Logger for Shortcuts — US App Store", "href": "https://apps.apple.com/us/app/logger-for-shortcuts/id1611554653"},
+      {"id": "actions", "label": "Actions — US App Store", "href": "https://apps.apple.com/us/app/actions/id1586435171"}
+    ],
+    "charts": [
+      {
+        "id": "opportunity_scenarios",
+        "title": "Fırsat skoru senaryoları",
+        "subtitle": "Voice Memo'nun base skoru yüksek olsa da core gate unknown; hiçbir sütun build izni değildir",
+        "intent": "comparison",
+        "question": "Aynı B2B/Prosumer ağırlıklarıyla low, base ve high değerlendirmeler nasıl ayrışıyor?",
+        "rationale": "Üç fikrin skor aralığını gösterir; fatal-gate durumunu açıklama metni ve karar tablosuyla birlikte okumak gerekir.",
+        "type": "bar",
+        "dataset": "scores_long",
+        "sourceId": "score_scenarios",
+        "encodings": {
+          "x": {"field": "idea", "type": "nominal", "label": "Fikir"},
+          "y": {"field": "score", "type": "quantitative", "format": "number", "label": "Fırsat skoru"},
+          "color": {"field": "scenario", "type": "nominal", "label": "Senaryo"},
+          "tooltip": [
+            {"field": "archetype", "type": "text", "label": "Arketip"},
+            {"field": "scenario", "type": "text", "label": "Senaryo"},
+            {"field": "score", "type": "quantitative", "format": "number", "label": "Skor"},
+            {"field": "decision", "type": "text", "label": "Desk kararı"}
+          ]
+        },
+        "settings": {"orientation": "vertical", "groupMode": "grouped", "showValues": true, "categoryLabelPolicy": "wrap"},
+        "legend": {"position": "bottom", "title": "Senaryo"},
+        "layout": "full",
+        "labels": {"values": "all"},
+        "palette": {"kind": "categorical", "name": "tableau10"},
+        "surface": {"surface": "card", "showControls": false, "viewMode": "visualization"}
+      }
+    ],
+    "tables": [
+      {
+        "id": "decision_table",
+        "title": "Gate-aware ürün adayları",
+        "subtitle": "Sıra ham skor değil; fatal gate, kanıt ve solo işletme yükünü birlikte kullanır.",
+        "dataset": "decisions",
+        "sourceId": "decision_summary",
+        "defaultSort": {"field": "rank", "direction": "asc"},
+        "density": "dense",
+        "layout": "full",
+        "columns": [
+          {"field": "rank", "label": "Sıra", "format": "number"},
+          {"field": "idea", "label": "Fikir", "type": "text"},
+          {"field": "gate_status", "label": "Fatal gate", "type": "text"},
+          {"field": "score_interval", "label": "Low / Base / High", "type": "text"},
+          {"field": "desk_decision", "label": "Desk kararı", "type": "text"},
+          {"field": "solo_operations", "label": "Solo operasyon", "type": "text"},
+          {"field": "main_risk", "label": "Killer risk", "type": "text"}
+        ]
+      },
+      {
+        "id": "test_table",
+        "title": "Önerilen öğrenme sırası",
+        "subtitle": "Ürün sırasından farklıdır: en ucuz belirsizlik azaltma aksiyonu önce gelir.",
+        "dataset": "tests",
+        "sourceId": "test_contracts",
+        "defaultSort": {"field": "rank", "direction": "asc"},
+        "density": "dense",
+        "layout": "full",
+        "columns": [
+          {"field": "rank", "label": "Aksiyon", "format": "number"},
+          {"field": "idea", "label": "Fikir", "type": "text"},
+          {"field": "sample_target", "label": "Örneklem", "type": "text"},
+          {"field": "first_action", "label": "İlk iş", "type": "text"},
+          {"field": "payment_offer", "label": "Ödeme testi", "type": "text"},
+          {"field": "pass_gate", "label": "Exploratory geçiş", "type": "text"},
+          {"field": "fail_action", "label": "Fail aksiyonu", "type": "text"}
+        ]
+      }
+    ],
+    "blocks": [
+      {"id": "title", "type": "markdown", "body": "# Tamamen Dijital Solo iOS Fikirleri — Karar Raporu"},
+      {
+        "id": "executive_summary",
+        "type": "markdown",
+        "body": "## Executive Summary\n\nTeknik gate'i bugün açık olan en güçlü aday **Vertical Video Preflight**; fakat sıradan safe-zone app değil, cihaz içi final-export lint olarak test edilmeli. **Voice Memo Archive** daha çekici bir mikro-utility olabilir ancak nullable tarih metadata'sı ve büyük Share Extension batch'i yüzünden `BELIRSIZ`; ilk yapılacak en ucuz iş 1–2 günlük teknik RAT'tır. **Shortcuts Payload Inspector** en küçük build olsa da native ve ücretsiz ikameler nedeniyle üçüncü sıradadır. Hiçbiri bugün tam MVP build izni almıyor.",
+        "sourceId": "decision_summary"
+      },
+      {
+        "id": "founder_constraint",
+        "type": "markdown",
+        "body": "## Kurucu filtresi\n\nShortlist yalnız tamamen dijital ürünlerden oluşur: inventory, saha hizmeti, hardware, marketplace, community moderation, scraping, zorunlu backend ve yüksek AI variable cost yok. MVP sınırı en fazla dört core ekran, üç ana özellik ve 6–8 haftadır. Önceki Quilt/Resin/Laser fikirleri fiziksel workflow'a bağlı olduğu için bu yeni founder constraint'i açısından supersede edilmiştir."
+      },
+      {"id": "decision_table_block", "type": "table", "tableId": "decision_table", "layout": "full"},
+      {
+        "id": "score_explanation",
+        "type": "markdown",
+        "body": "## Skor ve fatal gate\n\nÜç fikir aynı B2B/Prosumer ağırlıklarıyla hesaplandı. Buna rağmen Voice Memo'nun 66 base skoru onu birinci yapmaz: core feasibility `unknown` olduğu için v4.0 karar matrisi `BELIRSIZ` üretir. Diğer iki adayın tüm fatal gate'leri clear, fakat low skorları 60'ın altında ve genel kanıt C olduğu için yalnız `TESTE_DEGER`dir.",
+        "sourceId": "score_scenarios"
+      },
+      {"id": "score_chart_block", "type": "chart", "chartId": "opportunity_scenarios", "layout": "full"},
+      {
+        "id": "clip_detail",
+        "type": "markdown",
+        "body": "## 1. Vertical Video Preflight\n\nFinal MP4/MOV dosyasını Share Sheet'ten alır; codec/resolution/audio specs, black/freeze/silence ve OCR safe-zone risklerini cihazda tarar. [Güncel Shorts vakası](https://www.reddit.com/r/NewTubers/comments/1tei9ym/what_do_yall_use_to_make_sure_your_shorts/) desktop'ta yerleştirilen caption'ın mobile UI altında kaldığını gösteriyor. [Previewly](https://apps.apple.com/us/app/previewly-video-safe-zone/id6748048131) generic safe-zone'u, [CodecAudit](https://apps.apple.com/us/app/codecaudit-media-metadata/id6759266682) metadata inspection'ı zaten yapıyor; wedge tek local publish gate ve düşük false-positive oranıdır.",
+        "sourceId": "clip_problem"
+      },
+      {
+        "id": "input_detail",
+        "type": "markdown",
+        "body": "## 2. Shortcuts Payload Inspector\n\nPhotos, Safari ve Files tarafından aynı item için sunulan UTI/MIME/file representations'ını karşılaştırır ve sanitized debug report üretir. [Ayrıntılı kullanıcı vakası](https://www.reddit.com/r/shortcuts/comments/1bd4mis) aynı içeriğin farklı tiplerde geldiğini gösteriyor. Fakat [Actions](https://apps.apple.com/us/app/actions/id1586435171) ücretsiz Get UTI sunuyor ve [Logger](https://apps.apple.com/us/app/logger-for-shortcuts/id1611554653) established paid incumbent; prototype native/free benchmark'tan yeni bilgi üretmezse fikir park edilmelidir.",
+        "sourceId": "shortcuts_problem"
+      },
+      {
+        "id": "memo_detail",
+        "type": "markdown",
+        "body": "## 3. Voice Memo Archive\n\nApple Voice Memos seçimini original audio, date-aware filename, CSV/JSON ve checksum receipt olarak dışa aktarır; missing metadata'yı uydurmaz. [2026 kullanıcı raporu](https://www.reddit.com/r/iphone/comments/1tg52vy/metadata_is_no_longer_preserved_when_saving_to/) gigabaytlarca memo için tarih koruma problemi gösteriyor. Yakın [Aurloom](https://apps.apple.com/us/app/aurloom-audio-archive/id6762100529) audio archive/import sunuyor. Apple extension'ların düşük memory limitleri nedeniyle 2 GB batch ve gerçek tarih kapsaması teknik RAT ile kapanmadan ürün geliştirilemez.",
+        "sourceId": "memo_problem"
+      },
+      {
+        "id": "research_order",
+        "type": "markdown",
+        "body": "## Bir sonraki gerçek kapı\n\nÜrün aday sırası ile araştırma aksiyon sırası aynı değildir. Önce Voice Memo'nun ucuz teknik RAT'ı çalışır; geçerse payment testine, kalırsa doğrudan ClipLint corpus + repeat-use testine gidilir. InputScope yalnız Shortcuts power-user erişimi ucuzsa üçüncü testtir. Refundable preorder, ürünün henüz hazır olmadığı ve refund koşulları açıkça belirtilerek alınmalıdır.",
+        "sourceId": "test_contracts"
+      },
+      {"id": "test_table_block", "type": "table", "tableId": "test_table", "layout": "full"},
+      {
+        "id": "eliminations",
+        "type": "markdown",
+        "body": "## Bilerek elenen alanlar\n\nGeneric screenshot redaction, image/PDF diff, generic safe-zone preview, App Store screenshot/localization, return-window tracker, voice transcription/summarization, generic Shortcuts logger, screen-recording scrub ve subtitle QC alanlarında exact veya çok yakın ürünler bulundu. Marketplace, community, physical-service workflow, inventory ve hardware fikirleri kurucu sınırına uymadığı için yeniden değerlendirilmedi."
+      },
+      {
+        "id": "limitations",
+        "type": "markdown",
+        "body": "## Kanıt sınırları\n\nApp Store fiyat ve rating'leri revenue veya retention değildir. Community kaynakları self-selected'dır. Seller sayfaları satış kanıtı değildir. Exact ürün bulunamaması pazar boşluğu kanıtı değildir. Low/base/high skorlar başarı olasılığı değildir. Bu çalışma tutulacak app garantisi vermez; en ucuz biçimde yanlışlanabilecek hipotezleri sıralar."
+      }
+    ]
+  },
+  "snapshot": {
+    "version": 1,
+    "generatedAt": "2026-07-16T13:32:41+03:00",
+    "status": "ready",
+    "datasets": {
+      "scores_long": [
+        {"rank": 1, "idea": "Vertical Video Preflight", "archetype": "B2B / Prosumer", "scenario": "Low", "scenario_order": 1, "score": 52, "decision": "TESTE_DEGER"},
+        {"rank": 1, "idea": "Vertical Video Preflight", "archetype": "B2B / Prosumer", "scenario": "Base", "scenario_order": 2, "score": 63, "decision": "TESTE_DEGER"},
+        {"rank": 1, "idea": "Vertical Video Preflight", "archetype": "B2B / Prosumer", "scenario": "High", "scenario_order": 3, "score": 72, "decision": "TESTE_DEGER"},
+        {"rank": 2, "idea": "Shortcuts Payload Inspector", "archetype": "B2B / Prosumer", "scenario": "Low", "scenario_order": 1, "score": 43, "decision": "TESTE_DEGER"},
+        {"rank": 2, "idea": "Shortcuts Payload Inspector", "archetype": "B2B / Prosumer", "scenario": "Base", "scenario_order": 2, "score": 60, "decision": "TESTE_DEGER"},
+        {"rank": 2, "idea": "Shortcuts Payload Inspector", "archetype": "B2B / Prosumer", "scenario": "High", "scenario_order": 3, "score": 63, "decision": "TESTE_DEGER"},
+        {"rank": 3, "idea": "Voice Memo Archive", "archetype": "B2B / Prosumer", "scenario": "Low", "scenario_order": 1, "score": 52, "decision": "BELIRSIZ"},
+        {"rank": 3, "idea": "Voice Memo Archive", "archetype": "B2B / Prosumer", "scenario": "Base", "scenario_order": 2, "score": 66, "decision": "BELIRSIZ"},
+        {"rank": 3, "idea": "Voice Memo Archive", "archetype": "B2B / Prosumer", "scenario": "High", "scenario_order": 3, "score": 72, "decision": "BELIRSIZ"}
+      ],
+      "decisions": [
+        {"rank": 1, "idea": "Vertical Video Preflight", "gate_status": "all clear", "score_interval": "52 / 63 / 72", "evidence": "C", "desk_decision": "TESTE_DEGER", "solo_operations": "Medium", "next_action": "12-editor behavior test", "main_risk": "False positives and incumbent expansion"},
+        {"rank": 2, "idea": "Shortcuts Payload Inspector", "gate_status": "all clear", "score_interval": "43 / 60 / 63", "evidence": "C", "desk_decision": "TESTE_DEGER", "solo_operations": "Low", "next_action": "Native-substitute RAT", "main_risk": "Built-in and free tools may be enough"},
+        {"rank": 3, "idea": "Voice Memo Archive", "gate_status": "core feasibility unknown", "score_interval": "52 / 66 / 72", "evidence": "C", "desk_decision": "BELIRSIZ", "solo_operations": "Low only after RAT", "next_action": "50-file and 2 GB technical RAT", "main_risk": "Nullable dates and extension batch limits"}
+      ],
+      "tests": [
+        {"rank": 1, "idea": "Voice Memo Archive", "sample_target": "50 memos plus 2 GB batch", "first_action": "Metadata and resume technical RAT", "payment_offer": "$9.99 refundable preorder only after technical pass", "pass_gate": ">=95% correct date coverage, 0 wrong dates, 100% missing flags, lossless resume", "fail_action": "ELENDIR if any core threshold fails"},
+        {"rank": 2, "idea": "Vertical Video Preflight", "sample_target": "12 editors and >=60 videos", "first_action": "Accuracy plus repeat-use test", "payment_offer": "$9.99 refundable preorder", "pass_gate": ">=90% controlled-issue recall, <=10% false critical, 6 repeats, 4 preorders", "fail_action": "Stop if any behavioral threshold fails"},
+        {"rank": 3, "idea": "Shortcuts Payload Inspector", "sample_target": "10 power users", "first_action": "Native/free benchmark comparison", "payment_offer": "$4.99 refundable preorder", "pass_gate": "6 novel useful findings, 5 repeat sessions, 4 preorders", "fail_action": "Park if native tools are sufficient"}
+      ]
+    }
+  },
+  "sources": [
+    {"id": "score_scenarios", "label": "Validated v4.0 opportunity-score scenarios", "query": {"description": "Scores from three validated Quick Scan assessments.", "executed_at": "2026-07-16T13:32:41+03:00", "engine": "SQLite", "language": "SQL", "sql": "WITH scores(rank, idea, scenario, score) AS (VALUES (1, 'Vertical Video Preflight', 'Low', 52), (1, 'Vertical Video Preflight', 'Base', 63), (1, 'Vertical Video Preflight', 'High', 72), (2, 'Shortcuts Payload Inspector', 'Low', 43), (2, 'Shortcuts Payload Inspector', 'Base', 60), (2, 'Shortcuts Payload Inspector', 'High', 63), (3, 'Voice Memo Archive', 'Low', 52), (3, 'Voice Memo Archive', 'Base', 66), (3, 'Voice Memo Archive', 'High', 72)) SELECT * FROM scores ORDER BY rank;", "tables_used": ["three validated assessment.json files"], "metric_definitions": ["Scores are evidence-bounded judgments, not forecasts."]}},
+    {"id": "decision_summary", "label": "Fatal-gate-aware candidate summary", "query": {"description": "Candidate order after gate and founder constraints.", "executed_at": "2026-07-16T13:32:41+03:00", "engine": "SQLite", "language": "SQL", "sql": "WITH decisions(rank, idea, decision) AS (VALUES (1, 'Vertical Video Preflight', 'TESTE_DEGER'), (2, 'Shortcuts Payload Inspector', 'TESTE_DEGER'), (3, 'Voice Memo Archive', 'BELIRSIZ')) SELECT * FROM decisions ORDER BY rank;", "tables_used": ["three validated Quick Scan assessments"], "metric_definitions": ["Fatal gates override raw score."]}},
+    {"id": "test_contracts", "label": "Exploratory uncertainty-reduction contracts", "query": {"description": "Next tests and stopping rules.", "executed_at": "2026-07-16T13:32:41+03:00", "engine": "SQLite", "language": "SQL", "sql": "WITH tests(rank, idea, action) AS (VALUES (1, 'Voice Memo Archive', 'technical RAT'), (2, 'Vertical Video Preflight', 'behavior test'), (3, 'Shortcuts Payload Inspector', 'native benchmark')) SELECT * FROM tests ORDER BY rank;", "tables_used": ["three validated Quick Scan reports"], "metric_definitions": ["Thresholds are exploratory, not population estimates."]}},
+    {"id": "memo_problem", "label": "Voice Memos metadata-loss report", "href": "https://www.reddit.com/r/iphone/comments/1tg52vy/metadata_is_no_longer_preserved_when_saving_to/"},
+    {"id": "apple_extension_limits", "label": "Apple app-extension performance guidance", "href": "https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/ExtensionCreation.html"},
+    {"id": "aurloom", "label": "Aurloom audio archive — US App Store", "href": "https://apps.apple.com/us/app/aurloom-audio-archive/id6762100529"},
+    {"id": "clip_problem", "label": "Shorts mobile UI covering desktop-positioned captions", "href": "https://www.reddit.com/r/NewTubers/comments/1tei9ym/what_do_yall_use_to_make_sure_your_shorts/"},
+    {"id": "previewly", "label": "Previewly safe-zone app — US App Store", "href": "https://apps.apple.com/us/app/previewly-video-safe-zone/id6748048131"},
+    {"id": "codec_audit", "label": "CodecAudit media inspector — US App Store", "href": "https://apps.apple.com/us/app/codecaudit-media-metadata/id6759266682"},
+    {"id": "shortcuts_problem", "label": "Shortcuts input-type inconsistency report", "href": "https://www.reddit.com/r/shortcuts/comments/1bd4mis"},
+    {"id": "logger", "label": "Logger for Shortcuts — US App Store", "href": "https://apps.apple.com/us/app/logger-for-shortcuts/id1611554653"},
+    {"id": "actions", "label": "Actions — US App Store", "href": "https://apps.apple.com/us/app/actions/id1586435171"}
+  ]
+}

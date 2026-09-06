@@ -1,0 +1,310 @@
+{
+  "surface": "report",
+  "manifest": {
+    "version": 1,
+    "surface": "report",
+    "title": "Tek Geliştirici için ABD iOS Fikirleri — Karar Raporu",
+    "description": "Üç dar mobile-native fikir için v4.0 Quick karşılaştırma, solo-scope ve gerçek davranış testi sırası.",
+    "generatedAt": "2026-07-16T10:57:52+03:00",
+    "sources": [
+      {
+        "id": "score_scenarios",
+        "label": "Validated v4.0 opportunity-score scenarios",
+        "query": {
+          "description": "Low, base and high archetype-weighted judgment scores from the three validated Quick Scan assessments.",
+          "executed_at": "2026-07-16T10:57:52+03:00",
+          "engine": "SQLite",
+          "language": "SQL",
+          "sql": "WITH scores(rank, idea, archetype, scenario, scenario_order, score, decision) AS (VALUES (1, 'Quilt Layout Lock', 'Consumer Utility', 'Low', 1, 54, 'TESTE_DEGER'), (1, 'Quilt Layout Lock', 'Consumer Utility', 'Base', 2, 65, 'TESTE_DEGER'), (1, 'Quilt Layout Lock', 'Consumer Utility', 'High', 3, 65, 'TESTE_DEGER'), (2, 'Resin Calibration Ladder', 'Consumer Utility', 'Low', 1, 56, 'TESTE_DEGER'), (2, 'Resin Calibration Ladder', 'Consumer Utility', 'Base', 2, 65, 'TESTE_DEGER'), (2, 'Resin Calibration Ladder', 'Consumer Utility', 'High', 3, 65, 'TESTE_DEGER'), (3, 'Laser Scrap Passport', 'B2B / Prosumer', 'Low', 1, 52, 'TESTE_DEGER'), (3, 'Laser Scrap Passport', 'B2B / Prosumer', 'Base', 2, 60, 'TESTE_DEGER'), (3, 'Laser Scrap Passport', 'B2B / Prosumer', 'High', 3, 65, 'TESTE_DEGER')) SELECT * FROM scores ORDER BY rank, scenario_order;",
+          "tables_used": [
+            "output/2026-07-16-us-quilt-layout-lock/data/assessment.json",
+            "output/2026-07-16-us-resin-calibration-ladder/data/assessment.json",
+            "output/2026-07-16-us-laser-scrap-passport/data/assessment.json"
+          ],
+          "metric_definitions": [
+            "Opportunity score is the v4.0 archetype-specific weighted sum of six 1–5 judgments, scaled to 0–100 and rounded half-up.",
+            "Low, base and high are evidence-bounded judgment scenarios, not forecasts, probabilities or statistical confidence intervals.",
+            "Different archetypes are not ranked by raw score alone."
+          ]
+        }
+      },
+      {
+        "id": "decision_summary",
+        "label": "Cross-report decision summary",
+        "query": {
+          "description": "Test order after fatal gates, evidence strength, score interval, test cost and solo-operation constraints.",
+          "executed_at": "2026-07-16T10:57:52+03:00",
+          "engine": "SQLite",
+          "language": "SQL",
+          "sql": "WITH decisions(rank, idea, archetype, score_interval, evidence, desk_decision, next_action, main_risk) AS (VALUES (1, 'Quilt Layout Lock', 'Consumer Utility', '54 / 65 / 65', 'C', 'TESTE_DEGER', 'TEST FIRST', 'Normal photo and labels may be enough'), (2, 'Resin Calibration Ladder', 'Consumer Utility', '56 / 65 / 65', 'C', 'TESTE_DEGER', 'TEST SECOND', 'Logging friction and free profiles'), (3, 'Laser Scrap Passport', 'B2B / Prosumer', '52 / 60 / 65', 'C', 'TESTE_DEGER', 'TEST THIRD', 'Cataloging cost and xTool expansion')) SELECT * FROM decisions ORDER BY rank;",
+          "tables_used": [
+            "three validated Quick Scan assessments",
+            "methodology/scoring-model.md",
+            "output/2026-07-16-us-solo-buildable-app-ideas-compare.md"
+          ],
+          "metric_definitions": [
+            "Portfolio order is gate then evidence then interval then top-risk test cost then founder constraints; it is not a raw-score sort.",
+            "All three desk decisions remain TESTE_DEGER and PREBUILD_PENDING."
+          ]
+        }
+      },
+      {
+        "id": "test_contracts",
+        "label": "Exploratory pre-build behavior-test contracts",
+        "query": {
+          "description": "Clearly disclosed refundable-payment tests coupled to real task completion for each idea.",
+          "executed_at": "2026-07-16T10:57:52+03:00",
+          "engine": "SQLite",
+          "language": "SQL",
+          "sql": "WITH tests(rank, idea, sample_target, offer, observed_cycles, pass_gate, fail_action) AS (VALUES (1, 'Quilt Layout Lock', '8 active quilters', '$9.99 refundable deposit', '1 real assembly plus second-cycle follow-up', '4 deposits and 3 real errors caught or prevented', 'Park if either threshold fails'), (2, 'Resin Calibration Ladder', '10 calibrating users', '$14.99 refundable pre-order', '2 real calibration cycles', '5 pre-orders, 6 two-cycle completions and 4 history reopens', 'Stop if any threshold fails'), (3, 'Laser Scrap Passport', '8 product-selling microbusinesses', '$19 refundable deposit', '20 scraps and 3 real jobs each', '4 deposits, 5 maintained catalogs and 4 avoided new sheets', 'Stop if any threshold fails')) SELECT * FROM tests ORDER BY rank;",
+          "tables_used": [
+            "methodology/pre-build-validation.md",
+            "three validated Quick Scan reports"
+          ],
+          "metric_definitions": [
+            "Thresholds are exploratory because baseline and MDE are unavailable; results are directional and cannot by themselves authorize BUILD_SMALL.",
+            "A deposit counts only when the product is disclosed as unbuilt and refund terms are explicit."
+          ]
+        }
+      },
+      {
+        "id": "quilt_problem",
+        "label": "Quilting block-order workaround discussion",
+        "href": "https://www.reddit.com/r/quilting/comments/1342d91"
+      },
+      {
+        "id": "chitubox_settings",
+        "label": "CHITUBOX print-settings documentation",
+        "href": "https://docs.chitubox.com/en-US/chitubox/latest/configure-print-settings"
+      },
+      {
+        "id": "laser_problem",
+        "label": "Laser-cutting scrap organization discussion",
+        "href": "https://www.reddit.com/r/lasercutting/comments/15z9v06"
+      },
+      {
+        "id": "xtool_nesting",
+        "label": "xTool Smart Nesting support article",
+        "href": "https://support.xtool.com/article/3481"
+      }
+    ],
+    "charts": [
+      {
+        "id": "opportunity_scenarios",
+        "title": "Fırsat skoru senaryoları",
+        "subtitle": "Üç adayın da alt sınırı 60'ın altında; masa başı araştırması build izni vermiyor",
+        "intent": "comparison",
+        "question": "Kanıtla sınırlandırılmış low, base ve high değerlendirmeler ne kadar ayrışıyor?",
+        "rationale": "Üç fikrin belirsizlik aralığını gösterir; farklı arketipleri ham skorla sıralamak için kullanılmaz.",
+        "type": "bar",
+        "dataset": "scores_long",
+        "sourceId": "score_scenarios",
+        "encodings": {
+          "x": {"field": "idea", "type": "nominal", "label": "Fikir"},
+          "y": {"field": "score", "type": "quantitative", "format": "number", "label": "Fırsat skoru"},
+          "color": {"field": "scenario", "type": "nominal", "label": "Senaryo"},
+          "tooltip": [
+            {"field": "archetype", "type": "text", "label": "Arketip"},
+            {"field": "scenario", "type": "text", "label": "Senaryo"},
+            {"field": "score", "type": "quantitative", "format": "number", "label": "Skor"},
+            {"field": "decision", "type": "text", "label": "Masa başı karar"}
+          ]
+        },
+        "settings": {"orientation": "vertical", "groupMode": "grouped", "showValues": true, "categoryLabelPolicy": "wrap"},
+        "legend": {"position": "bottom", "title": "Senaryo"},
+        "layout": "full",
+        "labels": {"values": "all"},
+        "palette": {"kind": "categorical", "name": "tableau10"},
+        "surface": {"surface": "card", "showControls": false, "viewMode": "visualization"}
+      }
+    ],
+    "tables": [
+      {
+        "id": "decision_table",
+        "title": "Test önceliği ve karar",
+        "subtitle": "Sıra, ham skor değil test maliyeti ve solo riskleri de içerir.",
+        "dataset": "decisions",
+        "sourceId": "decision_summary",
+        "defaultSort": {"field": "rank", "direction": "asc"},
+        "density": "dense",
+        "layout": "full",
+        "columns": [
+          {"field": "rank", "label": "Sıra", "format": "number"},
+          {"field": "idea", "label": "Fikir", "type": "text"},
+          {"field": "archetype", "label": "Arketip", "type": "text"},
+          {"field": "score_interval", "label": "Low / Base / High", "type": "text"},
+          {"field": "next_action", "label": "Sonraki aksiyon", "type": "text"},
+          {"field": "main_risk", "label": "Killer risk", "type": "text"}
+        ]
+      },
+      {
+        "id": "test_table",
+        "title": "Önerilen gerçek davranış testleri",
+        "subtitle": "Ödeme, gerçek görev ve durdurma kuralı aynı sözleşmede ölçülür.",
+        "dataset": "tests",
+        "sourceId": "test_contracts",
+        "defaultSort": {"field": "rank", "direction": "asc"},
+        "density": "dense",
+        "layout": "full",
+        "columns": [
+          {"field": "rank", "label": "Sıra", "format": "number"},
+          {"field": "idea", "label": "Fikir", "type": "text"},
+          {"field": "sample_target", "label": "Örneklem", "type": "text"},
+          {"field": "offer", "label": "Gerçek teklif", "type": "text"},
+          {"field": "pass_gate", "label": "Exploratory ilerleme eşiği", "type": "text"},
+          {"field": "fail_action", "label": "Fail aksiyonu", "type": "text"}
+        ]
+      }
+    ],
+    "blocks": [
+      {
+        "id": "title",
+        "type": "markdown",
+        "body": "# Tek Geliştirici için ABD iOS Fikirleri — Karar Raporu"
+      },
+      {
+        "id": "executive_summary",
+        "type": "markdown",
+        "body": "## Yönetici özeti\n\nİlk test tercihi **Quilt Layout Lock**; ikinci **Resin Calibration Ladder**, üçüncü **Laser Scrap Passport**. Quilt, donanım bağımlılığı taşımayan en küçük MVP ve en ucuz karşılaştırmalı test olduğu için önce geliyor. Üç aday da Kanıt Gücü C, `TESTE_DEGER` ve `PREBUILD_PENDING`; bugün ürün geliştirmeye başlamak metodolojiye aykırı olur.",
+        "sourceId": "decision_summary"
+      },
+      {
+        "id": "decision_note",
+        "type": "markdown",
+        "body": "## Neden ham skor sırası değil?\n\nResin'in low skoru Quilt'ten iki puan yüksek olsa da kamera anı ile ücretsiz fotoğraf ikamesi arasındaki fark tek assembly görevinde ölçülebilir. Resin iki calibration döngüsü ve donanım bağlamı ister. Laser farklı arketip ağırlıkları kullanır ve xTool platform riski taşır. Bu yüzden sıra gate, kanıt, belirsizlik, test maliyeti ve solo operasyon yükünün birlikte değerlendirilmesidir.",
+        "sourceId": "decision_summary"
+      },
+      {
+        "id": "decision_table_block",
+        "type": "table",
+        "tableId": "decision_table",
+        "layout": "full"
+      },
+      {
+        "id": "chart_explanation",
+        "type": "markdown",
+        "body": "## Skor belirsizliği\n\nGrouped bar görünümü her fikrin low/base/high yargı senaryosunu gösterir. Tüm alt sınırlar 60'ın altında kaldığı için hiçbiri `TEST_ONCELIKLI` değildir. Laser'ın B2B/Prosumer skoru Consumer Utility skorlarıyla tek başına sıralama gerekçesi olarak kullanılmamalıdır.",
+        "sourceId": "score_scenarios"
+      },
+      {
+        "id": "score_chart_block",
+        "type": "chart",
+        "chartId": "opportunity_scenarios",
+        "layout": "full"
+      },
+      {
+        "id": "quilt_detail",
+        "type": "markdown",
+        "body": "## 1. Quilt Layout Lock\n\nFiziksel quilt blokları doğru dizildikten sonra referans fotoğrafına grid/yön işareti ekler, canlı kamerada yarı saydam overlay gösterir ve satır checklist'i tutar. [Quilter'ların fotoğraf, tape ve label workaround'ları](https://www.reddit.com/r/quilting/comments/1342d91) problem sinyalidir; ürün talebi değildir. V1 dört ekran ve üç özellikle, AI/CV olmadan yapılabilir. Killer risk, normal fotoğraf ve Post-it'in yeterli olmasıdır.",
+        "sourceId": "quilt_problem"
+      },
+      {
+        "id": "resin_detail",
+        "type": "markdown",
+        "body": "## 2. Resin Calibration Ladder\n\nPrinter/resin çifti için deneme fotoğrafı, kullanıcı-onaylı ayar, sınırlı failure taxonomy ve A/B winning-profile geçmişi tutar. [CHITUBOX dokümanı](https://docs.chitubox.com/en-US/chitubox/latest/configure-print-settings) calibration ihtiyacını destekler; uygulamaya ödeme isteğini kanıtlamaz. V1 printer kontrolü veya doğru exposure önerisi vermez. Killer risk, kayıt sürtünmesinin ücretsiz community profile'larından daha pahalı gelmesidir.",
+        "sourceId": "chitubox_settings"
+      },
+      {
+        "id": "laser_detail",
+        "type": "markdown",
+        "body": "## 3. Laser Scrap Passport\n\nÜrün satan solo laser mikro-işletmeleri için fotoğraf + manuel bounding ölçüsü + material/thickness + shelf QR kaydı tutar ve gereken dikdörtgene uyan scrap'ı bulur. [Kullanıcıların çekmece/yığın workaround'ları](https://www.reddit.com/r/lasercutting/comments/15z9v06) problem sinyalidir. Auto contour, SVG nesting ve machine control v1 dışıdır. [xTool Smart Nesting](https://support.xtool.com/article/3481) belirli cihazlarda benzer kamera yeteneği sunduğu için platform genişleme riski yüksektir.",
+        "sourceId": "laser_problem"
+      },
+      {
+        "id": "eliminations",
+        "type": "markdown",
+        "body": "## Bilerek elenen alanlar\n\nCandle burn-test, pottery/kiln log, fly-tying inventory, fountain-pen tracker, miniature-paint inventory, craft-fair analytics, needlepoint stash, generic laser settings, darkroom development, RC/LiPo log, watch collection, antique booth, leathercraft hide inventory, bonsai/coral tracker, beekeeping, metal detecting, sailing, archery, equestrian course walk, model rocketry ve dog-agility alanlarında 2025–2026 exact veya çok yakın iOS ürünleri bulundu. Bu, pazar olmadığı değil; solo geliştiricinin yalnız daha iyi UI ile savunabileceği wedge görülmediği anlamına gelir. Astronomical League logger, POTA rove planner, FitReplay ve stained-glass remnant match yalnız partner/izin veya yeni davranış kanıtı oluşursa yeniden açılmalı."
+      },
+      {
+        "id": "test_plan_note",
+        "type": "markdown",
+        "body": "## Bir sonraki gerçek kapı\n\nÜç testi paralel çalıştırma. Önce Quilt'i gerçek assembly + iade edilebilir depozito ile sınayıp başarısız olursa Resin'e geç. Eşikler baseline/MDE olmadığı için exploratory'dir; geçmeleri population sonucu veya doğrudan build izni üretmez. `BUILD_SMALL` için low skorun en az 60'a yeniden çıkması, genel ve top-risk kanıtın B+ olması ve ürün-spesifik en az bir E3+ davranış gerekir.",
+        "sourceId": "test_contracts"
+      },
+      {
+        "id": "test_table_block",
+        "type": "table",
+        "tableId": "test_table",
+        "layout": "full"
+      },
+      {
+        "id": "limitations",
+        "type": "markdown",
+        "body": "## Kanıt sınırları\n\nApp Store fiyat ve rating'leri revenue veya retention değildir. Community kaynakları self-selected'dır. Exact rakip bulunamaması zayıf karşı kanıttır, yokluk kanıtı değildir. Skorlar başarı tahmini değildir. Bu çalışma tutulacak app garantisi vermez; en ucuz şekilde yanlışlanabilecek rekabet hipotezlerini sıralar."
+      }
+    ]
+  },
+  "snapshot": {
+    "version": 1,
+    "generatedAt": "2026-07-16T10:57:52+03:00",
+    "status": "ready",
+    "datasets": {
+      "scores_long": [
+        {"rank": 1, "idea": "Quilt Layout Lock", "archetype": "Consumer Utility", "scenario": "Low", "scenario_order": 1, "score": 54, "decision": "TESTE_DEGER"},
+        {"rank": 1, "idea": "Quilt Layout Lock", "archetype": "Consumer Utility", "scenario": "Base", "scenario_order": 2, "score": 65, "decision": "TESTE_DEGER"},
+        {"rank": 1, "idea": "Quilt Layout Lock", "archetype": "Consumer Utility", "scenario": "High", "scenario_order": 3, "score": 65, "decision": "TESTE_DEGER"},
+        {"rank": 2, "idea": "Resin Calibration Ladder", "archetype": "Consumer Utility", "scenario": "Low", "scenario_order": 1, "score": 56, "decision": "TESTE_DEGER"},
+        {"rank": 2, "idea": "Resin Calibration Ladder", "archetype": "Consumer Utility", "scenario": "Base", "scenario_order": 2, "score": 65, "decision": "TESTE_DEGER"},
+        {"rank": 2, "idea": "Resin Calibration Ladder", "archetype": "Consumer Utility", "scenario": "High", "scenario_order": 3, "score": 65, "decision": "TESTE_DEGER"},
+        {"rank": 3, "idea": "Laser Scrap Passport", "archetype": "B2B / Prosumer", "scenario": "Low", "scenario_order": 1, "score": 52, "decision": "TESTE_DEGER"},
+        {"rank": 3, "idea": "Laser Scrap Passport", "archetype": "B2B / Prosumer", "scenario": "Base", "scenario_order": 2, "score": 60, "decision": "TESTE_DEGER"},
+        {"rank": 3, "idea": "Laser Scrap Passport", "archetype": "B2B / Prosumer", "scenario": "High", "scenario_order": 3, "score": 65, "decision": "TESTE_DEGER"}
+      ],
+      "decisions": [
+        {"rank": 1, "idea": "Quilt Layout Lock", "archetype": "Consumer Utility", "score_interval": "54 / 65 / 65", "evidence": "C", "desk_decision": "TESTE_DEGER", "next_action": "TEST FIRST", "main_risk": "Normal photo and labels may be enough"},
+        {"rank": 2, "idea": "Resin Calibration Ladder", "archetype": "Consumer Utility", "score_interval": "56 / 65 / 65", "evidence": "C", "desk_decision": "TESTE_DEGER", "next_action": "TEST SECOND", "main_risk": "Logging friction and free profiles"},
+        {"rank": 3, "idea": "Laser Scrap Passport", "archetype": "B2B / Prosumer", "score_interval": "52 / 60 / 65", "evidence": "C", "desk_decision": "TESTE_DEGER", "next_action": "TEST THIRD", "main_risk": "Cataloging cost and xTool expansion"}
+      ],
+      "tests": [
+        {"rank": 1, "idea": "Quilt Layout Lock", "sample_target": "8 active quilters", "offer": "$9.99 refundable deposit", "observed_cycles": "1 real assembly plus second-cycle follow-up", "pass_gate": "4 deposits and 3 real errors caught or prevented", "fail_action": "Park if either threshold fails"},
+        {"rank": 2, "idea": "Resin Calibration Ladder", "sample_target": "10 calibrating users", "offer": "$14.99 refundable pre-order", "observed_cycles": "2 real calibration cycles", "pass_gate": "5 pre-orders, 6 two-cycle completions and 4 history reopens", "fail_action": "Stop if any threshold fails"},
+        {"rank": 3, "idea": "Laser Scrap Passport", "sample_target": "8 product-selling microbusinesses", "offer": "$19 refundable deposit", "observed_cycles": "20 scraps and 3 real jobs each", "pass_gate": "4 deposits, 5 maintained catalogs and 4 avoided new sheets", "fail_action": "Stop if any threshold fails"}
+      ]
+    }
+  },
+  "sources": [
+    {
+      "id": "score_scenarios",
+      "label": "Validated v4.0 opportunity-score scenarios",
+      "query": {
+        "description": "Low, base and high archetype-weighted judgment scores from the three validated Quick Scan assessments.",
+        "executed_at": "2026-07-16T10:57:52+03:00",
+        "engine": "SQLite",
+        "language": "SQL",
+        "sql": "WITH scores(rank, idea, archetype, scenario, scenario_order, score, decision) AS (VALUES (1, 'Quilt Layout Lock', 'Consumer Utility', 'Low', 1, 54, 'TESTE_DEGER'), (1, 'Quilt Layout Lock', 'Consumer Utility', 'Base', 2, 65, 'TESTE_DEGER'), (1, 'Quilt Layout Lock', 'Consumer Utility', 'High', 3, 65, 'TESTE_DEGER'), (2, 'Resin Calibration Ladder', 'Consumer Utility', 'Low', 1, 56, 'TESTE_DEGER'), (2, 'Resin Calibration Ladder', 'Consumer Utility', 'Base', 2, 65, 'TESTE_DEGER'), (2, 'Resin Calibration Ladder', 'Consumer Utility', 'High', 3, 65, 'TESTE_DEGER'), (3, 'Laser Scrap Passport', 'B2B / Prosumer', 'Low', 1, 52, 'TESTE_DEGER'), (3, 'Laser Scrap Passport', 'B2B / Prosumer', 'Base', 2, 60, 'TESTE_DEGER'), (3, 'Laser Scrap Passport', 'B2B / Prosumer', 'High', 3, 65, 'TESTE_DEGER')) SELECT * FROM scores ORDER BY rank, scenario_order;",
+        "tables_used": ["three validated Quick Scan assessment.json files"],
+        "metric_definitions": ["Opportunity scores are archetype-weighted judgment scenarios, not forecasts.", "Different archetypes are not ranked by raw score alone."]
+      }
+    },
+    {
+      "id": "decision_summary",
+      "label": "Cross-report decision summary",
+      "query": {
+        "description": "Test order after fatal gates, evidence strength, score interval, test cost and solo-operation constraints.",
+        "executed_at": "2026-07-16T10:57:52+03:00",
+        "engine": "SQLite",
+        "language": "SQL",
+        "sql": "WITH decisions(rank, idea, archetype, score_interval, evidence, desk_decision, next_action, main_risk) AS (VALUES (1, 'Quilt Layout Lock', 'Consumer Utility', '54 / 65 / 65', 'C', 'TESTE_DEGER', 'TEST FIRST', 'Normal photo and labels may be enough'), (2, 'Resin Calibration Ladder', 'Consumer Utility', '56 / 65 / 65', 'C', 'TESTE_DEGER', 'TEST SECOND', 'Logging friction and free profiles'), (3, 'Laser Scrap Passport', 'B2B / Prosumer', '52 / 60 / 65', 'C', 'TESTE_DEGER', 'TEST THIRD', 'Cataloging cost and xTool expansion')) SELECT * FROM decisions ORDER BY rank;",
+        "tables_used": ["three validated Quick Scan assessments", "methodology/scoring-model.md"],
+        "metric_definitions": ["Portfolio order adds test cost and solo constraints; all three remain PREBUILD_PENDING."]
+      }
+    },
+    {
+      "id": "test_contracts",
+      "label": "Exploratory pre-build behavior-test contracts",
+      "query": {
+        "description": "Clearly disclosed refundable-payment tests coupled to real task completion for each idea.",
+        "executed_at": "2026-07-16T10:57:52+03:00",
+        "engine": "SQLite",
+        "language": "SQL",
+        "sql": "WITH tests(rank, idea, sample_target, offer, observed_cycles, pass_gate, fail_action) AS (VALUES (1, 'Quilt Layout Lock', '8 active quilters', '$9.99 refundable deposit', '1 real assembly plus second-cycle follow-up', '4 deposits and 3 real errors caught or prevented', 'Park if either threshold fails'), (2, 'Resin Calibration Ladder', '10 calibrating users', '$14.99 refundable pre-order', '2 real calibration cycles', '5 pre-orders, 6 two-cycle completions and 4 history reopens', 'Stop if any threshold fails'), (3, 'Laser Scrap Passport', '8 product-selling microbusinesses', '$19 refundable deposit', '20 scraps and 3 real jobs each', '4 deposits, 5 maintained catalogs and 4 avoided new sheets', 'Stop if any threshold fails')) SELECT * FROM tests ORDER BY rank;",
+        "tables_used": ["methodology/pre-build-validation.md", "three validated Quick Scan reports"],
+        "metric_definitions": ["Thresholds are exploratory and directional because baseline and MDE are unavailable."]
+      }
+    },
+    {"id": "quilt_problem", "label": "Quilting block-order workaround discussion", "href": "https://www.reddit.com/r/quilting/comments/1342d91"},
+    {"id": "chitubox_settings", "label": "CHITUBOX print-settings documentation", "href": "https://docs.chitubox.com/en-US/chitubox/latest/configure-print-settings"},
+    {"id": "laser_problem", "label": "Laser-cutting scrap organization discussion", "href": "https://www.reddit.com/r/lasercutting/comments/15z9v06"},
+    {"id": "xtool_nesting", "label": "xTool Smart Nesting support article", "href": "https://support.xtool.com/article/3481"}
+  ]
+}
