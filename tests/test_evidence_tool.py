@@ -364,6 +364,35 @@ class EvidenceToolTests(unittest.TestCase):
             (legacy / "REPORT.md").write_text("legacy\n", encoding="utf-8")
             self.assertEqual(0, evidence_tool.command_validate_all(root, skip_legacy=True))
 
+    def test_support_surface_is_not_judged_by_the_idea_contract(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            support = root / "keyword-report"
+            support.mkdir()
+            (support / "REPORT.md").write_text("# keyword research\n", encoding="utf-8")
+            (support / "artifact.json").write_text('{"surface": "report"}\n', encoding="utf-8")
+            self.assertEqual("support", evidence_tool.classify_output(support))
+            # A support surface has no assessment.json, but it is a v4 shape rather
+            # than a pre-v4 report, so validate-all must not fail on it.
+            self.assertEqual(0, evidence_tool.command_validate_all(root, skip_legacy=False))
+
+    def test_legacy_report_still_fails_without_skip_legacy(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            legacy = root / "legacy"
+            legacy.mkdir()
+            (legacy / "REPORT.md").write_text("legacy\n", encoding="utf-8")
+            self.assertEqual("legacy", evidence_tool.classify_output(legacy))
+            self.assertEqual(1, evidence_tool.command_validate_all(root, skip_legacy=False))
+
+    def test_assessment_dir_with_artifact_is_still_validated(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            output_dir = write_output(root, "deep")
+            (output_dir / "artifact.json").write_text('{"surface": "report"}\n', encoding="utf-8")
+            self.assertEqual("assessment", evidence_tool.classify_output(output_dir))
+            self.assertEqual(0, evidence_tool.command_validate_all(root, skip_legacy=False))
+
 
 if __name__ == "__main__":
     unittest.main()

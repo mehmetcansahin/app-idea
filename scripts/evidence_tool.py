@@ -839,16 +839,36 @@ def command_render(output_dir: Path) -> int:
     return 0
 
 
+def classify_output(output_dir: Path) -> str:
+    """Return the contract that governs a directory.
+
+    ``assessment`` directories are v4 idea runs and carry ``data/assessment.json``.
+    ``support`` directories are v4 portable analysis surfaces (keyword research,
+    compare artifacts) that carry ``artifact.json`` but score no single idea, so the
+    Quick/Standard/Deep output contract does not apply to them.
+    Everything else is a pre-v4 report.
+    """
+    if (output_dir / "data" / "assessment.json").exists():
+        return "assessment"
+    if (output_dir / "artifact.json").exists():
+        return "support"
+    return "legacy"
+
+
 def command_validate_all(output_root: Path, skip_legacy: bool) -> int:
     failed = False
     found = False
     for output_dir in sorted(path for path in output_root.iterdir() if path.is_dir()):
-        assessment = output_dir / "data" / "assessment.json"
-        if not assessment.exists() and skip_legacy:
-            print(f"SKIP LEGACY {output_dir}")
+        kind = classify_output(output_dir)
+        if kind == "support":
+            print(f"SKIP SUPPORT {output_dir}")
             continue
-        if not (output_dir / "REPORT.md").exists() and not assessment.exists():
-            continue
+        if kind == "legacy":
+            if skip_legacy:
+                print(f"SKIP LEGACY {output_dir}")
+                continue
+            if not (output_dir / "REPORT.md").exists():
+                continue
         found = True
         result = validate_output(output_dir)
         print_result(str(output_dir), result)
