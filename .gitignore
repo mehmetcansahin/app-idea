@@ -1,4 +1,12 @@
 .DS_Store
+
+# Python bytecode (scripts/, tests/); global gitignore bunu kapsamiyor.
+__pycache__/
+*.pyc
+
+# artifact.json'dan analysis/build_report_sources.py ile uretilen turetilmis DB.
+output/**/analysis/report_sources.sqlite
+
 # Global gitignore .claude/'u tumden disliyor; bu projede slash komutlari
 # (research agent'in parcasi) repo icerigidir. Sadece commands/ izlenir.
 !.claude/
