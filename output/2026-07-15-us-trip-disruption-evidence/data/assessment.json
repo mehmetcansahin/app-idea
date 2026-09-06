@@ -1,0 +1,38 @@
+{
+  "methodology_version": "4.0",
+  "idea_id": "us-trip-disruption-evidence",
+  "analysis_date": "2026-07-15",
+  "mode": "quick",
+  "stage": "desk_research",
+  "target_segment": "US iPhone travelers with insured or higher-cost trips who experience a flight, baggage or trip disruption and must assemble receipts and carrier evidence",
+  "target_geos": ["US"],
+  "primary_archetype": "consumer_utility",
+  "risk_modifiers": ["regulated", "sensitive_data", "platform_dependency"],
+  "dimensions": {
+    "problem_demand": {"low": 2, "base": 3, "high": 4, "claim_ids": ["claim-demand"]},
+    "monetization_economics": {"low": 1, "base": 2, "high": 3, "claim_ids": ["claim-economics"]},
+    "competitive_wedge": {"low": 1, "base": 2, "high": 3, "claim_ids": ["claim-wedge"]},
+    "distribution_access": {"low": 2, "base": 2, "high": 3, "claim_ids": ["claim-distribution"]},
+    "repeat_value_retention": {"low": 1, "base": 2, "high": 3, "claim_ids": ["claim-repeat"]},
+    "timing": {"low": 2, "base": 3, "high": 4, "claim_ids": ["claim-timing"]},
+    "liquidity_cold_start": null
+  },
+  "opportunity": {"low": 32, "base": 47, "high": 67, "classification": "borderline"},
+  "fatal_gates": [
+    {"code": "LEGAL_BLOCKED", "status": "clear", "evidence_ids": ["trip-safety-dot"]},
+    {"code": "CORE_FEASIBILITY_BLOCKED", "status": "clear", "evidence_ids": ["trip-wedge-refundme"]},
+    {"code": "PLATFORM_BLOCKED", "status": "clear", "evidence_ids": ["trip-platform-apple"]},
+    {"code": "SAFETY_ETHICS_BLOCKED", "status": "clear", "evidence_ids": ["trip-safety-dot"]}
+  ],
+  "riskiest_assumptions": [
+    {"claim_id": "claim-demand", "category": "value", "impact": 3, "uncertainty": 3, "claim_grade": "C", "product_specific_behavior": false, "disposition": "partial"},
+    {"claim_id": "claim-economics", "category": "business_viability", "impact": 3, "uncertainty": 3, "claim_grade": "C", "product_specific_behavior": false, "disposition": "partial"},
+    {"claim_id": "claim-wedge", "category": "usability", "impact": 3, "uncertainty": 3, "claim_grade": "C", "product_specific_behavior": false, "disposition": "countered"}
+  ],
+  "overall_evidence_grade": "C",
+  "decision": "TESTE_DEGER",
+  "status": "PREBUILD_PENDING",
+  "next_test": "At two US airports or traveler communities, sell twenty disrupted travelers a $9 manual evidence-pack service that organizes itinerary, receipts, carrier notices and refunds without giving eligibility or legal advice",
+  "stopping_rule": "Stop if fewer than 6 pay, fewer than 5 submit a completed packet, or fewer than 3 packets are actually used in an insurer, airline or card-benefit claim",
+  "post_mvp_result": null
+}
