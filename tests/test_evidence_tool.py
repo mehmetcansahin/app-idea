@@ -211,6 +211,30 @@ class EvidenceToolTests(unittest.TestCase):
         ]
         self.assertEqual("C", evidence_tool.compute_claim_grade(records))
 
+    def test_echoed_root_warns_when_splitting_it_would_raise_the_grade(self):
+        records = [
+            evidence("primary", "claim", "E2", "one-report"),
+            evidence("coverage-a", "claim", "E2", "one-report"),
+            evidence("coverage-b", "claim", "E2", "one-report"),
+        ]
+        result = evidence_tool.validate_evidence_records(records)
+        self.assertTrue(result.ok, result.errors)
+        self.assertEqual("C", evidence_tool.compute_claim_grade(records))
+        self.assertTrue(
+            any("would grade B instead of C" in warning for warning in result.warnings),
+            result.warnings,
+        )
+
+    def test_conservative_root_over_several_urls_stays_silent(self):
+        records = [
+            evidence("vendor-api-doc", "claim", "E2", "Apple Inc."),
+            evidence("vendor-writer-doc", "claim", "E2", "Apple Inc."),
+        ]
+        result = evidence_tool.validate_evidence_records(records)
+        self.assertTrue(result.ok, result.errors)
+        self.assertEqual("C", evidence_tool.compute_claim_grade(records))
+        self.assertEqual([], result.warnings)
+
     def test_unresolved_strong_counter_forces_d(self):
         records = [
             evidence("support", "claim", "E4", "first-party"),

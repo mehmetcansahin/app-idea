@@ -313,12 +313,11 @@ def validate_evidence_records(records: Sequence[Dict[str, Any]]) -> ValidationRe
             elif record["sample_n"] > 0 and record["denominator"] is None:
                 result.warn(f"{label}: sample_n is set but denominator is missing")
     for claim_id, claim_records in group_by_claim(records).items():
-        roots: Dict[str, set] = {}
-        for record in claim_records:
-            roots.setdefault(record.get("independence_root", ""), set()).add(record.get("source_url"))
-        echoed = [root for root, urls in roots.items() if root and len(urls - {None}) > 1]
-        if echoed:
-            result.warn(f"claim {claim_id}: multiple URLs share source root(s): {', '.join(sorted(echoed))}")
+        for root, base, split in grade_inflating_roots(claim_records):
+            result.warn(
+                f"claim {claim_id}: root {root} spans multiple URLs that would grade "
+                f"{split} instead of {base} if counted as independent; confirm the root"
+            )
     return result
 
 
@@ -376,6 +375,48 @@ def compute_claim_grade(records: Sequence[Dict[str, Any]]) -> str:
     if e3_roots or e2_roots or len(e1_roots) >= 2:
         return "C"
     return "D"
+
+
+def split_root_records(
+    records: Sequence[Dict[str, Any]], root: str
+) -> List[Dict[str, Any]]:
+    """Copy of ``records`` in which every URL under ``root`` becomes its own root."""
+    split: List[Dict[str, Any]] = []
+    for record in records:
+        url = record.get("source_url")
+        if record.get("independence_root") != root or url is None:
+            split.append(record)
+            continue
+        clone = dict(record)
+        clone["independence_root"] = f"{root} #url={url}"
+        split.append(clone)
+    return split
+
+
+def grade_inflating_roots(
+    records: Sequence[Dict[str, Any]],
+) -> List[Tuple[str, str, str]]:
+    """Roots whose several URLs would lift the claim grade if counted as independent.
+
+    A conservative root legitimately spans several URLs: publisher granularity for a
+    vendor asserting its own capability, or one collection protocol run over several
+    feeds. That only misleads a reader when splitting the root would raise the grade,
+    which is also the shape of echoed coverage (one primary report behind many URLs).
+    """
+    urls_by_root: Dict[str, set] = {}
+    for record in records:
+        url = record.get("source_url")
+        if url is not None:
+            urls_by_root.setdefault(record.get("independence_root", ""), set()).add(url)
+    base = compute_claim_grade(records)
+    inflating: List[Tuple[str, str, str]] = []
+    for root, urls in sorted(urls_by_root.items()):
+        if not root or len(urls) < 2:
+            continue
+        split = compute_claim_grade(split_root_records(records, root))
+        if GRADE_VALUE[split] > GRADE_VALUE[base]:
+            inflating.append((root, base, split))
+    return inflating
 
 
 def has_strong_counter(records: Sequence[Dict[str, Any]]) -> bool:

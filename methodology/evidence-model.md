@@ -67,6 +67,11 @@ Bir analiz kok granulerligini secer ve rapor icinde sabit tutar:
 kabiliyetini iddia ediyorsa bu granulerlik kullanilir. Farkli granulerlik kullanan
 analizlerin kokleri birbiriyle karsilastirilmaz.
 
+Bagimsizlik uyarisi derece-duyarlidir: `scripts/evidence_tool.py` ayni kok altindaki
+birden fazla URL'yi yalniz o kok bolunse claim derecesi yukselecekse isaretler.
+Publisher granulerligi veya tek toplama protokolu gibi muhafazakar kokler bu esikte
+sessizdir; ekonun karari degistirdigi durum gorunur kalir.
+
 Portable destek yuzeyleri (`artifact.json` tasiyan, tek fikri puanlamayan analizler)
 `data/evidence.jsonl` uretmez; kaynak koklerini kendi veri dosyasindaki
 `source_roots` kaydinda tutar ve `granularity` alanini belirtir.
