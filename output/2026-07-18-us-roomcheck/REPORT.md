@@ -106,6 +106,8 @@ Bu wedge kullanıcı tercihine ve kontrollü accuracy testine sahip değildir.
 
 Baseline/MDE bilinmediği için RAT exploratory'dir ve `BUILD_SMALL` yetkisi vermez.
 
+Teknik gate sözleşmesi: [phases/06-prebuild-plan.md](phases/06-prebuild-plan.md). Sözleşme `room-core-feasibility` D derecesinin nedenini (üç kaydın tamamı çürütücü), masa başında yapısal olarak D kalan `room-legal`/`room-safety` claim'lerini ve G0 corpus'unun ön-kayıtlı eşiklerini ayırır. Kullanıcı ve ödeme deneyleri gate `clear` olmadan açılmaz.
+
 ## Kanit sinirlari
 
 Rakip rating/fiyatları revenue değildir. App Store yorumları accuracy benchmark'ı değildir. iOS dokümanları API sınırını açıklar fakat RoomCheck'in kontrollü precision/recall değerini vermez. ABD hukuk değerlendirmesi scope ile sınırlıdır ve hukuk görüşü değildir.

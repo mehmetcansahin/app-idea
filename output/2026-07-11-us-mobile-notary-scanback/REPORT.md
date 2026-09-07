@@ -84,3 +84,22 @@ ham-belge retention iste. Herhangi bir hiring-party yasağında dur.
 Exact commercial mobile-notary sayısı, scanback-required pay ve hata frekansı yapısal olarak
 gözlenemiyor. Vendor işleri/fiyatları bu ürüne ödeme değildir. İzin claim'i D olduğundan masa
 başı kararı ilerlemeye yetmez. Ayrıntılar: [kanıt defteri](data/evidence-ledger.md).
+
+## Kapatma dispozisyonu — 2026-09-07
+
+Bu fikre Faz 5.5 sözleşmesi yazılmadı. Gerekçe kanıt yapısında:
+
+| Engel | Kayıt | Masa başında kapanır mı |
+|---|---|---|
+| `claim-permission` = D | `notary-permission-nna` (E1, `structurally_unobservable`) + `notary-platform-apple` (E2, neutral) | **Hayır.** Karar mercii hiring party; cevap yalnız yazılı pilot izniyle alınır. Doküman taraması bu izni üretemez |
+| `claim-wedge` = D | `notary-wedge-signingos` (E2, contradicts) | Hayır. SigningOS birebir aynı AI scanback kontrolünü listeliyor; wedge ancak tercih davranışıyla kurtulur |
+| Skor tavanı | `opportunity` 29 / 45 / 62 | İlgisiz; portföyün en zayıf tavanı |
+
+Sıradaki tek anlamlı hamle bir deney değil, bir **erişim testi**dir: 5 title/signing
+service'ten zero-retention/on-device işleme için yazılı pilot izni istemek. İki yazılı
+izin çıkmadan prototip, kullanıcı testi veya fiyat testi yapılmaz. İzin çıkarsa fikir
+yeniden puanlanır ve o zaman sözleşme yazılır.
+
+Bu bir `ELENDIR` değildir: `opportunity.high = 62`, yani eleme kuralı (`high < 40`)
+karşılanmıyor ve hiçbir fatal gate `blocked` değil. Karar `BELIRSIZ` olarak kalır,
+aktif backlog dışıdır.

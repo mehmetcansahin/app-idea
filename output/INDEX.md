@@ -69,6 +69,7 @@
 | US Occasion Reel | [06-prebuild-plan](2026-07-18-us-occasion-reel/phases/06-prebuild-plan.md) | Karsilastirmali gorev -> iade edilebilir preorder -> kanal probe | >=8/12 bes dakikada export |
 | US Vertical Video Preflight | [06-prebuild-plan](2026-07-16-us-vertical-video-preflight/phases/06-prebuild-plan.md) | Dogruluk corpus'u -> editor kohortu -> ikinci export -> preorder | Kontrollu sorun recall >=%90, clean yanlis critical <=%10 |
 | US Voice Memo Archive | [06-prebuild-plan](2026-07-16-us-voice-memo-archive/phases/06-prebuild-plan.md) | Teknik spike (gate kapatma) -> ikame karsilastirmasi -> preorder | Dogru tarih kapsamasi >=%95 ve yanlis tarih = 0 |
+| US RoomCheck | [06-prebuild-plan](2026-07-18-us-roomcheck/phases/06-prebuild-plan.md) | Kontrollu corpus (gate kapatma) -> anlama testi -> preorder | Gorunebilir kameralarda recall >=%80, yuksek-riskli FP <=%10 |
 
 ## v4.0 Durumlari
 
@@ -89,6 +90,11 @@
 - Debt Payoff icin eski Faz 5.5 aksiyonu aktif backlog degildir; iki rapor da legacy'dir.
 - v3.x K2/K3/final skorlari orijinal raporlarda korunur, bu tabloda v4 Firsat
   Skoru gibi gosterilmez.
+- 2026-09-07 dispozisyon: Mobile Notary Scanback ve Real-estate Photographer QA
+  portfoyde son sirada. Ikisinin de belirleyici D claim'i masa basinda kapanmiyor:
+  notary'de hiring-party veri-isleme izni yazili izin gerektiriyor, RE photo'da wedge
+  icin odeme davranisi yok ve `high` yalnizca 52. Faz 5.5 sozlesmesi yazilmadi;
+  gerekce ilgili REPORT'larin dispozisyon bolumunde.
 - People Finder'in eski Standard raporu tarihsel output semasini kullanir.
 - Yeni analizler `REPORT.md` yaninda `data/assessment.json`, `data/evidence.jsonl`
   ve `data/evidence-ledger.md` uretmelidir.
