@@ -96,6 +96,8 @@ UI tasarlamadan önce küçük bir Swift komut/prototype hedefi:
 
 Geçiş: **en az %95 doğru tarih kapsaması, sıfır yanlış tarih, eksik/şüpheli alanların %100 işaretlenmesi, 2 GB job'da kayıpsız resume**. Bunlardan biri kalırsa fikri `ELENDIR`; “dosyanın transfer tarihini original tarih gibi” sunma. Teknik gate geçerse 100+ memo'su olan 12 kullanıcıya çalışan demo ve **$9.99 iade edilebilir preorder** sun; en az 5 ödeme yoksa park et. Bu geçiş de tek başına `BUILD_SMALL` değildir; yeniden puanlama gerekir.
 
+Teknik gate sözleşmesi: [phases/06-prebuild-plan.md](phases/06-prebuild-plan.md). Belge masa başında kapanan üç alt soruyu, kapanamayan iki ölçümü (gerçek tarih kapsaması ve 2 GB batch resume) ve G0 spike'ının ön-kayıtlı eşiklerini ayırır. Kullanıcı ve ödeme deneyleri gate `clear` olmadan açılmaz.
+
 ## Sınırlar
 
 Community vakaları self-selected'dır. App Store rating'i revenue değildir. Seller fiyatı satış değildir. Exact ürün bulunamaması yokluk kanıtı değildir. Masa başı skor başarı olasılığı değildir. Bu rapor “tutacak app” garantisi vermez; en ucuz öldürücü testi belirler.

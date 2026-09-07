@@ -150,3 +150,66 @@ Baseline ve MDE bilinmediği için bu eşikler exploratory/directional'dır:
 - **KILL/PARK:** <8 hızlı export, <6 gerçek kullanım, <4 depozito, <6 repeat veya çoğunluk status quo'yu seçerse scope genişletme.
 
 Bu tek deney, opportunity low 28 ve evidence C iken `BUILD_SMALL` veremez. BUILD_SMALL için yeniden assessment, low ≥60, B+ top-risk evidence ve product-specific E3 davranış gerekir.
+
+## Sözleşme kayıtları
+
+`pre-build-validation.md` §7 şablonunun makine-okunur karşılığı. Eşikler yukarıdaki
+bölümlerden **değiştirilmeden** kopyalanmıştır; burada yeni eşik tanımlanmaz.
+
+```text
+experiment_id: before-g0-status-quo-benchmark
+claim_id: before-wedge-preference
+segment: 20 zor Art/DIY/home before/after çifti; insan katılımcı yok
+channel_or_recruitment: Kurucunun hazırladığı corpus; beş yol (Qvyshift, DiffPix, CapCut template/manual, Edits fuse/transition, yerel alignment prototipi)
+method: Aynı 20 çift beş yolda tamamlanır; her koşulda aktif görev süresi, ilk kullanılabilir 1080x1920 export, kör subject/anchor alignment tercihi, beklenmeyen crop, export failure ve paywall'a kadar tamamlanabilen görev kaydedilir
+target_evidence_level: E2
+sample_target: 20 çift x 5 yol = 100 görev; denominator = tamamlanan görev sayısı
+metric: Median aktif süre, kör alignment tercih oranı, beklenmeyen crop ve export failure sayısı
+threshold_and_derivation: Prototip median aktif sürede rakip medianından >=%30 hızlı; kör alignment tercihinde prototip >=%70 seçilir; beklenmeyen crop veya export failure en iyi rakipten kötü değil
+guardrails: Sonuç pazar talebi veya WTP kanıtı değildir; yalnız "generic editörden daha iyi görev aracı" teknik iddiasını sınar
+stopping_rule: Ön-benchmark kalırsa 80-pair teknik RAT'a geçilmez
+pass_action: Kapı 1 teknik RAT'ını başlat
+fail_action: Core wedge teknik olarak yok; scope daralt veya fikri kapat
+privacy_disclosure_refund: Corpus kurucuya ait; üçüncü kişi verisi yok
+owner: Kurucu
+planned_dates: Kapı 1 öncesi 2-3 gün
+```
+
+```text
+experiment_id: before-g1-alignment-rat
+claim_id: before-autoalign-feasibility
+segment: İzinli 80 gerçek before/after çifti; Art/DIY, hair/skin, home/garden ve fitness için 20'şer
+channel_or_recruitment: İzinli corpus; fotoğraflar paylaşılmadan cihazda test edilebiliyorsa bu yol tercih edilir
+method: Dört varyant karşılaştırılır: no-auto manual overlay baseline, Vision translation, Vision homography (yalnız statik sahne), face/body landmarks similarity transform (yalnız insan)
+target_evidence_level: E2
+sample_target: 80 çift, 4 varyant, 200 stress export
+metric: Import başarısı, iCloud failure recovery, statik ve insan körlemesinde better/equal oranı, confident catastrophic warp, 5s 1080p export p95, crash, peak memory, metadata leak
+threshold_and_derivation: Import %100; iCloud graceful recovery %100; statik blind better/equal >=%85; human blind >=%70; confident catastrophic warp <%2; export p95 eski cihazda <=15 sn, güncel cihazda <=7 sn; 200 export'ta 0 crash; peak memory <350 MB; GPS/orijinal dosya adı sızıntısı 0
+guardrails: Teknik corpus segment ödeme sonucuyla birleştirilmez; yalnız algoritma robustness'ı ölçülür
+stopping_rule: Statik <%85, catastrophic warp >=%2 veya crash varsa davranış testine geçilmez
+pass_action: Kapı 2 Art/DIY davranış ve ödeme deneyini başlat
+fail_action: Statik geçer insan kalırsa scope Art/DIY/home; homography güvensizse translation/similarity + manual overlay; manual fallback ile süre düşmüyorsa core wedge çöker
+privacy_disclosure_refund: Fotoğraflar cihazda test edilir; corpus sahibine izin ve silme koşulu yazılı bildirilir
+owner: Kurucu
+planned_dates: 5 gün
+```
+
+```text
+experiment_id: before-e1-artdiy-behavior-deposit
+claim_id: before-paid-demand
+segment: Son 90 günde en az iki Art/DIY projesi tamamlamış, her proje için gerçek before/after çifti olan 12 ABD'li iPhone kullanıcısı; yalnız Art/DIY arm'ı
+channel_or_recruitment: Art/DIY toplulukları; professional tester ve arkadaş kolaylık örneklemi ayrı source etiketiyle tutulur, mümkünse dışarıda bırakılır
+method: Her kişi bir pair'i mevcut yöntemiyle, diğerini prototiple yapar; sıra 6/6 dengelenir ve pair zorluğu kör kodlanır. Görevden önce $9.99 lifetime fiyatı gösterilir, ayrı ödeme sayfasında $5 iade edilebilir founding-license depozitosu alınır. 14 gün içinde ikinci farklı pair ile tekrar izlenir
+target_evidence_level: E3
+sample_target: 12 kişi, kişi başı 2 pair
+metric: İki dakikada export, gerçek save/share/proje kullanımı, $5 depozito, ikinci pair ile tekrar, auto-align retained oranı, refund oranı, medyan görev süresi, çıktı kalitesi tercihi
+threshold_and_derivation: Baseline ve MDE bilinmediği için exploratory/directional: >=8/12 iki dakikada export; >=6/12 gerçek kullanım; >=4/12 depozito; >=6/12 14 günde ikinci pair; export'ların >=%70'inde auto-align retained; refund <=%20; medyan prototip süresi kullanıcının kendi baseline'ından kısa; çoğunluk çıktı kalitesinde prototipi tercih eder
+guardrails: TestFlight IAP sandbox gerçek ödeme değildir; waitlist E1'dir. Depozito prototip erişiminin şartı değildir. Share sheet açılması gerçek paylaşım sayılmaz. Fotoğraflar araştırmacı sunucusuna yüklenmez; filename, GPS, image hash ve face/body verisi tutulmaz
+stopping_rule: <8 hızlı export, <6 gerçek kullanım, <4 depozito, <6 tekrar veya çoğunluk status quo'yu seçerse scope genişletilmez
+pass_action: TESTE_DEVAM; hair/beauty professional için ayrı WTP arm'ı ve gerçek Apple Ads exact-match testi açılır
+fail_action: Kullanım/süre geçer depozito kalırsa professional veya manual-first use case ayrı sözleşmeyle test edilir; sonuçlar birleştirilmez
+privacy_disclosure_refund: Ürünün hazır olmadığı, refund süreci ve teslimat koşulu açık yazılır; toplanan event listesi bildirilir
+owner: Kurucu
+planned_dates: 14 gün (1-3 recruitment, 4-6 görevler, 7-10 doğrulama, 11-13 tekrar, 14 depozito/karar kapanışı)
+```
+

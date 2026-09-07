@@ -58,6 +58,18 @@
 - 2026-07-18 — [US iOS keyword ürünleri detaylı solo geliştirici analizi](2026-07-18-us-ios-keyword-products-deep-dive-report/REPORT.md): Sekiz aday için rakip/review, ürün wedge'i, dört ekran/üç özellik MVP sınırı, fiyat hipotezi, solo operasyon ve tek belirleyici ilk test. Apple `Search Popularity` export'u bekliyor; formal Standard veya build izni değildir.
 - 2026-07-18 — [US iOS niş ve satın alma niyetli keyword fırsatları](2026-07-18-us-app-store-keyword-opportunities-report/REPORT.md): 15 kelimelik public-proxy taraması ve Apple Ads exact-keyword doğrulama paketi. Apple `Search Popularity` export'u bekliyor; v4 fikir skoru değildir.
 
+## Faz 5.5 Sozlesmeleri
+
+> Deney tasarimi, sonuc degil. Sozlesme varligi durum degistirmez; esikler sonuc
+> gorulmeden kaydedilir ve sonra degistirilmez.
+
+| Fikir | Sozlesme | Kapi sirasi | Ilk kapi esigi |
+|---|---|---|---|
+| US Before/After Reel (Deep) | [06-prebuild-plan](2026-07-18-us-before-after-reel-deep/phases/06-prebuild-plan.md) | Teknik on-benchmark -> 5 gunluk teknik RAT -> Art/DIY davranis+odeme | Statik cift kor degerlendirmede >=%85 better/equal |
+| US Occasion Reel | [06-prebuild-plan](2026-07-18-us-occasion-reel/phases/06-prebuild-plan.md) | Karsilastirmali gorev -> iade edilebilir preorder -> kanal probe | >=8/12 bes dakikada export |
+| US Vertical Video Preflight | [06-prebuild-plan](2026-07-16-us-vertical-video-preflight/phases/06-prebuild-plan.md) | Dogruluk corpus'u -> editor kohortu -> ikinci export -> preorder | Kontrollu sorun recall >=%90, clean yanlis critical <=%10 |
+| US Voice Memo Archive | [06-prebuild-plan](2026-07-16-us-voice-memo-archive/phases/06-prebuild-plan.md) | Teknik spike (gate kapatma) -> ikame karsilastirmasi -> preorder | Dogru tarih kapsamasi >=%95 ve yanlis tarih = 0 |
+
 ## v4.0 Durumlari
 
 | Durum | Anlam |

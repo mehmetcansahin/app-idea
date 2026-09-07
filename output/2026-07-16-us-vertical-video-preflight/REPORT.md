@@ -99,6 +99,8 @@ V1 yalnız 9:16, en fazla 3 dakika ve MP4/MOV destekler. Video editing, transkri
 
 Eşiklerden biri ciddi biçimde kalırsa durdur. Yalnız safe-zone veya yalnız metadata uygulamasına pivot etme; o alanlar zaten kalabalık. Geçiş `BUILD_SMALL` değildir; evidence B+ ve product-specific E3+ davranışla yeniden puanlama gerekir.
 
+Deney sözleşmesi: [phases/06-prebuild-plan.md](phases/06-prebuild-plan.md). Sözleşme dört deneyi kapı sırasına dizer: ölçülebilir denominator'lı doğruluk corpus'u (G0), 12 editörlük gerçek export kohortu (E1), hatırlatmasız ikinci-export dönüşü (E2) ve iade edilebilir preorder (E3). `claim-demand` zaten B olduğu için ayrı deney açılmaz; frekans E1 içinde ölçülür.
+
 ## Sınırlar
 
 Community örnekleri self-selected'dır. App Store fiyat ve rating'i revenue değildir. Platform safe zones ve upload kuralları değişir. Exact birleşik ürün bulunamaması yokluk kanıtı değildir. Skor başarı olasılığı değildir.
