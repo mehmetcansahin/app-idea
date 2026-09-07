@@ -92,6 +92,8 @@ Dört fatal gate `clear`: kullanıcı-seçimli medya ve telifsiz/kullanıcı-sah
 - Geçiş: En az 8/12 kişi beş dakikada export, en az 6/12 gerçek paylaşım, en az 4/12 preorder.
 - Durdurma: Üç eşikten biri kalırsa park et. Geçerse ikinci doğal occasion döngüsünde tekrar kullanımı test et ve yeniden puanla; tek test `BUILD_SMALL` vermez.
 
+Deney sözleşmesi: [phases/06-prebuild-plan.md](phases/06-prebuild-plan.md). Sözleşme ilk arm'ı yalnız **doğum günü** occasion'ına kilitler (anma/mezuniyet/yıldönümü ayrı `experiment_id`), üç deneyi RAT sırasına dizer ve `occasion-retention`'ı ayrı ikinci-döngü sözleşmesine erteler.
+
 ## Kanit sinirlari
 
 Storefront rating'leri gelir değildir. Quick Scan'de stratified review mining yapılmadı. Occasion bazlı arama hacmi, organik install conversion, CAC, gerçek ödeme ve ikinci-döngü kullanımı gözlenemedi. Generic editörlerin ücretsiz ikame gücü çözülmedi.
