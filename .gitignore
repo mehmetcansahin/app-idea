@@ -4,8 +4,8 @@
 __pycache__/
 *.pyc
 
-# artifact.json'dan analysis/build_report_sources.py ile uretilen turetilmis DB.
-output/**/analysis/report_sources.sqlite
+# Arastirma ciktilari (raporlar, evidence, analysis) yerelde kalir; repo sismesin.
+output/
 
 # Global gitignore .claude/'u tumden disliyor; bu projede slash komutlari
 # (research agent'in parcasi) repo icerigidir. Sadece commands/ izlenir.
