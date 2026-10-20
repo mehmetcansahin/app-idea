@@ -57,7 +57,8 @@ incele.
 5. Fiyat ve gercek odeme davranisi
 6. Ozellik/wedge ve Deep'te 2x2
 7. Platform cross-check
-8. Ad/channel intelligence
+8. Ad/channel intelligence (top 5 rakip; `ad_library` kayitlari, protokol
+   `data-collection-protocol.md`)
 9. Onboarding, paywall ve screenshot visual intelligence
 
 **Review minimumu (Standard/Deep):** Top 5 rakip, hedef 30/min 15 yorum; 1-2,

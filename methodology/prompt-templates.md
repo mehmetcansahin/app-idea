@@ -43,7 +43,8 @@ Top 10 rakip/ikame matrisi olustur. Top 5 app icin son 12 aydan storefront ve
 version bilgili stratified review sample topla: 1-2, 3 ve 4-5 yildizdan min 5'er,
 hedef 30. Tema frekansini yalniz sample denominator'u icinde raporla. Community
 verisini JTBD Push/Pull/Anxiety/Habit ile analiz et. Fiyat, odeme davranisi,
-ad/channel ve visual intelligence'i claim/evidence ID'lerine bagla.
+ad/channel (`ad_library` kayitlari) ve visual intelligence'i claim/evidence
+ID'lerine bagla.
 ```
 
 ## Faz 5: Iki Eksenli Degerlendirme

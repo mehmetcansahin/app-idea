@@ -26,6 +26,9 @@ seviyesine tasiyamaz.
 
 AI ciktisi hipotez uretebilir fakat karari destekleyen evidence root sayilmaz.
 
+`ad_library` (reklam kutuphanesi) gozlemi en fazla `E2`dir; reklamverenin mesajini
+gosterir, kullanici davranisini degil.
+
 ## 3. Claim Bazli Kanit Derecesi
 
 Claim derecesi, ayni iddiaya bagli kayitlardan hesaplanir:
@@ -38,6 +41,10 @@ Claim derecesi, ayni iddiaya bagli kayitlardan hesaplanir:
 
 `claim_relevance=weak` kayitlari A/B sayimina girmez. `direction=contradicts` olan
 guclu kayitlar cozulmeden claim A olamaz.
+
+Bir claim'in tum destekleyen kayitlari `ad_library` ise derece en fazla C olur;
+`scripts/evidence_tool.py` bu tavani hesaplar. Rating kuralinin reklam karsiligidir:
+reklam yogunlugu tek basina talep, dagitim veya odeme davranisi kanitlamaz.
 
 Genel Kanit Gucu, RAT tablosundaki en yuksek `impact * uncertainty` degerine sahip
 uc varsayimin en dusuk claim derecesidir. Uc varsayim tamamlanmamissa eksik olan D
@@ -52,6 +59,9 @@ kaynak sayilir. Ornek: RevenueCat raporu ve o raporu ozetleyen iki haberin ucu d
 - Birincil kaynaktaki ciplak gozlem tek kaynakla kaydedilebilir.
 - Gozlemden pazar/urun sonucu cikariliyorsa B+ icin bagimsiz kok gerekir.
 - `synthetic` kaynaklar bagimsiz kok sayimina girmez.
+- `ad_library` kokleri `adlib-<platform>-<reklamveren>-<tarih>` bicimindedir;
+  `publisher` granulerliginde ayni reklamverenin Meta ve Google kayitlari tek kok
+  olur.
 
 ### Kok Granulerligi
 

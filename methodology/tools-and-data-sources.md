@@ -57,18 +57,42 @@ payback, brut katki ve retention kohortlari kullanilir.
 
 ## Ad/Channel Intelligence
 
-Meta Ad Library, Google Ads Transparency Center ve TikTok Creative Center icin
-browser gozlemi tercih edilir. Kaydet:
+Reklam kutuphaneleri rakibin ne soyledigini, hangi kanali kullandigini ve nereye
+yonlendirdigini gosterir; harcama, CPI, CAC, ROAS, ABD gosterim sayisi veya keyword
+hacmi gostermez. Bunlar yalniz Faz 5.5 kanal testiyle olculur.
 
-- advertiser/domain
-- aktif kreatif sayisi ve gorulen tarih araligi
-- geo ve placement
-- mesaj acisi
-- ekran goruntusu/artifact
+| Kaynak | ABD'de gorulen | Gorulmeyen | Resmi API / veri seti | Sinir |
+|---|---|---|---|---|
+| Meta Ad Library (`facebook.com/ads/library`) | Yalniz su an aktif reklamlar: sayfa, baslangic tarihi, format, metin, hedef URL, platformlar | Harcama, gosterim, bitmis reklamlar | `ads_archive` Graph API AB'ye ulasmayan ticari reklamlari dondurmez; AB reklamlarinda `eu_total_reach` ve hedefleme var | Otomatik toplama Meta Automated Data Collection Terms'e tabidir; scraper kullanma |
+| Google Ads Transparency Center (`adstransparency.google.com`) | Reklamveren/domain bazinda kreatif, format, ilk/son gosterim, dogrulanmis reklamveren adi, bolge filtresi | Harcama, gosterim, keyword | BigQuery `google_ads_transparency_center.creative_stats`; `region_stats` yalniz AEA + Turkiye | Keyword niyeti yalniz baslik metninden cikarilir ve `inferred` kalir |
+| TikTok Creative Center Top Ads (`ads.tiktok.com/business/creativecenter`) | TikTok for Business girisiyle bolge/sektor bazli ornek reklamlar | Girissiz yalniz birkac genel kart; reklamveren onayli secilmis ornek, tum reklamlar degil | Commercial Content Library/API (`library.tiktok.com`) yalniz AB/AEA + UK + CH; basvuru gerekir | Giris yoksa `structurally_unobservable` |
 
-WebSearch ozetini direct sayma. Harcama tutari resmi olarak gorulmuyorsa uretme.
-Ad longevity monetizasyon davranisini destekleyebilir; profit veya indie gelir
-kaniti degildir.
+Kayit kurallari:
+
+- `source_type=ad_library`; `evidence_level` en fazla `E2`. Tarayici gozlemi
+  `E2/direct`, WebSearch veya ucuncu taraf ozeti `E1/estimated`.
+- `independence_root=adlib-<platform>-<reklamveren-slug>-<YYYY-MM-DD>`; keyword
+  aramasinda `adlib-<platform>-kw-<keyword-slug>-<YYYY-MM-DD>`. `platform` alani
+  `meta`, `google_ads` veya `tiktok`.
+- `artifact_path=data/artifacts/ads/<platform>-<reklamveren-slug>-<YYYY-MM-DD>.png`.
+  Kutuphaneler yalniz canli reklami gosterdigi icin ekran goruntusu tek kalici
+  kanittir; gozlenen kayitta eksikse validator uyarir.
+- Yalniz `ad_library` kayitlarina dayanan destek claim'i C'de tutar
+  (`evidence-model.md`).
+- AB/TR veri setindeki erisim veya gosterim araligi ABD iddiasi icin en fazla
+  `supporting`tir; geo farki `limitations` icine yazilir.
+- Harcama tutari resmi olarak gorulmuyorsa uretme. Ad longevity monetizasyon
+  davranisini destekleyebilir; profit veya indie gelir kaniti degildir.
+
+Boyut eslemesi:
+
+| Boyut | Kullanim | Relevance |
+|---|---|---|
+| `competitive_wedge` | Rakibin kullandigi mesaj acilari; bizim wedge'imizin zaten reklamda olmasi | direct, cogunlukla contradicts |
+| `distribution_access` | Kullanilan kanal, hedef (App Store/Play/web), rakip adina bidding, creator/affiliate payi, reklamveren yogunlugu | direct |
+| `monetization_economics` | Reklamdaki fiyat/indirim capasi; uzun sure yayinda kalan reklam | supporting |
+| `timing` | Yeni girislerin baslangic tarihlerinde kumelenmesi | supporting |
+| `problem_demand` | Reklam sayisi talep gostermez | weak |
 
 ## Visual Intelligence
 

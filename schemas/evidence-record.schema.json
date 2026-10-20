@@ -43,6 +43,7 @@
       "enum": [
         "official_primary",
         "marketplace_primary",
+        "ad_library",
         "first_party",
         "third_party_estimate",
         "community",
@@ -95,12 +96,16 @@
       }
     },
     {
-      "if": {"properties": {"source_type": {"enum": ["official_primary", "marketplace_primary", "third_party_estimate", "community"]}}},
+      "if": {"properties": {"source_type": {"enum": ["official_primary", "marketplace_primary", "ad_library", "third_party_estimate", "community"]}}},
       "then": {"properties": {"source_url": {"type": "string"}}}
     },
     {
       "if": {"properties": {"source_type": {"const": "synthetic"}}},
       "then": {"properties": {"evidence_level": {"const": "E0"}}}
+    },
+    {
+      "if": {"properties": {"source_type": {"const": "ad_library"}}},
+      "then": {"properties": {"evidence_level": {"enum": ["E1", "E2"]}}}
     }
   ]
 }

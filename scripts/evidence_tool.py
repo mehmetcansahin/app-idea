@@ -70,6 +70,7 @@ FATAL_CODES = {
 FATAL_STATUSES = {"clear", "blocked", "unknown"}
 EVIDENCE_LEVELS = set(LEVEL_VALUE)
 CLAIM_GRADES = set(GRADE_VALUE)
+AD_LIBRARY_LEVELS = {"E1", "E2"}
 OBSERVATION_QUALITIES = {"direct", "estimated", "inferred"}
 CLAIM_RELEVANCES = {"direct", "supporting", "weak"}
 DIRECTIONS = {"supports", "contradicts", "neutral"}
@@ -82,6 +83,7 @@ EVIDENCE_STATUSES = {
 SOURCE_TYPES = {
     "official_primary",
     "marketplace_primary",
+    "ad_library",
     "first_party",
     "third_party_estimate",
     "community",
@@ -94,6 +96,7 @@ SOURCE_TYPES = {
 WEB_SOURCE_TYPES = {
     "official_primary",
     "marketplace_primary",
+    "ad_library",
     "third_party_estimate",
     "community",
 }
@@ -302,6 +305,14 @@ def validate_evidence_records(records: Sequence[Dict[str, Any]]) -> ValidationRe
             result.error(f"{label}: source_url, source_ref or artifact_path is required")
         if record["source_type"] == "synthetic" and record["evidence_level"] != "E0":
             result.error(f"{label}: synthetic evidence must be E0")
+        if record["source_type"] == "ad_library":
+            if record["evidence_level"] not in AD_LIBRARY_LEVELS:
+                result.error(f"{label}: ad_library evidence must be E1 or E2")
+            if record["status"] == "observed" and record["artifact_path"] is None:
+                result.warn(
+                    f"{label}: observed ad_library evidence has no artifact_path; "
+                    "ad libraries only show live ads, save a screenshot"
+                )
         if record["status"] == "not_found_after_protocol":
             if not record["search_queries"] or not record["attempted_sources"]:
                 result.error(f"{label}: not_found_after_protocol requires searches and attempted sources")
@@ -328,27 +339,13 @@ def group_by_claim(records: Iterable[Dict[str, Any]]) -> Dict[str, List[Dict[str
     return claims
 
 
-def compute_claim_grade(records: Sequence[Dict[str, Any]]) -> str:
-    usable = [
-        record
-        for record in records
-        if record.get("status") == "observed"
-        and record.get("source_type") != "synthetic"
-        and record.get("claim_relevance") != "weak"
-    ]
-    strong_counter = any(
-        record.get("direction") == "contradicts"
-        and LEVEL_VALUE.get(record.get("evidence_level"), 0) >= 3
-        for record in usable
-    )
-    supports = [record for record in usable if record.get("direction") == "supports"]
+def grade_from_supports(supports: Sequence[Dict[str, Any]]) -> str:
+    """Grade ladder over supporting records; counters and caps are the caller's job."""
     direct_e3_roots = {
         record.get("independence_root")
         for record in supports
         if record.get("evidence_level") == "E3" and record.get("claim_relevance") == "direct"
     }
-    if strong_counter:
-        return "D"
     if any(record.get("evidence_level") == "E4" for record in supports):
         return "A"
     if len(direct_e3_roots) >= 2:
@@ -375,6 +372,30 @@ def compute_claim_grade(records: Sequence[Dict[str, Any]]) -> str:
     if e3_roots or e2_roots or len(e1_roots) >= 2:
         return "C"
     return "D"
+
+
+def compute_claim_grade(records: Sequence[Dict[str, Any]]) -> str:
+    usable = [
+        record
+        for record in records
+        if record.get("status") == "observed"
+        and record.get("source_type") != "synthetic"
+        and record.get("claim_relevance") != "weak"
+    ]
+    strong_counter = any(
+        record.get("direction") == "contradicts"
+        and LEVEL_VALUE.get(record.get("evidence_level"), 0) >= 3
+        for record in usable
+    )
+    supports = [record for record in usable if record.get("direction") == "supports"]
+    if strong_counter:
+        return "D"
+    grade = grade_from_supports(supports)
+    # Ad libraries show what advertisers say, not what users do; like ratings, they
+    # cannot carry a claim past C on their own.
+    if supports and all(record.get("source_type") == "ad_library" for record in supports):
+        return min(grade, "C", key=GRADE_VALUE.__getitem__)
+    return grade
 
 
 def split_root_records(

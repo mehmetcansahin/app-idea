@@ -37,6 +37,8 @@ Amac: Fikri ucuza elemek veya test yatirimina aday gostermek.
 
 - Preflight + use case/ikame ayrimi
 - Top 5 rakip/ikame, hizli trend/community, hedef geo
+- Top 3 rakip icin Meta Ad Library + Google Ads Transparency var/yok, aktif sayi ve
+  hedef URL (`ad_library` + screenshot)
 - Fatal gate taramasi
 - Iki eksenli desk assessment
 - Kisa risk ve bir sonraki test
@@ -58,7 +60,8 @@ Quick'e ek olarak:
 
 - top 10 rakip/ikame metadata
 - top 5 icin stratified review mining
-- gelir/odeme, fiyat, ad/channel, Geo-LTV ve visual intelligence
+- gelir/odeme, fiyat, ad/channel (top 5 rakip Meta/Google/TikTok, `ad_library`
+  kayitlari + screenshot), Geo-LTV ve visual intelligence
 - Faz 7 evidence audit
 - test adayiysa Faz 5.5 deney sozlesmesi
 - cross-report karsilastirma
@@ -110,6 +113,8 @@ Brief, Faz 5.5 gecilmediyse kosullu taslaktir.
 - Tema frekansini yalniz incelenen orneklem icin yaz.
 - Regule/sensitive-data fikirlerde fatal gate ve security kontrolunu erken yap.
 - Masa basi benchmark'i first-party veri gibi sunma.
+- Reklam kutuphanesi gozlemi `ad_library` kaydidir: en fazla E2, screenshot
+  artifact'i tasir, tek basina claim'i B'ye tasimaz; harcama/CPI tahmin etme.
 - Farkli metodoloji surumlerinin skorlarini karsilastirma.
 
 ## Faz 5.5

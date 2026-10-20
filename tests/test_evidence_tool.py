@@ -252,6 +252,35 @@ class EvidenceToolTests(unittest.TestCase):
         self.assertTrue(result.ok, result.errors)
         self.assertEqual("C", evidence_tool.compute_claim_grade([record]))
 
+    def test_ad_library_evidence_cannot_exceed_e2(self):
+        record = evidence("meta-longevity", "claim-economics", "E3", "adlib-meta-x-2026-07-10", "ad_library")
+        record["artifact_path"] = "data/artifacts/ads/meta-x-2026-07-10.png"
+        result = evidence_tool.validate_evidence_records([record])
+        self.assertFalse(result.ok)
+        self.assertTrue(any("ad_library evidence must be E1 or E2" in error for error in result.errors))
+
+    def test_observed_ad_library_record_without_screenshot_warns(self):
+        record = evidence("meta-x", "claim-distribution", "E2", "adlib-meta-x-2026-07-10", "ad_library")
+        result = evidence_tool.validate_evidence_records([record])
+        self.assertTrue(result.ok, result.errors)
+        self.assertTrue(any("artifact_path" in warning for warning in result.warnings), result.warnings)
+        record["artifact_path"] = "data/artifacts/ads/meta-x-2026-07-10.png"
+        result = evidence_tool.validate_evidence_records([record])
+        self.assertEqual([], result.warnings)
+
+    def test_ad_library_alone_cannot_reach_b(self):
+        records = [
+            evidence("meta-incogni", "claim-distribution", "E2", "adlib-meta-incogni-2026-07-10", "ad_library"),
+            evidence("meta-deleteme", "claim-distribution", "E2", "adlib-meta-deleteme-2026-07-10", "ad_library"),
+            evidence("google-optery", "claim-distribution", "E2", "adlib-google-optery-2026-07-10", "ad_library"),
+        ]
+        for record in records:
+            record["artifact_path"] = f"data/artifacts/ads/{record['evidence_id']}-2026-07-10.png"
+        self.assertEqual("C", evidence_tool.compute_claim_grade(records))
+        self.assertEqual([], evidence_tool.validate_evidence_records(records).warnings)
+        records.append(evidence("store-serp", "claim-distribution", "E2", "itunes-search-api"))
+        self.assertEqual("B", evidence_tool.compute_claim_grade(records))
+
     def test_b2b_loi_and_workaround_reach_b_without_app_competitor(self):
         loi = evidence("signed-loi", "claim-demand", "E3", "customer-loi", "experiment")
         workaround = evidence("paid-workaround", "claim-demand", "E2", "customer-history", "interview")

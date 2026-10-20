@@ -8,7 +8,8 @@ Konu: $ARGUMENTS
 `AGENTS.md` Standard workflow'unu uygula.
 
 1. Preflight + use case/arketip segmentasyonu.
-2. Top 10 rakip/ikame; trend, community, fiyat, gelir/odeme, ad/channel, Geo-LTV.
+2. Top 10 rakip/ikame; trend, community, fiyat, gelir/odeme, ad/channel (top 5
+   rakip, `ad_library` + screenshot), Geo-LTV.
 3. Top 5 rakip icin `scoring-model.md` stratified review minimumunu uygula.
 4. Visual intelligence ve JTBD migration analizi yap.
 5. JSONL evidence kaydet; `04-scoring.md` icinde iki eksenli v4 sonucu uret.

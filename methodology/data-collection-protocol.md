@@ -122,9 +122,40 @@ geliri veya profit kaniti degildir.
 
 ### Ad/channel intelligence
 
-Browser ile dogrudan gozlem yapilabiliyorsa reklam tarihi, aktif kreatif sayisi,
-mesaj acisi, geo ve advertiser'i kaydet. WebSearch fallback'i estimated'dir.
-Harcama tutari resmi olarak gorulmuyorsa tahmin yapma.
+Kapsam: Standard/Deep'te review mining ile ayni top 5 rakip ve kategori ifadesiyle
+1-2 keyword aramasi (yeni girisleri yakalamak icin). Quick'te top 3 rakip icin
+yalniz var/yok, aktif sayi ve hedef URL turu; mesaj acisi kodlamasi yok. Kayit
+kurallari (`source_type=ad_library`, kok, artifact, seviye)
+`tools-and-data-sources.md` icindedir; `phase` degeri `4`tur.
+
+Her rakip icin sirayla:
+
+1. Meta Ad Library: reklamveren sayfasi (`search_type=page`, `view_all_page_id`),
+   `country=` hedef geo, `active_status=active`, `ad_type=all`. Gosterilen toplam
+   `denominator`, incelenen kart sayisi `sample_n`.
+2. Google Ads Transparency Center: `domain=` sorgusu, `region=` hedef geo, `hl=en`
+   (TR IP'sinden arayuz Turkce acilir; sayi "~300 reklam" yerine "~300 ads" okunur).
+   "Any time" ve "Last 30 days" (`preset-date=Last+30+days`) sayilarini ayri yaz.
+3. TikTok: TikTok for Business girisi varsa Creative Center Top Ads, bolge = hedef
+   geo, son 30 gun; yoksa denenen URL ile `structurally_unobservable`.
+
+Her kayitta gozlenen alanlar: aktif reklam sayisi (gosterildigi gibi, `~` kabul),
+baslangic tarihi araligi ve kumelenme, format dagilimi, hedef URL turu (App Store /
+Play / web), mesaj acilari (`kodlanan/incelenen` oraniyla), teklif/fiyat/indirim
+kodu, creator/affiliate payi, rakip adina bidding. Her gozlem bir screenshot ile
+`data/artifacts/ads/` altina kaydedilir.
+
+Sonuc yoksa: "No ads match" veya 0 reklam `not_found_after_protocol`;
+`search_queries` icine reklamveren dropdown, exact keyword ve domain sorgularini
+yaz. Giris duvari `structurally_unobservable`.
+
+Tablo: Standard/Deep'te `phases/02-competitor-analysis.md` icinde
+`## Ad/Channel Intelligence` basligi; Quick'te `REPORT.md` Dagitim Erisimi
+tablosunda satirlar. Kolonlar: Reklamveren | Meta (aktif, tarih) | Google ATC
+(any time / 30g) | TikTok | Mesaj acilari (n/N) | Teklif/CTA | Hedef | Evidence.
+
+Harcama, gosterim, CPI veya CAC tahmin etme. Reklam gozlemi `problem_demand` icin
+`weak` kalir.
 
 ### Visual intelligence
 

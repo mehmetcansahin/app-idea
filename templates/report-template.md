@@ -57,6 +57,7 @@ goster. Pazar raporu/dijital davranis uyumsuzlugunu uyari olarak yaz.
 | Kanal/Keyword | Segment/Geo | Gozlenen Sinyal | Maliyet veya Difficulty | Evidence | Sinir |
 |---|---|---|---|---|---|
 | [kanal] | [baglam] | [sonuc] | [deger] | [ID] | [limit] |
+| Paid: Meta / Google ATC / TikTok | [geo] | [aktif reklam sayisi, hedef URL turu, mesaj acisi] | [harcama gorulmez] | [ID] | [yalniz aktif reklamlar; screenshot artifact] |
 
 ## 2. Rakip, Review ve Wedge
 
@@ -73,6 +74,15 @@ goster. Pazar raporu/dijital davranis uyumsuzlugunu uyari olarak yaz.
 | [app] | [n] | [n] | [n] | [son 12 ay] | [US] | [tema] | [x/n] | [ID] |
 
 Random sample yoksa orani pazar prevalansi diye sunma.
+
+### Ad/Channel Intelligence ⚐ STANDARD+
+
+| Reklamveren | Meta (aktif, tarih) | Google ATC (any time / 30g) | TikTok | Mesaj Acilari (n/N) | Teklif/CTA | Hedef | Evidence |
+|---|---|---|---|---|---|---|---|
+| [rakip] | [~n, baslangic araligi] | [n / n] | [n veya unobservable] | [aci: x/N] | [fiyat/kod] | App Store/Play/web | [ID] |
+
+Harcama, gosterim ve CAC gorulmez; tahmin yazma. Yalniz `ad_library` kaydina
+dayanan claim C'yi gecmez.
 
 ### Adlandirilmis Wedge
 
