@@ -1,4 +1,6 @@
+import contextlib
 import copy
+import io
 import json
 import sys
 import tempfile
@@ -244,19 +246,27 @@ def set_analysis_date(output_dir, value):
     path.write_text(json.dumps(assessment, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
-def write_narrative_output(root, report, mode="quick", research=None, review=None):
-    """Output dated on the narrative cutoff; ``research``/``review`` default to complete."""
+def write_narrative_output(root, report, mode="quick", research=None, review=None, summary=True):
+    """Output dated on the narrative cutoff; research, review and Özet default to complete."""
     output_dir = write_output(root, mode)
     set_analysis_date(output_dir, evidence_tool.NARRATIVE_REPORT_FROM.isoformat())
     if research is None:
         research = research_records(mode)
     write_records(output_dir, valid_records() + research)
+    if summary:
+        assessment = json.loads((output_dir / "data" / "assessment.json").read_text(encoding="utf-8"))
+        report = evidence_tool.with_report_summary(report, assessment) or report
     (output_dir / "REPORT.md").write_text(report, encoding="utf-8")
     if review is None and mode in {"standard", "deep"}:
         review = reader_review()
     if review:
         (output_dir / evidence_tool.READER_REVIEW_PATH).write_text(review, encoding="utf-8")
     return output_dir
+
+
+def run_render(output_dir):
+    with contextlib.redirect_stdout(io.StringIO()):
+        return evidence_tool.command_render(output_dir)
 
 
 class EvidenceToolTests(unittest.TestCase):
@@ -710,6 +720,44 @@ class EvidenceToolTests(unittest.TestCase):
             reader_review(issue_status="Kabul edilmedi", issue_fix="Kapsam dışı."), records
         )
         self.assertTrue(rejected.ok, rejected.errors)
+
+    def test_render_writes_summary_from_section_boxes_before_appendices(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            output_dir = write_narrative_output(Path(tmp), narrative_report(), summary=False)
+            self.assertEqual(0, run_render(output_dir))
+            report = (output_dir / "REPORT.md").read_text(encoding="utf-8")
+            self.assertEqual(0, run_render(output_dir))
+            rerendered = (output_dir / "REPORT.md").read_text(encoding="utf-8")
+            result = evidence_tool.validate_output(output_dir)
+        summary = report[report.index("## Özet") : report.index("## Ek A")]
+        self.assertIn("**Karar: `TEST_ONCELIKLI`**", summary)
+        self.assertIn("60 / 60 / 60", summary)
+        self.assertIn("- **2. Kullanıcının sorunu** — Ne öğrendik: x. Karara etkisi: z.", summary)
+        self.assertNotIn("Neden önemli", summary)
+        self.assertIn("Bölüm 5 (Karar ve öneri)", summary)
+        self.assertEqual(report, rerendered)
+        self.assertTrue(result.ok, result.errors)
+
+    def test_summary_is_required_and_must_follow_the_section_boxes(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            missing = evidence_tool.validate_output(
+                write_narrative_output(Path(tmp) / "a", narrative_report(), summary=False)
+            )
+            stale_dir = write_narrative_output(Path(tmp) / "b", narrative_report())
+            report_path = stale_dir / "REPORT.md"
+            report = report_path.read_text(encoding="utf-8")
+            report_path.write_text(report.replace("Ne öğrendik: x.", "Ne öğrendik: yeni.", 1), encoding="utf-8")
+            stale = evidence_tool.validate_output(stale_dir)
+        self.assertTrue(any("no generated '## Özet'" in error for error in missing.errors))
+        self.assertTrue(any("'## Özet' is out of date" in error for error in stale.errors))
+
+    def test_render_leaves_reports_without_section_boxes_untouched(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            output_dir = write_output(Path(tmp))
+            before = (output_dir / "REPORT.md").read_text(encoding="utf-8")
+            self.assertEqual(0, run_render(output_dir))
+            after = (output_dir / "REPORT.md").read_text(encoding="utf-8")
+        self.assertEqual(before, after)
 
 
 if __name__ == "__main__":

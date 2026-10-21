@@ -5,7 +5,8 @@ argument-hint: <output klasoru>
 
 Cikti klasoru: $ARGUMENTS
 
-1. `python3 scripts/evidence_tool.py render "$ARGUMENTS"`
+1. `python3 scripts/evidence_tool.py render "$ARGUMENTS"` (ledger ve raporun
+   `## Özet` bolumu; ozet elle duzenlenmez)
 2. `python3 scripts/evidence_tool.py validate "$ARGUMENTS"`
 3. Hatalari evidence/assessment/report kaynaginda duzelt; validator gecmeden
    tamamlanmis rapor olarak sunma. Rapor kontrolleri `methodology/report-writing.md`

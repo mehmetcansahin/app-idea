@@ -51,9 +51,10 @@ Basliklar sablondaki metinle birebir yazilir; validator bir kismini kontrol eder
 | 11 | `## 9. Puanlama: sayılar nasıl okunur?` | Skor ve not ne demek? |
 | 12 | `## 10. Karar ve öneri` | Ne yapiyoruz, neden, ne degistirir? |
 | 13 | `## 11. Kanıtın sınırları` | Neye ne kadar guvenebiliriz? |
-| 14 | `## Ek A — Terimler sözlüğü` | Terimler |
-| 15 | `## Ek B — Ana kaynaklar (türüne göre)` | Kaynaklar |
-| 16 | `## Ek C — Araştırma arşivi (denetim için)` | Claim/evidence kimlikleri, faz dosyalari |
+| 14 | `## Özet` (otomatik, §14) | Karar, puan, not ve her bolumun sonucu tek yerde |
+| 15 | `## Ek A — Terimler sözlüğü` | Terimler |
+| 16 | `## Ek B — Ana kaynaklar (türüne göre)` | Kaynaklar |
+| 17 | `## Ek C — Araştırma arşivi (denetim için)` | Claim/evidence kimlikleri, faz dosyalari |
 
 Quick Scan ayni iskeleti kisa tutar; sablonda `⚐` ile isaretli alt bolumler moda
 gore eklenir.
@@ -236,6 +237,9 @@ Hata:
 - Okur incelemesi (Standard/Deep): `data/reader-review.md` var; 11 olcutun hepsi
   `GEÇTİ`; `Açık` sorun yok; `Kabul edilmedi` sorunlarin gerekcesi var; en az 10
   iddia kontrol edilmis ve hicbiri `Hayır` degil; `İnceleyen:` dolu (§13).
+- `## Özet` var ve bolum sonuc kutulari ile `assessment.json` ile guncel (§14).
+  Ozet disindaki kontroller yalniz yazarin yazdigi metne bakar; ozet karar ve firsat
+  araligi kontrollerini karsilamaz.
 
 Uyari:
 
@@ -275,3 +279,21 @@ yazmamis bir okur (ayri alt ajan veya kisi) raporu bu sozlesmeye gore inceler.
    tamamlanmis sayilmaz.
 
 Quick Scan'de okur incelemesi istege baglidir.
+
+## 14. Ozet (Otomatik)
+
+Raporun sonunda, eklerden once `## Özet` bolumu bulunur. Yazar bu bolumu yazmaz:
+`python3 scripts/evidence_tool.py render <output-dir>` her calistiginda bolumu
+`<!-- ozet:start ... -->` / `<!-- ozet:end -->` isaretleri arasina yeniden uretir.
+
+- Ilk paragraf `assessment.json`'dan gelir: karar ve anlami, Firsat Cekiciligi
+  araligi ve sinifi, Kanit Gucu, durum.
+- Ardindan her numarali bolum icin `Bu bölümün sonucu` kutusunun `Ne öğrendik` ve
+  `Karara etkisi` kisimlari listelenir; son satir `Karar ve öneri` bolumune
+  yonlendirir.
+- Ozeti degistirmek icin kutulari veya `assessment.json`'u duzelt, sonra `render`'i
+  yeniden calistir. Elle yapilan degisiklik bir sonraki `render`'da silinir;
+  `validate` eskimis veya eksik ozeti hata sayar.
+- `render`, bolum sonuc kutusu olmayan eski raporlara dokunmaz. Kutulu eski raporlar
+  da `render` ile ozet alir; ozet bir kez eklendikten sonra guncel tutulmasi
+  `validate` ile kontrol edilir.

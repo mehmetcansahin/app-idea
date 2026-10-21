@@ -122,7 +122,8 @@ ilk geciste acikla ve Ek A'ya ekle. Her numarali bolumu sorusuyla ac ve "Bu
 bölümün sonucu" kutusuyla kapat; bulgulari uc parcali yaz. Kritik iddialari
 govdede evidence kaydindaki URL ile bagla; claim/evidence ID'lerini yalniz Ek C'de
 listele. REPORT, assessment.json ve evidence ledger ayni arketip, skor, grade,
-karar ve durumu gostersin. Son adimda evidence_tool render + validate calistir.
+karar ve durumu gostersin. `## Özet` yazma; son adimda evidence_tool render
+(ozeti bolum sonuc kutularindan uretir) + validate calistir.
 ```
 
 ## Okur Incelemesi (Standard/Deep)

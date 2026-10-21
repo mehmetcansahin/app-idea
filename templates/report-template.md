@@ -424,6 +424,8 @@ Bu bölüm şu soruyu yanıtlıyor: Bu raporun bulgularına ne kadar güvenebili
 
 > **Bu bölümün sonucu.** Ne öğrendik: [...] Neden önemli: [...] Karara etkisi: [...]
 
+<!-- "## Özet" bölümü buraya gelir. Yazmayın: `python3 scripts/evidence_tool.py render` bölüm sonuç kutularından ve data/assessment.json'dan üretir (methodology/report-writing.md §14). -->
+
 ## Ek A — Terimler sözlüğü
 
 | Terim | Anlamı |

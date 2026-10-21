@@ -29,7 +29,8 @@ Bu dosya workflow ozetidir; puanlama tablosunu kopyalamaz.
    `templates/reader-review-template.md` ile inceleme yaptir; sonuc
    `data/reader-review.md`'ye yazilir, yazar her sorunu kapatir.
 8. `python3 scripts/evidence_tool.py render <output-dir>` ve sonra `validate` calistir;
-   paylasim kopyasi gerekiyorsa `pdf` ile `REPORT.pdf` uret.
+   `render` ledger'i ve raporun sonundaki `## Özet` bolumunu otomatik uretir.
+   Paylasim kopyasi gerekiyorsa `pdf` ile `REPORT.pdf` uret.
 9. `output/INDEX.md` scoreboard'unu guncelle.
 
 Masa basi karar enum'lari: `ELENDIR`, `BELIRSIZ`, `TESTE_DEGER`,
@@ -135,8 +136,10 @@ Ayrinti ve validator kontrolleri `methodology/report-writing.md` icindedir.
   nasil etkiliyor, proje mantikli mi?" sorularini yazara sormadan cevaplayabilmeli.
 - Baslik ve kapsam incelenen urunu tarif eder; `Kapsam dışında kalanlar` zorunlu.
 - Akis: kisa cevap → kapsam → sorun → pazar → rakipler → urun → kanallar → para →
-  riskler → puanlama → karar → sinirlar. Her numarali bolum sorusuyla acilir ve
-  `Bu bölümün sonucu` kutusuyla kapanir.
+  riskler → puanlama → karar → sinirlar → ozet. Her numarali bolum sorusuyla acilir
+  ve `Bu bölümün sonucu` kutusuyla kapanir.
+- `## Özet` elle yazilmaz: `render` bolum sonuc kutularindan ve `assessment.json`'dan
+  eklerden once uretir; degisiklik kutularda yapilir.
 - Bulgular rapor boyunca numaralanir ve uc parcalidir: ne gozlemledik, urun acisindan
   anlami, henuz varamadigimiz sonuc.
 - Tam cumle; terimler ilk geciste aciklanir ve Ek A'ya yazilir; skor olcegi
