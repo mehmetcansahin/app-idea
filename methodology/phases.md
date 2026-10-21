@@ -143,6 +143,17 @@ regulasyon varsayimlarini karsi kanitla kir.
 **Cikti:** Varsayim tablosu, fatal gate audit'i, worst case ve karar matrisi
 uygunluk kontrolu.
 
+## Okur Incelemesi (Numarasiz, Standard/Deep)
+
+**Amac:** Raporu yazmayan bir okurun, raporu `report-writing.md` basari olcutune
+gore incelemesi ve bulunan sorunlarin kapatilmasi.
+
+**Cikti:** `data/reader-review.md` (`templates/reader-review-template.md`): 11 olcut,
+bulunan sorunlar ve en az 10 iddia kontrolu.
+
+**Gate:** Tum olcutler `GEÇTİ`; `Açık` sorun ve `Hayır` iddia yok; `validate` gecer.
+Ayrinti: `report-writing.md` §13.
+
 ## MVP Sonrasi
 
 Onceden yazilan aktivasyon, retention ve ekonomi esikleri kohort bazli izlenir:

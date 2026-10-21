@@ -207,6 +207,37 @@ PDF_BROWSER_PATHS = (
     "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
 )
 
+# Research steps from methodology/data-collection-protocol.md that the report must
+# show (methodology/report-writing.md §11). Reader review is §13.
+RESEARCH_MODES = {"standard", "deep"}
+RESEARCH_REPORT_TABLES = (
+    ("competitor profile table", ("Bu işte ne zamandan beri?", "Platformlar")),
+    ("channel summary table", ("Kim hâkim?", "Yeni bir uygulama için gerçekçi mi?")),
+)
+SEARCH_RESULTS_URL_RE = re.compile(
+    r"^https?://(?:www\.|html\.)?"
+    r"(?:google\.[a-z.]+/search|bing\.com/search|duckduckgo\.com/(?:html/?)?\?|youtube\.com/results)",
+    re.IGNORECASE,
+)
+MIN_SEARCH_RESULT_PAGES = 8
+READER_REVIEW_PATH = Path("data") / "reader-review.md"
+READER_REVIEW_CRITERIA = (
+    "Kapsam",
+    "Akış",
+    "Bulgular",
+    "Örnekler",
+    "Dil",
+    "Terim ve sayılar",
+    "Karar",
+    "Kaynaklar",
+    "Rakipler",
+    "Pazar ve kanallar",
+    "Başarı ölçütü",
+)
+MIN_REVIEWED_CLAIMS = 10
+TABLE_SEPARATOR_CELL_RE = re.compile(r":?-{3,}:?")
+UNESCAPED_PIPE_RE = re.compile(r"(?<!\\)\|")
+
 
 @dataclass
 class ValidationResult:
@@ -1058,6 +1089,145 @@ def validate_report_narrative(
     return result
 
 
+def claim_matches(record: Dict[str, Any], suffix: str) -> bool:
+    claim_id = record.get("claim_id")
+    return isinstance(claim_id, str) and (claim_id == suffix or claim_id.endswith("-" + suffix))
+
+
+def has_table_header(text: str, columns: Sequence[str]) -> bool:
+    return any(
+        line.lstrip().startswith("|") and all(column in line for column in columns)
+        for line in text.splitlines()
+    )
+
+
+def validate_report_research(
+    report: str, assessment: Dict[str, Any], records: Sequence[Dict[str, Any]]
+) -> ValidationResult:
+    """Competitor, market and channel research the report must rest on."""
+    result = ValidationResult()
+    text = HTML_COMMENT_RE.sub("", report)
+    for label, columns in RESEARCH_REPORT_TABLES:
+        if not has_table_header(text, columns):
+            result.error(f"REPORT.md has no {label} (columns: {' | '.join(columns)})")
+    if not any(claim_matches(record, "competitor-profile") for record in records):
+        result.error("evidence.jsonl has no '<prefix>-competitor-profile' record")
+    if assessment.get("mode") not in RESEARCH_MODES:
+        return result
+    if not any(claim_matches(record, "market-size") for record in records):
+        result.error("evidence.jsonl has no '<prefix>-market-size' record")
+    search_pages = {
+        record["source_url"]
+        for record in records
+        if claim_matches(record, "distribution")
+        and isinstance(record.get("source_url"), str)
+        and SEARCH_RESULTS_URL_RE.match(record["source_url"])
+    }
+    if not search_pages:
+        result.error(
+            "evidence.jsonl has no '<prefix>-distribution' record of a web or video "
+            "search results page"
+        )
+    elif len(search_pages) < MIN_SEARCH_RESULT_PAGES:
+        result.warn(
+            f"only {len(search_pages)} distinct search results page(s) recorded; "
+            f"the organic channel step asks for {MIN_SEARCH_RESULT_PAGES}"
+        )
+    return result
+
+
+def markdown_table_rows(block: str) -> List[List[str]]:
+    """Body rows of the first pipe table run in ``block`` (header and separator dropped)."""
+    rows: List[List[str]] = []
+    for line in block.splitlines():
+        stripped = line.strip()
+        if not stripped.startswith("|"):
+            if rows:
+                break
+            continue
+        cells = [cell.strip() for cell in UNESCAPED_PIPE_RE.split(stripped.strip("|"))]
+        if all(TABLE_SEPARATOR_CELL_RE.fullmatch(cell) for cell in cells):
+            continue
+        rows.append(cells)
+    return rows[1:]
+
+
+def review_cell(row: Sequence[str], index: int) -> str:
+    return row[index].strip() if index < len(row) else ""
+
+
+def validate_reader_review(text: str, records: Sequence[Dict[str, Any]]) -> ValidationResult:
+    """Independent reader review in data/reader-review.md (report-writing.md §13)."""
+    result = ValidationResult()
+    text = HTML_COMMENT_RE.sub("", text)
+    label = READER_REVIEW_PATH.as_posix()
+    reviewer = re.search(r"^- İnceleyen:[ \t]*(.*)$", text, re.MULTILINE)
+    if not reviewer or not reviewer.group(1).strip() or reviewer.group(1).lstrip().startswith("["):
+        result.error(f"{label} does not name the reviewer ('- İnceleyen:')")
+
+    headings = report_headings(text)
+
+    def section(title: str) -> Optional[str]:
+        blocks = heading_blocks(text, headings, re.compile(re.escape(title) + r"\s*$"), level=2)
+        if not blocks:
+            result.error(f"{label} is missing the '## {title}' section")
+            return None
+        return blocks[0][1]
+
+    criteria_block = section("Ölçütler")
+    if criteria_block is not None:
+        rows = markdown_table_rows(criteria_block)
+        for key in READER_REVIEW_CRITERIA:
+            row = next((row for row in rows if f"**{key}**" in review_cell(row, 0)), None)
+            if row is None:
+                result.error(f"{label} has no '{key}' criterion")
+                continue
+            verdict = review_cell(row, 1).upper()
+            if verdict.startswith("KALD"):
+                result.error(f"{label}: criterion '{key}' is KALDI; fix the report and re-check")
+            elif not verdict.startswith("GEÇT"):
+                result.error(f"{label}: criterion '{key}' needs GEÇTİ or KALDI")
+
+    issues_block = section("Bulunan sorunlar")
+    if issues_block is not None:
+        issues = markdown_table_rows(issues_block)
+        if not issues:
+            result.warn(f"{label} records no issues")
+        for row in issues:
+            number = review_cell(row, 0) or "?"
+            status = review_cell(row, 3).casefold()
+            if status.startswith("açık"):
+                result.error(f"{label}: issue {number} is still open")
+            elif status.startswith("kabul edilmedi"):
+                reason = review_cell(row, 4)
+                if not reason or reason.startswith("["):
+                    result.error(f"{label}: issue {number} is rejected without a reason")
+            elif not status.startswith("düzeltildi"):
+                result.error(
+                    f"{label}: issue {number} needs status Açık, Düzeltildi or Kabul edilmedi"
+                )
+
+    claims_block = section("İddia kontrolü")
+    if claims_block is not None:
+        claims = markdown_table_rows(claims_block)
+        if len(claims) < MIN_REVIEWED_CLAIMS:
+            result.error(
+                f"{label} checks {len(claims)} claim(s); at least {MIN_REVIEWED_CLAIMS} required"
+            )
+        evidence_ids = {
+            record["evidence_id"] for record in records if isinstance(record.get("evidence_id"), str)
+        }
+        for index, row in enumerate(claims, start=1):
+            verdict = review_cell(row, 3).casefold()
+            if verdict.startswith("hayır"):
+                result.error(f"{label}: claim check {index} does not match its evidence")
+            elif not (verdict.startswith("evet") or verdict.startswith("düzeltildi")):
+                result.error(f"{label}: claim check {index} needs Evet, Düzeltildi or Hayır")
+            if not evidence_ids.intersection(SLUG_TOKEN_RE.findall(review_cell(row, 2))):
+                result.warn(f"{label}: claim check {index} cites no known evidence_id")
+    return result
+
+
 def validate_output(output_dir: Path) -> ValidationResult:
     result = ValidationResult()
     report_path = output_dir / "REPORT.md"
@@ -1089,6 +1259,18 @@ def validate_output(output_dir: Path) -> ValidationResult:
             result.error("REPORT.md must link data/evidence-ledger.md")
         if narrative_report_required(assessment):
             result.merge(validate_report_narrative(report, assessment, records))
+            result.merge(validate_report_research(report, assessment, records))
+            if assessment.get("mode") in RESEARCH_MODES:
+                review_path = output_dir / READER_REVIEW_PATH
+                if not review_path.exists():
+                    result.error(
+                        f"{assessment.get('mode')} mode requires {READER_REVIEW_PATH.as_posix()} "
+                        "(methodology/report-writing.md §13)"
+                    )
+                else:
+                    result.merge(
+                        validate_reader_review(review_path.read_text(encoding="utf-8"), records)
+                    )
     if assessment is not None:
         # An incomplete assessment is already reported by validate_assessment.
         mode = assessment.get("mode")

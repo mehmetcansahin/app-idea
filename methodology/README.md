@@ -67,15 +67,15 @@ output/{YYYY-MM-DD}-{konu}/
     └── evidence-ledger.md
 ```
 
-Standard/Deep `phases/` dosyalarini; Deep ayrica
-`data/raw-search-results.md` dosyasini uretir. REPORT.md iskeleti
+Standard/Deep `phases/` dosyalarini ve `data/reader-review.md` okur incelemesini;
+Deep ayrica `data/raw-search-results.md` dosyasini uretir. REPORT.md iskeleti
 `templates/report-template.md`, kurallari `report-writing.md`'dir.
 
 ## Surum Gecmisi
 
 | Surum | Tarih | Ozet |
 |---|---|---|
-| v4.0 | 2026-10-20 | Rapor yazim sozlesmesi: anlati iskeleti, uc parcali bulgular, bolum sonu ozetleri, govdede kaynak baglantisi; validator kontrolleri ve PDF komutu. Skorlar degismedi |
+| v4.0 | 2026-10-20 | Rapor yazim sozlesmesi: anlati iskeleti, uc parcali bulgular, bolum sonu ozetleri, govdede kaynak baglantisi; validator kontrolleri ve PDF komutu. 2026-10-21: arastirma kaniti (rakip profili, pazar buyuklugu, arama sonucu) ve Standard/Deep okur incelemesi kontrolleri. Skorlar degismedi |
 | v4.0 | 2026-07-10 | Iki eksenli arketip modeli, evidence contract, staged decision ve validator |
 | v3.4 | 2026-07-08 | Geo-LTV, visual intelligence, micro-MVP, security ve TR operasyon notlari |
 | v3.3 | 2026-06-26 | RAT, JTBD, Lean Canvas ve ek pazar araclari |

@@ -91,13 +91,16 @@ iki duzeyli numara kullanilmaz.
   validator uyarisi uretir.
 - Claim/evidence kimlikleri (`[abc-wedge]`) ve `phases/` yollari govdede
   kullanilmaz; yalniz Ek C'de denetim icin listelenir.
-- Gozlem cumlelerinde kaynagin turu belirtilir:
+- Gozlem cumlelerinde kaynagin turu asagidaki bes etiketten biriyle belirtilir;
+  gerekirse virgulden sonra ayrinti eklenir (`şirket beyanı, denetlenmemiş`,
+  `yazarın yorumu, kaba çıkarım`). Bu bes etiketin disinda tur adi kullanilmaz ve
+  okuma rehberi bes etiketin hepsini tanitir:
 
 | Etiket | Anlami |
 |---|---|
 | gözlem | Arastirmacinin dogrudan gordugu: store sayfasi, fiyat sayfasi, reklam kutuphanesi, form |
 | şirket beyanı | Sirketin kendisi hakkinda soyledigi, bagimsiz dogrulanmamis bilgi |
-| bağımsız kaynak | Resmi kurum, mahkeme, SEC dosyasi, basin, test kurulusu, akademik calisma |
+| bağımsız kaynak | Resmi kurum, mahkeme, SEC dosyasi, basin, test kurulusu, sektor raporu, akademik calisma |
 | varsayım | Yalniz hesapta kullanilan, kanit olmayan deger |
 | yazarın yorumu | Gozlemden yapilan cikarim; "Ürün açısından anlamı" paragraflari varsayilan olarak yorumdur |
 
@@ -223,10 +226,23 @@ Hata:
 - Govdede kullanilan teknik terim (wedge, CAC, LTV, ARPU, concierge, opt-out,
   data broker, affiliate, fatal gate, JTBD, RAT, ASO, IAP, MDE, payback, churn,
   paywall) Ek A'da tanimli.
+- Arastirma kaniti (tum modlar): `evidence.jsonl` icinde `<prefix>-competitor-profile`
+  claim'li en az bir kayit; raporda rakip profili tablosu (`Bu işte ne zamandan
+  beri?` ve `Platformlar` sutunlari) ve kanal ozeti tablosu (`Kim hâkim?` ve
+  `Yeni bir uygulama için gerçekçi mi?` sutunlari).
+- Arastirma kaniti (Standard/Deep): `<prefix>-market-size` claim'li en az bir kayit
+  ve `<prefix>-distribution` claim'inde en az bir web/video arama sonucu kaydi
+  (Google, Bing, DuckDuckGo arama sayfasi veya YouTube sonuc sayfasi URL'si).
+- Okur incelemesi (Standard/Deep): `data/reader-review.md` var; 11 olcutun hepsi
+  `GEÇTİ`; `Açık` sorun yok; `Kabul edilmedi` sorunlarin gerekcesi var; en az 10
+  iddia kontrol edilmis ve hicbiri `Hayır` degil; `İnceleyen:` dolu (§13).
 
 Uyari:
 
 - Govdedeki URL `evidence.jsonl` kayitlarinda yok.
+- Standard/Deep'te 8'den az farkli arama sonucu sayfasi kaydedilmis
+  (`data-collection-protocol.md` organik kanal adimi en az 8 sorgu ister).
+- Okur incelemesinde hic sorun kaydedilmemis.
 
 ## 12. PDF
 
@@ -239,3 +255,23 @@ python3 scripts/evidence_tool.py pdf output/{tarih}-{konu}
 Komut once `validate` calistirir; gecmezse PDF uretmez. `pandoc` ve bir Chromium
 tabanli tarayici gerekir (`--browser` veya `REPORT_PDF_BROWSER` ile secilir).
 Stil: `templates/report-pdf.css`.
+
+## 13. Okur Incelemesi (Standard/Deep)
+
+Rapor yazildiktan ve `validate` disindaki tum adimlar bittikten sonra, raporu
+yazmamis bir okur (ayri alt ajan veya kisi) raporu bu sozlesmeye gore inceler.
+
+1. Inceleyen once yalniz `REPORT.md`'yi okur; anlamak icin `data/` veya `phases/`
+   acmaz. Iddia kontrolu icin `data/evidence.jsonl` acilir.
+2. Sonuc `templates/reader-review-template.md` bicimiyle `data/reader-review.md`
+   dosyasina yazilir: 11 olcut, bulunan sorunlar ve en az 10 iddia kontrolu.
+   Inceleyen sorunlari `Açık` durumuyla yazar ve rapora dokunmaz.
+3. Yazar her sorunu duzeltir ve durumunu `Düzeltildi` yapar ya da gerekcesiyle
+   `Kabul edilmedi` yazar. `Hayır` iddialar duzeltilip `Düzeltildi` olur.
+4. Duzeltmeler `KALDI` olcutleri ortadan kaldiriyorsa olcut `GEÇTİ` yapilir ve
+   Not sutununa duzeltmenin yeri yazilir. Kapsamli degisiklikte inceleme yeniden
+   calistirilir.
+5. `validate` bu dosyayi §11'deki kurallarla kontrol eder; gecmeden rapor
+   tamamlanmis sayilmaz.
+
+Quick Scan'de okur incelemesi istege baglidir.

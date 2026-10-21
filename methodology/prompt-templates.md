@@ -124,3 +124,21 @@ govdede evidence kaydindaki URL ile bagla; claim/evidence ID'lerini yalniz Ek C'
 listele. REPORT, assessment.json ve evidence ledger ayni arketip, skor, grade,
 karar ve durumu gostersin. Son adimda evidence_tool render + validate calistir.
 ```
+
+## Okur Incelemesi (Standard/Deep)
+
+Raporu yazmayan ayri bir alt ajana verilir; alt ajan yalniz
+`data/reader-review.md` yazar.
+
+```text
+[CIKTI_KLASORU]/REPORT.md'yi konuya ilk kez bakan bir okur olarak bastan sona oku;
+anlamak icin data/ veya phases/ acma. methodology/report-writing.md sozlesmesine
+gore templates/reader-review-template.md'deki 11 olcutu GEÇTİ veya KALDI olarak
+degerlendir; Not sutununa satir numarasi yaz. Somut her sorunu (aciklanmamis terim,
+telgraf cumle, tahmin gerektiren tablo hucresi, bolumler arasi tutarsiz sayi,
+yanlis capraz referans, yazim hatasi, kaynak turu belirsiz karar iddiasi, kapsam
+disi ornek) yer, kisa alinti, `Açık` durumu ve onerilen duzeltmeyle listele. Zevk
+tercihi ekleme. Bolum 2-10'a yayilan en az 12 iddiayi data/evidence.jsonl ile
+karsilastir; tutmayani `Hayır` yaz ve sorunlara da ekle. Sonucu
+[CIKTI_KLASORU]/data/reader-review.md'ye yaz; baska dosyaya dokunma.
+```

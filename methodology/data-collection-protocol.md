@@ -90,7 +90,7 @@ Tek bir "pazar buyuklugu" rakami uretme; olculebilen parcalari ve dagilimi kayde
 
 Kayit: tahmin, gelir ve kayit sayilari `claim_id=<prefix>-market-size`,
 `direction=neutral`; davranis ve anket sayilari talep claim'ine. Yazarin kaba
-cikarimi raporda "yazarın kaba çıkarımı" diye etiketlenir.
+cikarimi raporda "yazarın yorumu, kaba çıkarım" diye etiketlenir.
 
 ## Faz 4: Rakip ve Davranis Analizi
 
@@ -227,8 +227,10 @@ Hedef geo icin kanallara kimin hakim oldugunu olc:
 6. Magaza listeleri (top charts) ve son 12 aydaki yeni girislerin gorunurlugu.
 
 Kayit: `claim_id=<prefix>-distribution`; buyuk oyuncu hakimiyeti `contradicts`,
-yeni bir oyuncunun organik cekisi `supports`, digerleri `neutral`. Raporda kanal
-ozet tablosu kullanilir (`report-writing.md` §10).
+yeni bir oyuncunun organik cekisi `supports`, digerleri `neutral`. Web ve video
+aramasi kayitlarinda `source_url` sorgunun sonuc sayfasi URL'sidir (orn.
+`https://www.google.com/search?q=...&gl=us`); validator bu kayitlari sayar. Raporda
+kanal ozet tablosu kullanilir (`report-writing.md` §10).
 
 ### Visual intelligence
 
@@ -315,4 +317,5 @@ python3 scripts/evidence_tool.py pdf output/{tarih}-{konu}   # istege bagli payl
 ```
 
 Validator gecmeden rapor tamamlanmis sayilmaz. Rapor dili ve yapisi
-`report-writing.md` sozlesmesine uyar.
+`report-writing.md` sozlesmesine uyar; Standard/Deep'te validate'ten once okur
+incelemesi yapilir (`report-writing.md` §13).

@@ -121,21 +121,25 @@ def valid_assessment(mode="quick"):
     }
 
 
-def write_output(root, mode="quick"):
-    output_dir = root / f"fixture-{mode}"
+def write_records(output_dir, records):
     data_dir = output_dir / "data"
-    data_dir.mkdir(parents=True)
-    records = valid_records()
     (data_dir / "evidence.jsonl").write_text(
         "\n".join(json.dumps(record, sort_keys=True) for record in records) + "\n",
         encoding="utf-8",
     )
+    (data_dir / "evidence-ledger.md").write_text(
+        evidence_tool.render_ledger(records), encoding="utf-8"
+    )
+
+
+def write_output(root, mode="quick"):
+    output_dir = root / f"fixture-{mode}"
+    data_dir = output_dir / "data"
+    data_dir.mkdir(parents=True)
+    write_records(output_dir, valid_records())
     assessment = valid_assessment(mode)
     (data_dir / "assessment.json").write_text(
         json.dumps(assessment, indent=2, sort_keys=True) + "\n", encoding="utf-8"
-    )
-    (data_dir / "evidence-ledger.md").write_text(
-        evidence_tool.render_ledger(records), encoding="utf-8"
     )
     (output_dir / "REPORT.md").write_text(
         "# Fixture\n\nMetodoloji: v4.0\n\nKarar: TEST_ONCELIKLI\n\n"
@@ -176,13 +180,60 @@ def narrative_report(opportunity="60 / 60 / 60", body_extra="", glossary_extra="
         + "**Henüz varamadığımız sonuç.** Ödeme isteği bilinmiyor.\n\n"
         + body_extra
         + NARRATIVE_SUMMARY
-        + narrative_section(3, "Karar ve öneri", "Ne yapalım?")
+        + narrative_section(3, "Mevcut çözümler", "Kim çözüyor?")
+        + "| Rakip | Bu işte ne zamandan beri? | Platformlar |\n|---|---|---|\n| A | 2015 | iOS |\n\n"
         + NARRATIVE_SUMMARY
-        + narrative_section(4, "Kanıtın sınırları", "Neye güvenebiliriz?")
+        + narrative_section(4, "Kullanıcıya ulaşma", "Nasıl ulaşırız?")
+        + "| Kanal | Kim hâkim? | Yeni bir uygulama için gerçekçi mi? |\n|---|---|---|\n"
+        + "| Web araması | Rakip siteleri | Hayır |\n\n"
+        + NARRATIVE_SUMMARY
+        + narrative_section(5, "Karar ve öneri", "Ne yapalım?")
+        + NARRATIVE_SUMMARY
+        + narrative_section(6, "Kanıtın sınırları", "Neye güvenebiliriz?")
         + NARRATIVE_SUMMARY
         + "## Ek A — Terimler sözlüğü\n\n| Terim | Anlamı |\n|---|---|\n"
         + glossary_extra
         + "\n## Ek C — Araştırma arşivi (denetim için)\n\n- Bölüm 2 → `claim-demand`\n"
+    )
+
+
+def research_records(mode, search_pages=8):
+    """Competitor, market and search-results evidence the research steps produce."""
+    records = [evidence("fixture-competitor-profile-a", "fixture-competitor-profile", "E2", "competitor-a")]
+    if mode in {"standard", "deep"}:
+        records.append(evidence("fixture-market-size-a", "fixture-market-size", "E2", "market-a"))
+        for index in range(search_pages):
+            record = evidence(f"fixture-serp-{index}", "fixture-distribution", "E2", f"serp-{index}")
+            record["source_url"] = f"https://www.google.com/search?q=query+{index}"
+            records.append(record)
+    return records
+
+
+def reader_review(
+    reviewer="Bağımsız okur",
+    criterion_verdict="GEÇTİ",
+    issue_status="Düzeltildi",
+    issue_fix="Cümle tamamlandı.",
+    claim_verdict="Evet",
+    claim_rows=10,
+):
+    criteria = "".join(
+        f"| **{key}** — ölçüt | {criterion_verdict} | satır 1 |\n"
+        for key in evidence_tool.READER_REVIEW_CRITERIA
+    )
+    claims = "".join(
+        f"| İddia {index} | Bölüm 2 | `claim-demand-behavior` | {claim_verdict} |\n"
+        for index in range(1, claim_rows + 1)
+    )
+    return (
+        f"# Okur İncelemesi\n\n- İnceleyen: {reviewer}\n- Tarih: 2026-10-21\n\n"
+        "## Ölçütler\n\n| Ölçüt | Sonuç | Not |\n|---|---|---|\n"
+        + criteria
+        + "\n## Bulunan sorunlar\n\n| # | Yer | Sorun | Durum | Çözüm |\n|---|---|---|---|---|\n"
+        + f"| 1 | Bölüm 2 | Yarım cümle | {issue_status} | {issue_fix} |\n"
+        + "\n## İddia kontrolü\n\nOn iddia kontrol edildi.\n\n"
+        + "| İddia | Yer | Kanıt kaydı | Uyuyor mu? |\n|---|---|---|---|\n"
+        + claims
     )
 
 
@@ -193,10 +244,18 @@ def set_analysis_date(output_dir, value):
     path.write_text(json.dumps(assessment, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
-def write_narrative_output(root, report):
-    output_dir = write_output(root)
+def write_narrative_output(root, report, mode="quick", research=None, review=None):
+    """Output dated on the narrative cutoff; ``research``/``review`` default to complete."""
+    output_dir = write_output(root, mode)
     set_analysis_date(output_dir, evidence_tool.NARRATIVE_REPORT_FROM.isoformat())
+    if research is None:
+        research = research_records(mode)
+    write_records(output_dir, valid_records() + research)
     (output_dir / "REPORT.md").write_text(report, encoding="utf-8")
+    if review is None and mode in {"standard", "deep"}:
+        review = reader_review()
+    if review:
+        (output_dir / evidence_tool.READER_REVIEW_PATH).write_text(review, encoding="utf-8")
     return output_dir
 
 
@@ -542,7 +601,7 @@ class EvidenceToolTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             result = evidence_tool.validate_output(write_narrative_output(Path(tmp), report))
         self.assertFalse(result.ok)
-        self.assertTrue(any("'3. Karar ve öneri' does not open" in error for error in result.errors))
+        self.assertTrue(any("'5. Karar ve öneri' does not open" in error for error in result.errors))
 
     def test_finding_must_state_what_it_does_not_prove(self):
         report = narrative_report().replace(
@@ -585,6 +644,72 @@ class EvidenceToolTests(unittest.TestCase):
             result = evidence_tool.validate_output(write_narrative_output(Path(tmp), report))
         self.assertTrue(result.ok, result.errors)
         self.assertTrue(any("unknown.example" in warning for warning in result.warnings))
+
+    def test_report_must_show_competitor_profiles_and_channel_summary(self):
+        without_channels = narrative_report().replace("Kim hâkim?", "Sahip")
+        with tempfile.TemporaryDirectory() as tmp:
+            no_profiles = evidence_tool.validate_output(
+                write_narrative_output(Path(tmp) / "a", narrative_report(), research=[])
+            )
+            no_table = evidence_tool.validate_output(
+                write_narrative_output(Path(tmp) / "b", without_channels)
+            )
+        self.assertTrue(any("competitor-profile" in error for error in no_profiles.errors))
+        self.assertTrue(any("channel summary table" in error for error in no_table.errors))
+
+    def test_standard_report_needs_market_size_and_search_results_evidence(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            missing = evidence_tool.validate_output(
+                write_narrative_output(
+                    Path(tmp) / "a", narrative_report(), "standard", research=research_records("quick")
+                )
+            )
+            few_pages = evidence_tool.validate_output(
+                write_narrative_output(
+                    Path(tmp) / "b",
+                    narrative_report(),
+                    "standard",
+                    research=research_records("standard", search_pages=3),
+                )
+            )
+        self.assertTrue(any("market-size" in error for error in missing.errors))
+        self.assertTrue(any("search results page" in error for error in missing.errors))
+        self.assertTrue(few_pages.ok, few_pages.errors)
+        self.assertTrue(any("only 3 distinct" in warning for warning in few_pages.warnings))
+
+    def test_deep_report_with_complete_reader_review_passes(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            result = evidence_tool.validate_output(
+                write_narrative_output(Path(tmp), narrative_report(), "deep")
+            )
+        self.assertTrue(result.ok, result.errors)
+        self.assertEqual([], result.warnings)
+
+    def test_research_modes_require_reader_review(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            result = evidence_tool.validate_output(
+                write_narrative_output(Path(tmp), narrative_report(), "standard", review=False)
+            )
+        self.assertTrue(any("reader-review.md" in error for error in result.errors))
+
+    def test_reader_review_blocks_unresolved_findings(self):
+        records = valid_records()
+        cases = {
+            "still open": reader_review(issue_status="Açık"),
+            "is KALDI": reader_review(criterion_verdict="KALDI"),
+            "does not match": reader_review(claim_verdict="Hayır"),
+            "without a reason": reader_review(issue_status="Kabul edilmedi", issue_fix=""),
+            "at least 10": reader_review(claim_rows=9),
+            "reviewer": reader_review(reviewer="[bağımsız okur]"),
+        }
+        for expected, text in cases.items():
+            with self.subTest(expected):
+                result = evidence_tool.validate_reader_review(text, records)
+                self.assertTrue(any(expected in error for error in result.errors), result.errors)
+        rejected = evidence_tool.validate_reader_review(
+            reader_review(issue_status="Kabul edilmedi", issue_fix="Kapsam dışı."), records
+        )
+        self.assertTrue(rejected.ok, rejected.errors)
 
 
 if __name__ == "__main__":

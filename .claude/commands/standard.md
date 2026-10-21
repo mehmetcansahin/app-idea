@@ -18,7 +18,9 @@ Konu: $ARGUMENTS
 7. Test adayiysa `06-prebuild-plan.md` icinde RAT-bazli deney sozlesmesi yaz.
 8. REPORT'u `methodology/report-writing.md` kurallariyla yaz; zorunlu phase/data
    dosyalari ve INDEX'i uret.
-9. `evidence_tool.py render` ve `validate` basarili olmadan tamamlanmis sayma.
+9. Raporu yazmayan ayri bir alt ajana `prompt-templates.md` "Okur Incelemesi"
+   prompt'uyla `data/reader-review.md` yazdir; her sorunu duzelt ve durumunu kapat.
+10. `evidence_tool.py render` ve `validate` basarili olmadan tamamlanmis sayma.
 
 Insan deneyi yurutulmediyse durum PREBUILD_PENDING'dir. Masa basi build karari
 vermez.

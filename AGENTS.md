@@ -25,9 +25,12 @@ Bu dosya workflow ozetidir; puanlama tablosunu kopyalamaz.
 5. Yalniz asamaya izin verilen karari ver.
 6. Raporu `templates/report-template.md` iskeleti ve `methodology/report-writing.md`
    kurallariyla, makine-okunur dosyalarla birlikte yaz.
-7. `python3 scripts/evidence_tool.py render <output-dir>` ve sonra `validate` calistir;
+7. Standard/Deep: raporu yazmayan bir okura (ayri alt ajan veya kisi)
+   `templates/reader-review-template.md` ile inceleme yaptir; sonuc
+   `data/reader-review.md`'ye yazilir, yazar her sorunu kapatir.
+8. `python3 scripts/evidence_tool.py render <output-dir>` ve sonra `validate` calistir;
    paylasim kopyasi gerekiyorsa `pdf` ile `REPORT.pdf` uret.
-8. `output/INDEX.md` scoreboard'unu guncelle.
+9. `output/INDEX.md` scoreboard'unu guncelle.
 
 Masa basi karar enum'lari: `ELENDIR`, `BELIRSIZ`, `TESTE_DEGER`,
 `TEST_ONCELIKLI`. Masa basi build/scale izni vermez.
@@ -71,6 +74,7 @@ Quick'e ek olarak:
 - Faz 7 evidence audit
 - test adayiysa Faz 5.5 deney sozlesmesi
 - cross-report karsilastirma
+- bagimsiz okur incelemesi (`data/reader-review.md`)
 
 Zorunlu `phases/`:
 
@@ -142,6 +146,9 @@ Ayrinti ve validator kontrolleri `methodology/report-writing.md` icindedir.
   kimlikleri ve `phases/` yollari yalniz Ek C'dedir.
 - Karar bolumu ne onerildigini, hangi bulgulara dayandigini, neyin belirsiz
   oldugunu ve hangi bilginin karari degistirecegini soyler.
+- `validate` rakip profili, pazar buyuklugu ve arama sonucu kanitini; Standard/Deep'te
+  okur incelemesini de denetler. `KALDI` olcut, `Açık` sorun veya tutmayan iddia
+  varken rapor tamamlanmis sayilmaz.
 
 ## Faz 5.5
 

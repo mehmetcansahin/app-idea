@@ -33,12 +33,13 @@ Yazım sözleşmesi: methodology/report-writing.md. Bu yorum bloğunu rapora kop
 
 - **Akış.** Rapor bir karara giden sırayla ilerliyor: neyi değerlendirdiğimiz (1) → kullanıcının sorunu (2) → pazar (3) → mevcut çözümler ve rakipler (4) → önerdiğimiz ürün ve onu farklı kılacak şey (5) → kullanıcıya ulaşma kanalları (6) → para kazanma (7) → hukuk, platform ve teknik riskler (8) → puanlama (9) → karar (10) → kanıtın sınırları (11). Her bölüm bir soruyla başlıyor ve "Bu bölümün sonucu" kutusuyla bitiyor.
 - **Bulgu biçimi.** Önemli bulgular rapor boyunca numaralandı ve üç parçalı: **Ne gözlemledik?** (kaynaklı gözlem), **Ürün açısından anlamı** (yazarın yorumu), **Henüz varamadığımız sonuç** (bu gözlemin kanıtlamadığı şey).
-- **Kaynak türleri.** Gözlem cümlelerinde kaynağın türü belirtiliyor:
+- **Kaynak türleri.** Gözlem cümlelerinde kaynağın türü bu beş etiketten biriyle belirtiliyor; gerekirse virgülden sonra ayrıntı ekleniyor (örneğin "şirket beyanı, denetlenmemiş"):
   - *gözlem*: araştırmacının [tarih]'de doğrudan gördüğü şey (mağaza sayfası, fiyat sayfası, reklam kütüphanesi, site formu);
   - *şirket beyanı*: bir şirketin kendisi hakkında söylediği, bağımsız doğrulanmamış bilgi;
-  - *bağımsız kaynak*: resmî kurum, mahkeme, ABD Menkul Kıymetler ve Borsa Komisyonu'na (SEC) verilen zorunlu şirket dosyaları, basın, test kuruluşu veya akademik çalışma;
-  - *varsayım*: yalnız hesaplamada kullanılan, kanıt olmayan değer.
-- **Örnekler.** "Örnek senaryo (kurgusal)" kutuları anlatımı somutlaştırmak için kurgulandı; gerçek kişi değildir. "Gerçek kullanıcı" ifadesi yalnız tarihli mağaza yorumları ve forum gönderileri için kullanılıyor.
+  - *bağımsız kaynak*: resmî kurum, mahkeme, ABD Menkul Kıymetler ve Borsa Komisyonu'na (SEC) verilen zorunlu şirket dosyaları, basın, test kuruluşu, sektör raporu veya akademik çalışma;
+  - *varsayım*: yalnız hesaplamada kullanılan, kanıt olmayan değer;
+  - *yazarın yorumu*: bir gözlemden yaptığımız çıkarım veya hesap.
+- **Örnekler.** "Örnek senaryo (kurgusal)" kutuları anlatımı somutlaştırmak için kurgulandı; gerçek kişi değildir. "Gerçek işleyiş örneği (kaynak)" kutuları bir şirketin belgelenmiş iş akışını aktarır. "Gerçek kullanıcı" ifadesi yalnız tarihli mağaza yorumları ve forum gönderileri için kullanılıyor; İngilizce alıntılar çevrildiğinde bu belirtiliyor.
 - **Sayılar ve terimler.** Tutarlar [para birimi]. Teknik terimler ilk geçtikleri yerde açıklanıyor; hepsi ayrıca [Ek A](#ek-a--terimler-sözlüğü)'da.
 - **Puan ve harf notu.** "[L] / [B] / [H]" fikrin 20–100 arası bir ölçekte kötümser, temel ve iyimser çekicilik puanıdır; "A–D" harf notu kararın dayandığı varsayımların ne kadar sağlam kanıtlandığını gösterir (A en güçlü, D en zayıf). Nasıl hesaplandıkları Bölüm 9'da.
 
@@ -97,7 +98,7 @@ Bu bölüm şu soruları yanıtlıyor: Bu iş için ne kadar para harcanıyor? K
 
 ### 3.1 Pazar büyüklüğü ⚐ STANDARD+
 
-[Yayıncı tahminleri tablosu: yayıncı, tahmin, kapsam; tahminlerin dağılımı ve bağımsızlığı. Daha sağlam dayanaklar: resmî dosyalar, açıklanan gelir/kullanıcı. Yazarın kaba çıkarımı etiketli. Hesaplanamayanlar.]
+[Yayıncı tahminleri tablosu: yayıncı, tahmin, kapsam; tahminlerin dağılımı ve bağımsızlığı. Daha sağlam dayanaklar: resmî dosyalar, açıklanan gelir/kullanıcı. Kaba çıkarımlar "yazarın yorumu, kaba çıkarım" etiketli. Hesaplanamayanlar.]
 
 ### 3.2 Kaç kişi harekete geçiyor?
 
@@ -265,7 +266,7 @@ Aşağıdaki tablo bir **senaryodur, kanıt değildir**.
 
 | Girdi | Değer | Türü |
 |---|---|---|
-| [mağaza payı, iade, dönüşüm, yenileme, edinme maliyeti, destek ...] | [değer] | [bağımsız kaynak / sektör ortalaması / varsayım + bağlantı] |
+| [mağaza payı, iade, dönüşüm, yenileme, edinme maliyeti, destek, personel emeği ...] | [değer ve kaynak bağlantısı] | [bağımsız kaynak / bağımsız kaynak, sektör ortalaması / varsayım] |
 
 [Formül tam cümleyle.]
 
