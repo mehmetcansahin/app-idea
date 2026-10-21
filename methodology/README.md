@@ -7,7 +7,7 @@
 ## v4.0 Degisikligi
 
 - K2/K3 ve kalibrasyonsuz yuzde guven kaldirildi.
-- Firsat Cekiciligi 0-100 araligi ile Kanit Gucu A-D ayrildi.
+- Firsat Cekiciligi 20-100 araligi ile Kanit Gucu A-D ayrildi.
 - Puanlama `consumer_utility`, `consumer_subscription`, `b2b_prosumer` ve
   `marketplace_network` arketiplerine gore agirliklandirildi.
 - Rating/rakip sayisi fatal gate olmaktan cikarildi.
@@ -28,6 +28,7 @@
 | `phases.md` | Pipeline ve faz sahipligi |
 | `data-collection-protocol.md` | Faz bazli toplama adimlari |
 | `prompt-templates.md` | Agent prompt'lari |
+| `report-writing.md` | REPORT.md dili, yapisi ve okunabilirlik kontrolleri |
 | `financial-model-template.md` | Kohort ekonomi ve senaryolar |
 | `launch-playbook.md` | BUILD_SMALL sonrasi SCALE/ITERATE/STOP |
 
@@ -59,6 +60,7 @@ Tum modlar:
 ```text
 output/{YYYY-MM-DD}-{konu}/
 ├── REPORT.md
+├── REPORT.pdf          # istege bagli; evidence_tool.py pdf
 └── data/
     ├── assessment.json
     ├── evidence.jsonl
@@ -66,12 +68,14 @@ output/{YYYY-MM-DD}-{konu}/
 ```
 
 Standard/Deep `phases/` dosyalarini; Deep ayrica
-`data/raw-search-results.md` dosyasini uretir.
+`data/raw-search-results.md` dosyasini uretir. REPORT.md iskeleti
+`templates/report-template.md`, kurallari `report-writing.md`'dir.
 
 ## Surum Gecmisi
 
 | Surum | Tarih | Ozet |
 |---|---|---|
+| v4.0 | 2026-10-20 | Rapor yazim sozlesmesi: anlati iskeleti, uc parcali bulgular, bolum sonu ozetleri, govdede kaynak baglantisi; validator kontrolleri ve PDF komutu. Skorlar degismedi |
 | v4.0 | 2026-07-10 | Iki eksenli arketip modeli, evidence contract, staged decision ve validator |
 | v3.4 | 2026-07-08 | Geo-LTV, visual intelligence, micro-MVP, security ve TR operasyon notlari |
 | v3.3 | 2026-06-26 | RAT, JTBD, Lean Canvas ve ek pazar araclari |

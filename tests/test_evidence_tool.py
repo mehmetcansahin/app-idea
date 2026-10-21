@@ -152,6 +152,54 @@ def write_output(root, mode="quick"):
     return output_dir
 
 
+NARRATIVE_SUMMARY = "> **Bu bölümün sonucu.** Ne öğrendik: x. Neden önemli: y. Karara etkisi: z.\n\n"
+
+
+def narrative_section(number, title, question):
+    return f"## {number}. {title}\n\nBu bölüm şu soruyu yanıtlıyor: {question}\n\n"
+
+
+def narrative_report(opportunity="60 / 60 / 60", body_extra="", glossary_extra=""):
+    """Smallest report that satisfies methodology/report-writing.md."""
+    return (
+        "# Fixture uygulaması\n\nMetodoloji v4.0\n\n**Karar: `TEST_ONCELIKLI`.**\n\n"
+        "Kaynaklar: [kanıt defteri](data/evidence-ledger.md)\n\n"
+        f"## Kısa cevap: Bu projeyi hayata geçirmek mantıklı mı?\n\nFırsat {opportunity}.\n\n"
+        "## Bu rapor nasıl okunmalı?\n\nRehber.\n\n"
+        + narrative_section(1, "Neyi değerlendirdik?", "Ne?")
+        + "### Kapsam dışında kalanlar\n\nEski hesaplar.\n\n"
+        + NARRATIVE_SUMMARY
+        + narrative_section(2, "Kullanıcının sorunu", "Gerçek mi?")
+        + "### Bulgu 1 — Talep var\n\n"
+        + "**Ne gözlemledik?** Kayıtlar arttı ([kaynak](https://example.com/claim-demand-behavior)).\n\n"
+        + "**Ürün açısından anlamı.** Talep var.\n\n"
+        + "**Henüz varamadığımız sonuç.** Ödeme isteği bilinmiyor.\n\n"
+        + body_extra
+        + NARRATIVE_SUMMARY
+        + narrative_section(3, "Karar ve öneri", "Ne yapalım?")
+        + NARRATIVE_SUMMARY
+        + narrative_section(4, "Kanıtın sınırları", "Neye güvenebiliriz?")
+        + NARRATIVE_SUMMARY
+        + "## Ek A — Terimler sözlüğü\n\n| Terim | Anlamı |\n|---|---|\n"
+        + glossary_extra
+        + "\n## Ek C — Araştırma arşivi (denetim için)\n\n- Bölüm 2 → `claim-demand`\n"
+    )
+
+
+def set_analysis_date(output_dir, value):
+    path = output_dir / "data" / "assessment.json"
+    assessment = json.loads(path.read_text(encoding="utf-8"))
+    assessment["analysis_date"] = value
+    path.write_text(json.dumps(assessment, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def write_narrative_output(root, report):
+    output_dir = write_output(root)
+    set_analysis_date(output_dir, evidence_tool.NARRATIVE_REPORT_FROM.isoformat())
+    (output_dir / "REPORT.md").write_text(report, encoding="utf-8")
+    return output_dir
+
+
 class EvidenceToolTests(unittest.TestCase):
     def test_agent_instruction_files_are_synced(self):
         self.assertEqual(
@@ -445,6 +493,98 @@ class EvidenceToolTests(unittest.TestCase):
             (output_dir / "artifact.json").write_text('{"surface": "report"}\n', encoding="utf-8")
             self.assertEqual("assessment", evidence_tool.classify_output(output_dir))
             self.assertEqual(0, evidence_tool.command_validate_all(root, skip_legacy=False))
+
+    def test_incomplete_assessment_is_reported_not_raised(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            output_dir = write_output(Path(tmp))
+            (output_dir / "data" / "assessment.json").write_text("{}\n", encoding="utf-8")
+            result = evidence_tool.validate_output(output_dir)
+            self.assertFalse(result.ok)
+            self.assertTrue(any("assessment missing fields" in error for error in result.errors))
+
+    def test_narrative_contract_applies_from_cutoff_date(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            before = write_output(root / "before")
+            set_analysis_date(before, "2026-10-19")
+            self.assertTrue(evidence_tool.validate_output(before).ok)
+            after = write_output(root / "after")
+            set_analysis_date(after, evidence_tool.NARRATIVE_REPORT_FROM.isoformat())
+            result = evidence_tool.validate_output(after)
+            self.assertFalse(result.ok)
+            self.assertTrue(any("Kısa cevap" in error for error in result.errors))
+
+    def test_narrative_report_passes_without_warnings(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            result = evidence_tool.validate_output(write_narrative_output(Path(tmp), narrative_report()))
+            self.assertTrue(result.ok, result.errors)
+            self.assertEqual([], result.warnings)
+
+    def test_ids_and_phase_paths_belong_in_the_appendix_not_the_body(self):
+        leaked = narrative_report(
+            body_extra="Ayrıntı: [claim-demand-behavior] ve phases/04-scoring.md.\n\n"
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            result = evidence_tool.validate_output(write_narrative_output(Path(tmp), leaked))
+        self.assertFalse(result.ok)
+        self.assertTrue(any("claim-demand-behavior" in error for error in result.errors))
+        self.assertTrue(any("phases/" in error for error in result.errors))
+
+    def test_section_summary_must_answer_all_three_questions(self):
+        report = narrative_report().replace("Neden önemli: y. ", "", 1)
+        with tempfile.TemporaryDirectory() as tmp:
+            result = evidence_tool.validate_output(write_narrative_output(Path(tmp), report))
+        self.assertFalse(result.ok)
+        self.assertTrue(any("summary lacks: Neden önemli" in error for error in result.errors))
+
+    def test_section_must_open_with_its_question(self):
+        report = narrative_report().replace("Bu bölüm şu soruyu yanıtlıyor: Ne yapalım?", "Karar.")
+        with tempfile.TemporaryDirectory() as tmp:
+            result = evidence_tool.validate_output(write_narrative_output(Path(tmp), report))
+        self.assertFalse(result.ok)
+        self.assertTrue(any("'3. Karar ve öneri' does not open" in error for error in result.errors))
+
+    def test_finding_must_state_what_it_does_not_prove(self):
+        report = narrative_report().replace(
+            "**Henüz varamadığımız sonuç.** Ödeme isteği bilinmiyor.\n\n", ""
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            result = evidence_tool.validate_output(write_narrative_output(Path(tmp), report))
+        self.assertFalse(result.ok)
+        self.assertTrue(any("lacks: Henüz varamadığımız sonuç" in error for error in result.errors))
+
+    def test_jargon_in_body_requires_a_glossary_entry(self):
+        body = "Bu fikrin wedge'i zayıf.\n\n"
+        with tempfile.TemporaryDirectory() as tmp:
+            undefined = evidence_tool.validate_output(
+                write_narrative_output(Path(tmp) / "a", narrative_report(body_extra=body))
+            )
+            defined = evidence_tool.validate_output(
+                write_narrative_output(
+                    Path(tmp) / "b",
+                    narrative_report(
+                        body_extra=body,
+                        glossary_extra="| Ayırt edici avantaj (wedge) | Bizi seçtiren üstünlük. |\n",
+                    ),
+                )
+            )
+        self.assertTrue(any("wedge" in error for error in undefined.errors))
+        self.assertTrue(defined.ok, defined.errors)
+
+    def test_report_must_state_the_assessment_opportunity_range(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            result = evidence_tool.validate_output(
+                write_narrative_output(Path(tmp), narrative_report(opportunity="55 / 60 / 65"))
+            )
+        self.assertFalse(result.ok)
+        self.assertTrue(any("60 / 60 / 60" in error for error in result.errors))
+
+    def test_body_link_absent_from_evidence_warns_without_failing(self):
+        report = narrative_report(body_extra="Ek kaynak ([site](https://unknown.example/page)).\n\n")
+        with tempfile.TemporaryDirectory() as tmp:
+            result = evidence_tool.validate_output(write_narrative_output(Path(tmp), report))
+        self.assertTrue(result.ok, result.errors)
+        self.assertTrue(any("unknown.example" in warning for warning in result.warnings))
 
 
 if __name__ == "__main__":

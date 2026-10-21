@@ -12,6 +12,7 @@ Celiskide su dosyalar esas alinir:
 2. `methodology/evidence-model.md` — E0-E4, A-D, kaynak ve JSONL
 3. `methodology/pre-build-validation.md` — RAT ve insan deneyleri
 4. `methodology/phases.md` — pipeline ve faz sahipligi
+5. `methodology/report-writing.md` — REPORT.md dili, yapisi ve okunabilirligi
 
 Bu dosya workflow ozetidir; puanlama tablosunu kopyalamaz.
 
@@ -22,8 +23,10 @@ Bu dosya workflow ozetidir; puanlama tablosunu kopyalamaz.
 3. Moda uygun arastirmayi calistir; her kritik iddiayi evidence kaydina bagla.
 4. Arketip-bazli Firsat Cekiciligi low/base/high ve Kanit Gucu A-D hesapla.
 5. Yalniz asamaya izin verilen karari ver.
-6. Raporu ve makine-okunur dosyalari yaz.
-7. `python3 scripts/evidence_tool.py render <output-dir>` ve sonra `validate` calistir.
+6. Raporu `templates/report-template.md` iskeleti ve `methodology/report-writing.md`
+   kurallariyla, makine-okunur dosyalarla birlikte yaz.
+7. `python3 scripts/evidence_tool.py render <output-dir>` ve sonra `validate` calistir;
+   paylasim kopyasi gerekiyorsa `pdf` ile `REPORT.pdf` uret.
 8. `output/INDEX.md` scoreboard'unu guncelle.
 
 Masa basi karar enum'lari: `ELENDIR`, `BELIRSIZ`, `TESTE_DEGER`,
@@ -36,7 +39,8 @@ Masa basi karar enum'lari: `ELENDIR`, `BELIRSIZ`, `TESTE_DEGER`,
 Amac: Fikri ucuza elemek veya test yatirimina aday gostermek.
 
 - Preflight + use case/ikame ayrimi
-- Top 5 rakip/ikame, hizli trend/community, hedef geo
+- Top 5 rakip/ikame ve sirket profili (kurulus, sahiplik, buyukluk, platform,
+  fiyat), hizli trend/community, hedef geo
 - Top 3 rakip icin Meta Ad Library + Google Ads Transparency var/yok, aktif sayi ve
   hedef URL (`ad_library` + screenshot)
 - Fatal gate taramasi
@@ -58,10 +62,12 @@ output/{tarih}-{konu}/
 
 Quick'e ek olarak:
 
-- top 10 rakip/ikame metadata
+- top 10 rakip/ikame metadata ve sirket profili; bagimsiz basari olcumleri
 - top 5 icin stratified review mining
+- pazar buyuklugu dagilimi (en az 3 yayinci + resmi dosya + davranis sayilari)
 - gelir/odeme, fiyat, ad/channel (top 5 rakip Meta/Google/TikTok, `ad_library`
-  kayitlari + screenshot), Geo-LTV ve visual intelligence
+  kayitlari + screenshot), organik kanal sahipligi (web/video aramasi,
+  sponsorluk, topluluk), Geo-LTV ve visual intelligence
 - Faz 7 evidence audit
 - test adayiysa Faz 5.5 deney sozlesmesi
 - cross-report karsilastirma
@@ -116,6 +122,26 @@ Brief, Faz 5.5 gecilmediyse kosullu taslaktir.
 - Reklam kutuphanesi gozlemi `ad_library` kaydidir: en fazla E2, screenshot
   artifact'i tasir, tek basina claim'i B'ye tasimaz; harcama/CPI tahmin etme.
 - Farkli metodoloji surumlerinin skorlarini karsilastirma.
+
+## Rapor Yazimi
+
+Ayrinti ve validator kontrolleri `methodology/report-writing.md` icindedir.
+
+- Okur konuya ilk kez bakar; her bolumun sonunda "ne ogrendim, neden onemli, karari
+  nasil etkiliyor, proje mantikli mi?" sorularini yazara sormadan cevaplayabilmeli.
+- Baslik ve kapsam incelenen urunu tarif eder; `Kapsam dışında kalanlar` zorunlu.
+- Akis: kisa cevap → kapsam → sorun → pazar → rakipler → urun → kanallar → para →
+  riskler → puanlama → karar → sinirlar. Her numarali bolum sorusuyla acilir ve
+  `Bu bölümün sonucu` kutusuyla kapanir.
+- Bulgular rapor boyunca numaralanir ve uc parcalidir: ne gozlemledik, urun acisindan
+  anlami, henuz varamadigimiz sonuc.
+- Tam cumle; terimler ilk geciste aciklanir ve Ek A'ya yazilir; skor olcegi
+  (20-100), formul ve A-D notlari anlatilir.
+- Kurgusal senaryo ile gercek kullanici deneyimi ayri etiketlenir.
+- Kritik iddialar govdede evidence kaydindaki URL ile baglanir; claim/evidence
+  kimlikleri ve `phases/` yollari yalniz Ek C'dedir.
+- Karar bolumu ne onerildigini, hangi bulgulara dayandigini, neyin belirsiz
+  oldugunu ve hangi bilginin karari degistirecegini soyler.
 
 ## Faz 5.5
 

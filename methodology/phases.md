@@ -2,7 +2,7 @@
 
 > Faz sahipligi ve gate'ler icin kanonik ozet. Puanlama:
 > `scoring-model.md`; kanit: `evidence-model.md`; Faz 5.5:
-> `pre-build-validation.md`.
+> `pre-build-validation.md`; rapor dili ve yapisi: `report-writing.md`.
 
 ## Research Contract Preflight (Numarasiz)
 
@@ -38,7 +38,7 @@ dagitim claim'i `not_found_after_protocol` olarak kaydedilir.
 **Amac:** Pazar proxy'lerini, ikameleri ve fatal gate adaylarini erken tara.
 
 **Cikti:** Lider/rakipler, storefront-bazli metadata, arama/trend, ikameler,
-hedef geo ve ilk evidence kayitlari.
+hedef geo, Standard/Deep'te pazar buyuklugu dagilimi ve ilk evidence kayitlari.
 
 **Kural:** Rating fatal gate degildir; `E2/supporting` proxy'dir. Rakip app yoksa
 manuel workflow, web urunu ve hizmet aranir.
@@ -50,15 +50,17 @@ incele.
 
 **9 adim:**
 
-1. Rakip + ikame listesi
+1. Rakip + ikame listesi ve sirket profili (kurulus, sahiplik, buyukluk,
+   platform, kapsam ve sinirlar)
 2. Metadata ve storefront kaydi
 3. Stratified review mining
 4. Reddit/community + JTBD Forces
 5. Fiyat ve gercek odeme davranisi
-6. Ozellik/wedge ve Deep'te 2x2
+6. Ozellik/wedge, Standard/Deep'te bagimsiz basari olcumleri ve Deep'te 2x2
 7. Platform cross-check
-8. Ad/channel intelligence (top 5 rakip; `ad_library` kayitlari, protokol
-   `data-collection-protocol.md`)
+8. Ad/channel intelligence (top 5 rakip; `ad_library` kayitlari) ve
+   Standard/Deep'te organik kanal sahipligi (web/video aramasi, sponsorluk,
+   topluluk); protokol `data-collection-protocol.md`
 9. Onboarding, paywall ve screenshot visual intelligence
 
 **Review minimumu (Standard/Deep):** Top 5 rakip, hedef 30/min 15 yorum; 1-2,

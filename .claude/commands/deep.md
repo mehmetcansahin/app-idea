@@ -15,6 +15,7 @@ Konu: $ARGUMENTS
    yaz; Faz 5.5 yoksa kosullu taslak olarak isaretle.
 5. Devil's advocate ile fatal gate, en riskli varsayim ve karsit evidence audit yap.
 6. Tum phase dosyalari, assessment/evidence/ledger ve raw-search-results uret.
-7. Render + validate + INDEX guncellemesiyle bitir.
+7. REPORT'u `methodology/report-writing.md` kurallariyla yaz; render + validate +
+   INDEX guncellemesiyle bitir; paylasim icin `evidence_tool.py pdf` calistir.
 
 BUILD_SMALL scope max 4 core ekran, 3 ana ozellik ve gerekiyorsa 1 paywall'dir.

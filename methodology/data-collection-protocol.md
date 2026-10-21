@@ -74,6 +74,24 @@ Hedef geo basina:
 
 Keyword difficulty tek basina rating'den uretiliyorsa `inferred/weak` kalir.
 
+### 5. Pazar buyuklugu (Standard/Deep)
+
+Tek bir "pazar buyuklugu" rakami uretme; olculebilen parcalari ve dagilimi kaydet:
+
+- En az 3 farkli yayincinin tahmini: rakam, baz yil, buyume orani, cografya ve
+  kapsam tanimi. Ayni yazar/editor kadrosunu paylasan yayincilar tek
+  `independence_root`'tur. Arastirma sirketi tahmini `third_party_estimate`,
+  `E1`, `weak`. Ucretli raporun yalniz ozeti okunduysa `limitations` icine yaz.
+- Daha saglam dayanaklar: resmi dosyalar (SEC 10-K/S-1 vb.), sirketin acikladigi
+  gelir/abone/kullanici, regulator kayit sayilari.
+- Talep tarafi davranis sayilari (kayit, talep, kullanim) ve ulusal temsili
+  anketler; kisi sayisi ile talep sayisini karistirma.
+- Hesaplanamayanlar listesi.
+
+Kayit: tahmin, gelir ve kayit sayilari `claim_id=<prefix>-market-size`,
+`direction=neutral`; davranis ve anket sayilari talep claim'ine. Yazarin kaba
+cikarimi raporda "yazarın kaba çıkarımı" diye etiketlenir.
+
 ## Faz 4: Rakip ve Davranis Analizi
 
 ### Rakip kapsami
@@ -81,6 +99,36 @@ Keyword difficulty tek basina rating'den uretiliyorsa `inferred/weak` kalir.
 - Quick: min 5 rakip/ikame
 - Standard/Deep: min 10 rakip/ikame
 - App rakibi yoksa manual workflow ve service competitor'lari listeye dahil et
+
+### Rakip profili
+
+Quick'te top 5, Standard/Deep'te top 10 rakip/ikame icin:
+
+- sirket kurulus yili ve bu urunun/ozelligin baslangic tarihi
+- merkez, sahiplik/ana sirket, fonlama veya satin alma
+- calisan sayisi veya araligi ve kaynagi (resmi dosya, sirket sayfasi, LinkedIn
+  araligi)
+- aciklanan kullanici, musteri veya gelir
+- platformlar (iOS, Android, web, tarayici eklentisi) ve ulke kisitlari
+- reklam edilen kapsam (site/ozellik sayisi) ile otomatik calisan kapsam farki
+- sirketin kendi yazdigi sinirlar (yapmadigi isler)
+
+Kayit: `claim_id=<prefix>-competitor-profile`, `direction=neutral`, `phase=4`.
+Sirketin kendini anlatmasi `E1`; resmi dosya veya dogrudan gozlem `E2`. Bulunamayan
+alan `not_found_after_protocol` olarak sorgu ve kaynaklarla kaydedilir. Raporda
+`report-writing.md` §10 tablolarina girer.
+
+### Bagimsiz basari olcumleri (Standard/Deep)
+
+Rakiplerin isi ne kadar iyi yaptigini olcen kaynaklari ayri ara ve ayri yaz:
+
+1. Test kurulusu ve akademik calisma: yontem, orneklem, donem.
+2. Basin testi: kendi olcumu mu, rakibin panosundaki sayiyi mi aktariyor; satis
+   ortakligi baglantisi var mi.
+3. Sirketin kendi veya yaptirdigi olcum: `E1`, raporda "şirket beyanı".
+
+Olcum, kullanicinin sikayet ettigi sonuca gore secilir (ornek: "kaldirildi"
+sayisi mi, gercek kaldirma mi). 12 aydan eski olcum `weak` relevance alir.
 
 ### Stratified review mining
 
@@ -156,6 +204,31 @@ tablosunda satirlar. Kolonlar: Reklamveren | Meta (aktif, tarih) | Google ATC
 
 Harcama, gosterim, CPI veya CAC tahmin etme. Reklam gozlemi `problem_demand` icin
 `weak` kalir.
+
+### Organik kanal sahipligi (Standard/Deep)
+
+Hedef geo icin kanallara kimin hakim oldugunu olc:
+
+1. Web aramasi: satin alma, karsilastirma, "nasil yapilir" ve marka niyetini
+   kapsayan min 8 sorgu. Her sorguda ilk 10 organik sonucun turu (rakip sitesi
+   veya rehberi, satis ortakligi kullanan inceleme sitesi, platform/resmi kaynak,
+   forum/topluluk, sorgulanan sitenin kendisi) ve ucretli alanlardaki
+   reklamverenler. Motor, `gl`/`hl` parametreleri ve gozlem yeri (IP ulkesi)
+   `limitations` icine yazilir; ham sonuc `data/` altina kaydedilip
+   `artifact_path` ile baglanir.
+2. Anahtar kelime hacmi: hesap gerektiren arac yoksa `structurally_unobservable`;
+   ucretsiz arac tahmini `E1` ve goreli olarak.
+3. Video aramasi: ilk 10 sonucta sponsorlu, satis ortakligi baglantili veya rakip
+   sahipli icerik orani.
+4. Podcast ve icerik ureticisi sponsorlugu: takip sitesindeki sayilar ve donem;
+   harcama tahmin edilmez.
+5. Topluluk buyuklugu (haftalik ziyaretci, uye, aktif kullanici) ve rakip
+   calisanlarinin tartismalardaki varligi.
+6. Magaza listeleri (top charts) ve son 12 aydaki yeni girislerin gorunurlugu.
+
+Kayit: `claim_id=<prefix>-distribution`; buyuk oyuncu hakimiyeti `contradicts`,
+yeni bir oyuncunun organik cekisi `supports`, digerleri `neutral`. Raporda kanal
+ozet tablosu kullanilir (`report-writing.md` §10).
 
 ### Visual intelligence
 
@@ -238,6 +311,8 @@ Arastirma sonunda:
 ```bash
 python3 scripts/evidence_tool.py render output/{tarih}-{konu}
 python3 scripts/evidence_tool.py validate output/{tarih}-{konu}
+python3 scripts/evidence_tool.py pdf output/{tarih}-{konu}   # istege bagli paylasim kopyasi
 ```
 
-Validator gecmeden rapor tamamlanmis sayilmaz.
+Validator gecmeden rapor tamamlanmis sayilmaz. Rapor dili ve yapisi
+`report-writing.md` sozlesmesine uyar.

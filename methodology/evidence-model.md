@@ -140,8 +140,10 @@ Tam alan ve enum listesi `schemas/assessment.schema.json` dosyasindadir.
 
 `data/evidence-ledger.md`, JSONL'nin insan-okunur ve deterministik gorunumudur.
 Elle kanonik veri sayilmaz; `scripts/evidence_tool.py render <output-dir>` ile
-uretilir. `REPORT.md` kritik iddialari claim/evidence kimlikleriyle bu deftere
-baglar.
+uretilir. `REPORT.md` kritik iddialari govdede kaynagin tiklanabilir URL'siyle,
+denetim icin claim/evidence kimlikleriyle de Ek C'de bu deftere baglar
+(`report-writing.md` §5). 2026-10-20 ve sonrasi analiz tarihli raporlarda
+kimlikler govdede kullanilmaz.
 
 ## 9. Zaman ve Tazelik
 
@@ -155,9 +157,12 @@ baglar.
 
 ## 10. Raporlama Kurallari
 
-- Her kritik internet iddiasinda tiklanabilir URL bulunur.
+- Her kritik internet iddiasinda tiklanabilir URL bulunur; URL `evidence.jsonl`
+  kaydindan gelir.
 - Geo/storefront/platform baglami kaybolmaz.
 - Review tema frekansi yalniz incelenen orneklem icin raporlanir; random sample
   yoksa pazar prevalansi denmez.
 - Direkt alinti yalniz gerekli kisa parcayla sinirli tutulur; `observation` alani
   varsayilan olarak paraphrase kullanir.
+- Raporun dili, yapisi ve kaynak turu etiketleri `report-writing.md` dosyasina
+  uyar.

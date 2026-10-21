@@ -32,19 +32,24 @@ gecmis davranis gibi sunma.
 [FIKIR] icin ayni JTBD'yi cozen app, web urunu, hizmet ve manuel workflow'lari
 tara. Store metadata'yi URL, tarih, storefront, platform ve app yasi ile kaydet.
 Rating'i E2/supporting proxy olarak kullan; fatal gate yapma. Trend, geo ve
-dagitim claim'leri icin bagimsiz ve karsit kaynak ara. Her bulguyu evidence JSONL
+dagitim claim'leri icin bagimsiz ve karsit kaynak ara. Standard/Deep'te pazar
+buyuklugunu en az 3 yayincinin tahmin dagilimi, resmi dosyalar ve davranis
+sayilariyla kaydet; tek bir rakam uydurma. Her bulguyu evidence JSONL
 sozlesmesine gore kaydet.
 ```
 
 ## Faz 4: Rakip ve Review
 
 ```text
-Top 10 rakip/ikame matrisi olustur. Top 5 app icin son 12 aydan storefront ve
-version bilgili stratified review sample topla: 1-2, 3 ve 4-5 yildizdan min 5'er,
-hedef 30. Tema frekansini yalniz sample denominator'u icinde raporla. Community
-verisini JTBD Push/Pull/Anxiety/Habit ile analiz et. Fiyat, odeme davranisi,
-ad/channel (`ad_library` kayitlari) ve visual intelligence'i claim/evidence
-ID'lerine bagla.
+Top 10 rakip/ikame matrisi olustur ve her biri icin sirket profilini topla:
+kurulus ve urun baslangic yili, sahiplik/fonlama, calisan araligi, aciklanan
+kullanici/gelir, platformlar, reklam edilen ve otomatik calisan kapsam, sinirlar.
+Top 5 app icin son 12 aydan storefront ve version bilgili stratified review sample
+topla: 1-2, 3 ve 4-5 yildizdan min 5'er, hedef 30. Tema frekansini yalniz sample
+denominator'u icinde raporla. Community verisini JTBD Push/Pull/Anxiety/Habit ile
+analiz et. Bagimsiz basari olcumlerini sirket iddialarindan ayir. Fiyat, odeme
+davranisi, ad/channel (`ad_library` kayitlari), organik kanal sahipligi ve visual
+intelligence'i claim/evidence ID'lerine bagla.
 ```
 
 ## Faz 5: Iki Eksenli Degerlendirme
@@ -111,7 +116,11 @@ yeniden hesapla.
 ## Final Rapor
 
 ```text
-`templates/report-template.md` kullan. Her kritik claim'i evidence ID ve tam URL
-ile bagla. REPORT, assessment.json ve evidence ledger ayni arketip, skor, grade,
+`templates/report-template.md` iskeletini ve `methodology/report-writing.md`
+kurallarini kullan. Konuya ilk kez bakan okur icin tam cumlelerle yaz; terimleri
+ilk geciste acikla ve Ek A'ya ekle. Her numarali bolumu sorusuyla ac ve "Bu
+bölümün sonucu" kutusuyla kapat; bulgulari uc parcali yaz. Kritik iddialari
+govdede evidence kaydindaki URL ile bagla; claim/evidence ID'lerini yalniz Ek C'de
+listele. REPORT, assessment.json ve evidence ledger ayni arketip, skor, grade,
 karar ve durumu gostersin. Son adimda evidence_tool render + validate calistir.
 ```

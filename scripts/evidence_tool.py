@@ -1,16 +1,23 @@
 #!/usr/bin/env python3
-"""Render and validate App Idea Research Agent v4.0 outputs.
+"""Render, validate and print App Idea Research Agent v4.0 outputs.
 
-Uses only the Python standard library. JSON Schema files are the portable contract;
-this tool enforces the same required fields plus cross-file business rules.
+Validation uses only the Python standard library. JSON Schema files are the portable
+contract; this tool enforces the same required fields plus cross-file business rules
+and, for reports analysed on or after NARRATIVE_REPORT_FROM, the reader-facing report
+contract in methodology/report-writing.md. The ``pdf`` command additionally needs
+pandoc and a Chromium-based browser.
 """
 
 from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
+import shutil
+import subprocess
 import sys
+import tempfile
 from dataclasses import dataclass, field
 from datetime import date, datetime
 from pathlib import Path
@@ -137,6 +144,68 @@ RISK_CATEGORIES = {
 }
 
 ID_RE = re.compile(r"^[a-z0-9][a-z0-9._-]*$")
+
+ROOT = Path(__file__).resolve().parents[1]
+PDF_STYLESHEET = ROOT / "templates" / "report-pdf.css"
+
+# Reports analysed on or after this date must follow methodology/report-writing.md.
+# Older v4.0 reports are not re-judged retroactively.
+NARRATIVE_REPORT_FROM = date(2026, 10, 20)
+REPORT_REQUIRED_HEADINGS = (
+    ("## Kısa cevap", re.compile(r"^## Kısa cevap\b", re.MULTILINE)),
+    ("## Bu rapor nasıl okunmalı?", re.compile(r"^## Bu rapor nasıl okunmalı\?", re.MULTILINE)),
+    ("Kapsam dışında kalanlar", re.compile(r"^#{2,4} Kapsam dışında kalanlar\b", re.MULTILINE)),
+    ("## N. Karar ve öneri", re.compile(r"^## \d+\. Karar ve öneri\b", re.MULTILINE)),
+    ("## N. Kanıtın sınırları", re.compile(r"^## \d+\. Kanıtın sınırları\b", re.MULTILINE)),
+    ("## Ek A — Terimler sözlüğü", re.compile(r"^## Ek A — Terimler sözlüğü\b", re.MULTILINE)),
+)
+# "Bu bölüm şu soruyu yanıtlıyor", "Bu bölüm iki soruyu yanıtlıyor", "... şu soruları ..."
+SECTION_OPENING_RE = re.compile(r"Bu bölüm [^\n]{0,20}?soru\w* yanıtlıyor")
+SECTION_SUMMARY = "Bu bölümün sonucu"
+SECTION_SUMMARY_LABELS = ("Ne öğrendik", "Neden önemli", "Karara etkisi")
+FINDING_LABELS = ("Ne gözlemledik?", "Ürün açısından anlamı", "Henüz varamadığımız sonuç")
+# Jargon a first-time reader cannot be expected to know; each one used in the body
+# must be defined in "Ek A — Terimler sözlüğü".
+REPORT_JARGON = (
+    ("wedge", re.compile(r"\bwedge\b", re.IGNORECASE)),
+    ("CAC", re.compile(r"\bCAC\b")),
+    ("LTV", re.compile(r"\bLTV\b")),
+    ("ARPU/ARPPU", re.compile(r"\bARPP?U\b")),
+    ("concierge", re.compile(r"\bconcierge\b", re.IGNORECASE)),
+    ("opt-out", re.compile(r"\bopt-out\b", re.IGNORECASE)),
+    ("data broker", re.compile(r"\bdata broker\b", re.IGNORECASE)),
+    ("affiliate", re.compile(r"\baffiliate\b", re.IGNORECASE)),
+    ("fatal gate", re.compile(r"\bfatal gate\b", re.IGNORECASE)),
+    ("JTBD", re.compile(r"\bJTBD\b")),
+    ("RAT", re.compile(r"\bRAT\b")),
+    ("ASO", re.compile(r"\bASO\b")),
+    ("IAP", re.compile(r"\bIAP\b")),
+    ("MDE", re.compile(r"\bMDE\b")),
+    ("payback", re.compile(r"\bpayback\b", re.IGNORECASE)),
+    ("churn", re.compile(r"\bchurn\b", re.IGNORECASE)),
+    ("paywall", re.compile(r"\bpaywall\b", re.IGNORECASE)),
+)
+HTML_COMMENT_RE = re.compile(r"<!--.*?-->", re.DOTALL)
+FENCED_BLOCK_RE = re.compile(r"^```.*?^```[^\n]*$", re.DOTALL | re.MULTILINE)
+HEADING_RE = re.compile(r"^(#{1,6}) (.+?)\s*$", re.MULTILINE)
+APPENDIX_RE = re.compile(r"^## Ek [A-Z]\b", re.MULTILINE)
+MARKDOWN_LINK_RE = re.compile(r"\]\((https?://[^\s()]+(?:\([^\s()]*\)[^\s()]*)*)\)")
+BARE_URL_RE = re.compile(r"https?://[^\s<>\]\"',;)]+")
+SLUG_TOKEN_RE = re.compile(r"[a-z0-9][a-z0-9._-]*[a-z0-9]")
+PDF_BROWSER_NAMES = (
+    "google-chrome",
+    "google-chrome-stable",
+    "chromium",
+    "chromium-browser",
+    "chrome",
+    "microsoft-edge",
+)
+PDF_BROWSER_PATHS = (
+    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+    "/Applications/Chromium.app/Contents/MacOS/Chromium",
+    "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser",
+    "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
+)
 
 
 @dataclass
@@ -840,6 +909,155 @@ def required_phase_files(mode: str, decision: str) -> List[str]:
     return files
 
 
+def narrative_report_required(assessment: Dict[str, Any]) -> bool:
+    value = assessment.get("analysis_date")
+    if not is_iso_date(value):
+        return False
+    return date.fromisoformat(value) >= NARRATIVE_REPORT_FROM
+
+
+def report_headings(text: str) -> List[Tuple[int, int, str]]:
+    """(offset, level, title) for Markdown headings outside fenced code blocks."""
+    masked = FENCED_BLOCK_RE.sub(lambda match: " " * len(match.group(0)), text)
+    return [
+        (match.start(), len(match.group(1)), match.group(2))
+        for match in HEADING_RE.finditer(masked)
+    ]
+
+
+def heading_blocks(
+    text: str,
+    headings: Sequence[Tuple[int, int, str]],
+    selector: "re.Pattern[str]",
+    level: Optional[int] = None,
+) -> List[Tuple[str, str]]:
+    """(title, block) for headings whose title matches ``selector``.
+
+    A block runs until the next heading of the same or a higher level.
+    """
+    blocks: List[Tuple[str, str]] = []
+    for index, (offset, heading_level, title) in enumerate(headings):
+        if level is not None and heading_level != level:
+            continue
+        if not selector.match(title):
+            continue
+        end = len(text)
+        for next_offset, next_level, _ in headings[index + 1 :]:
+            if next_level <= heading_level:
+                end = next_offset
+                break
+        blocks.append((title, text[offset:end]))
+    return blocks
+
+
+def without_urls(text: str) -> str:
+    return BARE_URL_RE.sub(" ", text)
+
+
+def known_evidence_urls(records: Sequence[Dict[str, Any]]) -> set:
+    urls: set = set()
+    for record in records:
+        values = [record.get("source_url"), record.get("source_ref")]
+        values.extend(record.get("attempted_sources") or [])
+        for value in values:
+            if isinstance(value, str):
+                urls.update(BARE_URL_RE.findall(value))
+                if is_url(value):
+                    urls.add(value)
+    return urls
+
+
+def validate_report_narrative(
+    report: str, assessment: Dict[str, Any], records: Sequence[Dict[str, Any]]
+) -> ValidationResult:
+    """Reader-facing report contract from methodology/report-writing.md."""
+    result = ValidationResult()
+    text = HTML_COMMENT_RE.sub("", report)
+    appendix = APPENDIX_RE.search(text)
+    body = text[: appendix.start()] if appendix else text
+
+    for label, pattern in REPORT_REQUIRED_HEADINGS:
+        if not pattern.search(text):
+            result.error(f"REPORT.md is missing the required heading {label!r}")
+
+    headings = report_headings(text)
+    for title, block in heading_blocks(text, headings, re.compile(r"\d+\. "), level=2):
+        if not SECTION_OPENING_RE.search(block):
+            result.error(f"REPORT.md section {title!r} does not open with the question it answers")
+        summary_at = block.find(SECTION_SUMMARY)
+        if summary_at < 0:
+            result.error(f"REPORT.md section {title!r} has no '{SECTION_SUMMARY}' summary")
+            continue
+        paragraph = block[summary_at:].split("\n\n", 1)[0]
+        missing = [label for label in SECTION_SUMMARY_LABELS if label not in paragraph]
+        if missing:
+            result.error(
+                f"REPORT.md section {title!r} summary lacks: {', '.join(missing)}"
+            )
+
+    findings = heading_blocks(body, report_headings(body), re.compile(r"Bulgu \d"))
+    if not findings:
+        result.error("REPORT.md body has no numbered 'Bulgu N' finding")
+    for title, block in findings:
+        if re.match(r"Bulgu \d+\.\d", title):
+            result.error(f"REPORT.md finding {title!r} must use one report-wide number (Bulgu N)")
+        missing = [label for label in FINDING_LABELS if label not in block]
+        if missing:
+            result.error(f"REPORT.md finding {title!r} lacks: {', '.join(missing)}")
+
+    body_links = MARKDOWN_LINK_RE.findall(body)
+    if not body_links:
+        result.error("REPORT.md body cites no clickable source; link critical claims inline")
+    known_urls = known_evidence_urls(records)
+    unknown = sorted({url for url in body_links if url not in known_urls})
+    if unknown:
+        shown = ", ".join(unknown[:5])
+        more = f" (+{len(unknown) - 5} more)" if len(unknown) > 5 else ""
+        result.warn(
+            f"REPORT.md body links {len(unknown)} URL(s) absent from evidence.jsonl: {shown}{more}"
+        )
+
+    prose = without_urls(body)
+    ids = {
+        str(record.get(key))
+        for record in records
+        for key in ("evidence_id", "claim_id")
+        if isinstance(record.get(key), str) and re.search(r"[-._]", record[key])
+    }
+    leaked = sorted(ids.intersection(SLUG_TOKEN_RE.findall(prose)))
+    if leaked:
+        result.error(
+            "REPORT.md body cites evidence/claim IDs (keep them in Ek C): " + ", ".join(leaked[:8])
+        )
+    if "phases/" in body:
+        result.error("REPORT.md body links phases/ files (keep them in Ek C)")
+
+    glossary = "".join(
+        block for _, block in heading_blocks(text, headings, re.compile(r"Ek A\b"), level=2)
+    )
+    undefined = [
+        label
+        for label, pattern in REPORT_JARGON
+        if pattern.search(prose) and not pattern.search(glossary)
+    ]
+    if undefined:
+        result.error(
+            "REPORT.md uses terms not defined in 'Ek A — Terimler sözlüğü': "
+            + ", ".join(undefined)
+        )
+
+    opportunity = assessment.get("opportunity")
+    if isinstance(opportunity, dict):
+        low, base, high = (opportunity.get(bound) for bound in ("low", "base", "high"))
+        pattern = re.compile(rf"(?<!\d){low}\s*/\s*{base}\s*/\s*{high}(?!\d)")
+        if not pattern.search(text):
+            result.error(
+                f"REPORT.md does not state the opportunity range {low} / {base} / {high} "
+                "from assessment.json"
+            )
+    return result
+
+
 def validate_output(output_dir: Path) -> ValidationResult:
     result = ValidationResult()
     report_path = output_dir / "REPORT.md"
@@ -862,18 +1080,23 @@ def validate_output(output_dir: Path) -> ValidationResult:
         result.error(f"missing file: {report_path}")
     elif assessment is not None:
         report = report_path.read_text(encoding="utf-8")
+        decision = assessment.get("decision")
         if "v4.0" not in report:
             result.error("REPORT.md must identify methodology v4.0")
-        if assessment["decision"] not in report:
+        if isinstance(decision, str) and decision not in report:
             result.error("REPORT.md decision does not match assessment.json")
         if "data/evidence-ledger.md" not in report:
             result.error("REPORT.md must link data/evidence-ledger.md")
+        if narrative_report_required(assessment):
+            result.merge(validate_report_narrative(report, assessment, records))
     if assessment is not None:
+        # An incomplete assessment is already reported by validate_assessment.
+        mode = assessment.get("mode")
         phases = output_dir / "phases"
-        for name in required_phase_files(assessment["mode"], assessment["decision"]):
+        for name in required_phase_files(mode, assessment.get("decision")):
             if not (phases / name).exists():
-                result.error(f"missing phase file for {assessment['mode']}: phases/{name}")
-        if assessment["mode"] == "deep" and not (output_dir / "data" / "raw-search-results.md").exists():
+                result.error(f"missing phase file for {mode}: phases/{name}")
+        if mode == "deep" and not (output_dir / "data" / "raw-search-results.md").exists():
             result.error("deep mode requires data/raw-search-results.md")
     return result
 
@@ -898,6 +1121,82 @@ def command_render(output_dir: Path) -> int:
     ledger_path.parent.mkdir(parents=True, exist_ok=True)
     ledger_path.write_text(render_ledger(records), encoding="utf-8")
     print(f"WROTE {ledger_path}")
+    return 0
+
+
+def find_pdf_browser(explicit: Optional[str]) -> Optional[str]:
+    for candidate in (explicit, os.environ.get("REPORT_PDF_BROWSER")):
+        if candidate:
+            return candidate
+    for name in PDF_BROWSER_NAMES:
+        path = shutil.which(name)
+        if path:
+            return path
+    for path in PDF_BROWSER_PATHS:
+        if Path(path).exists():
+            return path
+    return None
+
+
+def command_pdf(output_dir: Path, browser: Optional[str]) -> int:
+    result = validate_output(output_dir)
+    if not result.ok:
+        print_result(str(output_dir), result)
+        print("PDF not written: fix the validation errors first")
+        return 1
+    pandoc = shutil.which("pandoc")
+    if pandoc is None:
+        print("ERROR: pandoc not found on PATH")
+        return 2
+    chrome = find_pdf_browser(browser)
+    if chrome is None:
+        print("ERROR: no Chromium-based browser found; pass --browser or set REPORT_PDF_BROWSER")
+        return 2
+    report_path = output_dir / "REPORT.md"
+    pdf_path = output_dir / "REPORT.pdf"
+    title_match = re.search(r"^# (.+)$", report_path.read_text(encoding="utf-8"), re.MULTILINE)
+    title = title_match.group(1).strip() if title_match else "REPORT"
+    base_href = output_dir.resolve().as_uri() + "/"
+    with tempfile.TemporaryDirectory() as tmp:
+        html_path = Path(tmp) / "report.html"
+        tmp_pdf = Path(tmp) / "report.pdf"
+        try:
+            subprocess.run(
+                [
+                    pandoc,
+                    str(report_path),
+                    "--from=gfm",
+                    "--to=html5",
+                    "--standalone",
+                    "--embed-resources",
+                    f"--css={PDF_STYLESHEET}",
+                    f"--metadata=pagetitle:{title}",
+                    f'--variable=header-includes:<base href="{base_href}">',
+                    f"--output={html_path}",
+                ],
+                check=True,
+            )
+            subprocess.run(
+                [
+                    chrome,
+                    "--headless=new",
+                    "--disable-gpu",
+                    "--no-pdf-header-footer",
+                    f"--print-to-pdf={tmp_pdf}",
+                    html_path.as_uri(),
+                ],
+                check=True,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+        except (OSError, subprocess.CalledProcessError) as exc:
+            print(f"ERROR: PDF rendering failed: {exc}")
+            return 1
+        if not tmp_pdf.exists() or tmp_pdf.stat().st_size == 0:
+            print(f"ERROR: {chrome} produced no PDF")
+            return 1
+        shutil.move(str(tmp_pdf), str(pdf_path))
+    print(f"WROTE {pdf_path}")
     return 0
 
 
@@ -950,6 +1249,13 @@ def build_parser() -> argparse.ArgumentParser:
     all_parser = subparsers.add_parser("validate-all", help="validate all output directories")
     all_parser.add_argument("output_root", type=Path, nargs="?", default=Path("output"))
     all_parser.add_argument("--skip-legacy", action="store_true")
+    pdf_parser = subparsers.add_parser(
+        "pdf", help="validate one output directory, then write REPORT.pdf (pandoc + Chromium)"
+    )
+    pdf_parser.add_argument("output_dir", type=Path)
+    pdf_parser.add_argument(
+        "--browser", help="Chromium-based browser executable (default: REPORT_PDF_BROWSER or autodetect)"
+    )
     return parser
 
 
@@ -963,6 +1269,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         return 0 if result.ok else 1
     if args.command == "validate-all":
         return command_validate_all(args.output_root, args.skip_legacy)
+    if args.command == "pdf":
+        return command_pdf(args.output_dir, args.browser)
     return 2
 
 

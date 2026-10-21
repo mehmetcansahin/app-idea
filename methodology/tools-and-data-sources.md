@@ -94,6 +94,29 @@ Boyut eslemesi:
 | `timing` | Yeni girislerin baslangic tarihlerinde kumelenmesi | supporting |
 | `problem_demand` | Reklam sayisi talep gostermez | weak |
 
+## Web Aramasi ve Icerik Kanallari
+
+| Kaynak | Gozlem | Sinir |
+|---|---|---|
+| Google arama sonucu (`gl=<geo>&hl=en&pws=0`) | ilk 10 organik sonucun turu, ucretli alanlar | Gozlem yeri (IP) sonucu degistirebilir; ham sonucu artifact olarak sakla |
+| Bing/DuckDuckGo | Google engellenirse yedek sonuc | Hangi motorun kullanildigini kaydet |
+| Keyword Planner / ucretli SEO araclari | mutlak hacim | Hesap yoksa `structurally_unobservable` |
+| Ucretsiz hacim araclari | kaba hacim | `E1`, goreli; tek kaynakla karar verme |
+| YouTube aramasi | ilk sonuclarda sponsorluk/satis ortakligi | Kisisellestirme ve IP etkisi |
+| Sponsorluk takip siteleri (podcast/YouTube) | bolum/icerik ureticisi sayisi | Harcama gostermez; donem belirtilmeyebilir |
+| Topluluk istatistikleri (Reddit, forum `about.json`) | ziyaretci, aktif kullanici | Uye sayisi ile aktif kitle farklidir |
+
+## Sirket ve Pazar Buyuklugu
+
+| Kaynak | Evidence potansiyeli | Not |
+|---|---|---|
+| SEC EDGAR (10-K, S-1) ve benzeri resmi dosyalar | E2 | gelir, abone, calisan; urun kirilimi olmayabilir |
+| Sirket About/basin sayfasi | E1 | kurulus, kullanici ve kapsam iddiasi |
+| LinkedIn sirket sayfasi | E1 | calisan araligi; kesin sayi degil |
+| Crunchbase/PitchBook/CB Insights ozeti | E1 | fonlama; erisim cogu zaman ozetle sinirli |
+| Pazar arastirma yayincilari | E1, weak | kapsam tanimi ve yayinci bagimsizligini kontrol et |
+| Regulator kayitlari ve yasal metrik raporlari | E2 | sektor arzi ve talep hacmi; sirket bildirimi olabilir |
+
 ## Visual Intelligence
 
 - App Store screenshots: direct urun mesaji gozlemi
