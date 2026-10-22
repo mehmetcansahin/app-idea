@@ -12,6 +12,7 @@
     "stage",
     "target_segment",
     "target_geos",
+    "product_type",
     "primary_archetype",
     "risk_modifiers",
     "dimensions",
@@ -31,8 +32,9 @@
     "analysis_date": {"type": "string", "format": "date"},
     "mode": {"enum": ["quick", "standard", "deep", "compare"]},
     "stage": {"enum": ["desk_research", "prebuild_validation", "post_mvp"]},
-    "target_segment": {"type": "string", "minLength": 1},
+    "target_segment": {"type": "string", "minLength": 1, "pattern": "\\S"},
     "target_geos": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "product_type": {"enum": ["app", "web_saas", "service"]},
     "primary_archetype": {
       "enum": ["consumer_utility", "consumer_subscription", "b2b_prosumer", "marketplace_network"]
     },
@@ -92,7 +94,7 @@
         "properties": {
           "code": {"enum": ["LEGAL_BLOCKED", "CORE_FEASIBILITY_BLOCKED", "PLATFORM_BLOCKED", "SAFETY_ETHICS_BLOCKED"]},
           "status": {"enum": ["clear", "blocked", "unknown"]},
-          "evidence_ids": {"type": "array", "items": {"type": "string"}}
+          "evidence_ids": {"type": "array", "minItems": 1, "items": {"type": "string"}}
         }
       }
     },
@@ -101,14 +103,18 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["claim_id", "category", "impact", "uncertainty", "claim_grade", "product_specific_behavior", "disposition"],
+        "required": ["claim_id", "category", "impact", "uncertainty", "claim_grade", "product_specific_evidence_ids", "disposition"],
         "properties": {
           "claim_id": {"type": "string"},
           "category": {"enum": ["value", "usability", "technical_feasibility", "business_viability", "retention", "distribution", "regulation_safety", "liquidity"]},
           "impact": {"type": "integer", "minimum": 1, "maximum": 3},
           "uncertainty": {"type": "integer", "minimum": 1, "maximum": 3},
           "claim_grade": {"enum": ["A", "B", "C", "D"]},
-          "product_specific_behavior": {"type": "boolean"},
+          "product_specific_evidence_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$"}
+          },
           "disposition": {"enum": ["untested", "supported", "contradicted", "partial"]}
         }
       }
@@ -118,7 +124,7 @@
       "enum": ["ELENDIR", "BELIRSIZ", "TESTE_DEGER", "TEST_ONCELIKLI", "KILL", "PIVOT", "BUILD_SMALL", "TESTE_DEVAM", "SCALE", "ITERATE", "STOP"]
     },
     "status": {
-      "enum": ["DESK_RESEARCH_COMPLETE", "PREBUILD_PENDING", "PREBUILD_PASSED", "BUILDING", "POSTLAUNCH", "KILLED", "ARCHIVED", "LEGACY"]
+      "enum": ["DESK_RESEARCH_COMPLETE", "PREBUILD_PENDING", "PREBUILD_PASSED", "BUILDING", "POSTLAUNCH", "KILLED"]
     },
     "next_test": {"type": ["string", "null"]},
     "stopping_rule": {"type": ["string", "null"]},

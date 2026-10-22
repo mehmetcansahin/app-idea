@@ -1,6 +1,6 @@
 # [Kullanıcı + iş + ürün türü + geo/platform; ör. "ABD'de kişi-arama sitelerinden adres ve telefon kaldırma: iPhone uygulaması fikri"]
 
-**[Quick Scan / Standard / Deep] · Metodoloji v4.0 · Araştırma: [GG Ay YYYY]**
+**[Quick Scan / Standard / Deep] · [Uygulama / Web yazılımı (SaaS) / Hizmet] · Metodoloji v4.0 · Araştırma: [GG Ay YYYY]**
 
 **Karar: `[ELENDIR / BELIRSIZ / TESTE_DEGER / TEST_ONCELIKLI]` — [tek cümlelik sade öneri].** Durum: `[DURUM]` ([durumun sade açıklaması]).
 
@@ -12,7 +12,11 @@ Yazım sözleşmesi: methodology/report-writing.md. Bu yorum bloğunu rapora kop
   "> **Bu bölümün sonucu.** Ne öğrendik: ... Neden önemli: ... Karara etkisi: ..." ile biter.
 - Bulgular rapor boyunca "Bulgu 1, 2, ..." diye numaralanır; her biri üç parçalıdır.
 - Gövdede claim/evidence kimliği ve phases/ yolu kullanılmaz; kaynaklar satır içi bağlantıdır.
-- ⚐ işaretli alt bölümler yalnız belirtilen modda zorunludur.
+- ⚐ işaretli alt bölümler yalnız belirtilen modda (QUICK, STANDARD+, DEEP) veya ürün türünde (APP, WEB_SAAS, SERVICE) yazılır; işaretsiz alt bölümler her raporda vardır. Numaralı `##` başlıklar, "Kapsam dışında kalanlar" ve Ek başlıkları her mod ve ürün türünde birebir korunur.
+- Quick (ve Compare adayları): 3.1, 4.4, 4.5, 4.6, 6.2 ve 6.4 yazılmaz; 4.2'de ilk 5 rakip, 6.3'te ilk 3 rakip için yalnız Meta/Google var/yok.
+- Ürün türü varyantı olan alt bölümlerde yalnız raporun ürün türüne ait başlık ve metin kopyalanır; diğer varyantlar ve ⚐ etiketleri rapora girmez. WEB_SAAS ve SERVICE raporlarında mağaza verisi, mağaza yorumları ve ASO yazılmaz; uygulanmadıkları Bölüm 11'de bir cümleyle söylenir.
+- "Bu işte ne zamandan beri?", "Platformlar", "Kim hâkim?" ve "Yeni bir uygulama için gerçekçi mi?" sütun başlıkları validator tarafından birebir aranır; ürün türü ne olursa olsun değiştirilmez, hücreler değerlendirilen ürün türü için yazılır.
+- Portföy yaşam döngüsü (active/archived/superseded) ve deney devrinin güncel durumu rapora yazılmaz; data/portfolio.json'da tutulur.
 - Masa başı raporunda geliştirme/ölçekleme dili kullanılmaz.
 -->
 
@@ -39,7 +43,7 @@ Yazım sözleşmesi: methodology/report-writing.md. Bu yorum bloğunu rapora kop
   - *bağımsız kaynak*: resmî kurum, mahkeme, ABD Menkul Kıymetler ve Borsa Komisyonu'na (SEC) verilen zorunlu şirket dosyaları, basın, test kuruluşu, sektör raporu veya akademik çalışma;
   - *varsayım*: yalnız hesaplamada kullanılan, kanıt olmayan değer;
   - *yazarın yorumu*: bir gözlemden yaptığımız çıkarım veya hesap.
-- **Örnekler.** "Örnek senaryo (kurgusal)" kutuları anlatımı somutlaştırmak için kurgulandı; gerçek kişi değildir. "Gerçek işleyiş örneği (kaynak)" kutuları bir şirketin belgelenmiş iş akışını aktarır. "Gerçek kullanıcı" ifadesi yalnız tarihli mağaza yorumları ve forum gönderileri için kullanılıyor; İngilizce alıntılar çevrildiğinde bu belirtiliyor.
+- **Örnekler.** "Örnek senaryo (kurgusal)" kutuları anlatımı somutlaştırmak için kurgulandı; gerçek kişi değildir. "Gerçek işleyiş örneği (kaynak)" kutuları bir şirketin belgelenmiş iş akışını aktarır. "Gerçek kullanıcı" ifadesi yalnız tarihli mağaza veya inceleme platformu yorumları ve forum gönderileri için kullanılıyor; İngilizce alıntılar çevrildiğinde bu belirtiliyor.
 - **Sayılar ve terimler.** Tutarlar [para birimi]. Teknik terimler ilk geçtikleri yerde açıklanıyor; hepsi ayrıca [Ek A](#ek-a--terimler-sözlüğü)'da.
 - **Puan ve harf notu.** "[L] / [B] / [H]" fikrin 20–100 arası bir ölçekte kötümser, temel ve iyimser çekicilik puanıdır; "A–D" harf notu kararın dayandığı varsayımların ne kadar sağlam kanıtlandığını gösterir (A en güçlü, D en zayıf). Nasıl hesaplandıkları Bölüm 9'da.
 
@@ -68,8 +72,10 @@ Bu bölüm şu soruyu yanıtlıyor: Hangi kullanıcının hangi sorununu, hangi 
 | Araştırma sözleşmesi | Karar |
 |---|---|
 | Fikir türü (arketip) | [consumer_utility / consumer_subscription / b2b_prosumer / marketplace_network] — [sade açıklama ve gerekçe] |
+| Ürün türü | [Uygulama (app) / Web yazılımı (web_saas) / Hizmet (service)] — [sade açıklama; hangi kaynakların toplandığı. Ürün türü puan ağırlıklarını değiştirmez.] |
 | Risk etkenleri | [sensitive_data, regulated ... — sade açıklamayla] |
-| Hedef pazar ve platform | [ülke/mağaza, iOS/Android] |
+| Hedef pazar ve platform | [APP: ülke/mağaza, iOS/Android; WEB_SAAS: ülke, web/tarayıcı; SERVICE: ülke/şehir, hizmet alanı ve kanal] |
+| Araştırma derinliği | [Quick Scan / Standard / Deep — sade açıklama: kaç rakip, yorum örneklemi ve kanal analizi var mı] |
 | Veri penceresi | [tarih aralığı] |
 
 > **Bu bölümün sonucu.** Ne öğrendik: [...] Neden önemli: [...] Karara etkisi: [...]
@@ -106,11 +112,11 @@ Bu bölüm şu soruları yanıtlıyor: Bu iş için ne kadar para harcanıyor? K
 
 ### 3.3 Oyuncuların konumu
 
-| Grup | Oyuncu | Mağaza değerlendirmesi | İndirme bandı | Arama ilgisi | Yayındaki reklam | Ölçek göstergesi |
+| Grup | Oyuncu | [Değerlendirme sütunu] | [Ölçek sütunu] | Arama ilgisi | Yayındaki reklam | Ölçek göstergesi |
 |---|---|---:|---|---|---:|---|
-| [paket/hizmet/ücretsiz/bağımsız] | [ad] | [sayı, mağaza, tarih] | [bant] | [göreli değer] | [sayı] | [gelir, abone, fon; türüyle] |
+| [paket/hizmet/ücretsiz/bağımsız] | [ad] | [sayı, kaynak, tarih] | [bant veya değer] | [göreli değer] | [sayı] | [gelir, abone, fon; türüyle] |
 
-[Tablonun nasıl okunacağı ve hiçbir göstergenin tek başına pazar payı olmadığı.]
+[Ürün türü sütunları: ⚐ APP "Mağaza değerlendirmesi" (sayı, mağaza, tarih) ve "İndirme bandı"; ⚐ WEB_SAAS "İnceleme platformu puanı" (G2/Capterra, sayı, tarih) ve "Açıklanan müşteri"; ⚐ SERVICE "Yerel inceleme puanı" (Google/Yelp/Trustpilot, sayı, tarih) ve "Hizmet alanı". Tablonun nasıl okunacağı ve hiçbir göstergenin tek başına pazar payı olmadığı.]
 
 ### 3.4 Pazar nereye gidiyor?
 
@@ -132,9 +138,9 @@ Bu bölüm şu soruları yanıtlıyor: Bu sorunu bugün kimler çözüyor? Nası
 
 | Rakip | Bu işte ne zamandan beri? | Sahiplik, fonlama, büyüklük | Platformlar | Yıllık fiyat ([para birimi]) |
 |---|---|---|---|---|
-| [ad] | [kuruluş / ürün başlangıcı + bağlantı] | [sahip, yatırım, çalışan aralığı, açıklanan kullanıcı/gelir; türüyle] | [iOS/Android/web/eklenti] | [fiyat] |
+| [ad] | [kuruluş / ürün başlangıcı + bağlantı] | [sahip, yatırım, çalışan aralığı, açıklanan kullanıcı/gelir; türüyle] | [iOS/Android/web/eklenti veya hizmet kanalı] | [fiyat] |
 
-[Quick: ilk 5 rakip/ikame; Standard/Deep: ilk 10.]
+[⚐ QUICK: ilk 5 rakip/ikame; ⚐ STANDARD+: ilk 10. "Platformlar" sütunu: APP ve WEB_SAAS için iOS/Android/web/eklenti; SERVICE için hizmet kanalı (yerinde/uzaktan/web) ve hizmet alanı. Tek taramada bulunamayan profil ayrıntısı "bulunamadı" yazılır.]
 
 ### 4.3 Nasıl çalışıyorlar, neyi iyi yapıyorlar, nerede yetersizler?
 
@@ -148,13 +154,13 @@ Bu bölüm şu soruları yanıtlıyor: Bu sorunu bugün kimler çözüyor? Nası
 
 ### 4.5 Kullanıcılar ne yaşıyor? ⚐ STANDARD+
 
-**Nasıl ölçtük?** [Uygulamalar, mağaza, son 12 ay, yıldız katmanları ve sayıları; örneklemin rastgele olmadığı.]
+**Nasıl ölçtük?** [Rakipler, kaynak (⚐ APP: App Store/Google Play ve sürüm; ⚐ WEB_SAAS: G2, Capterra veya TrustRadius; ⚐ SERVICE: Google, Yelp, Trustpilot veya pazaryeri listeleri), son 12 ay, yıldız katmanları ve sayıları; eksik katmanlar; örneklemin rastgele olmadığı.]
 
 ### Bulgu [N] — [başlık]
 
 **Ne gözlemledik?** [Tema sayısı / incelenen yorum sayısı.]
 
-> **Gerçek kullanıcı ([uygulama], [mağaza], [tarih], [puan]★):** "[kısa, çevrilmiş alıntı]"
+> **Gerçek kullanıcı ([ürün], [mağaza veya inceleme platformu], [tarih], [puan]★):** "[kısa, çevrilmiş alıntı]"
 
 **Ürün açısından anlamı.** [...]
 
@@ -162,7 +168,7 @@ Bu bölüm şu soruları yanıtlıyor: Bu sorunu bugün kimler çözüyor? Nası
 
 ### 4.6 Rakipler kendilerini nasıl anlatıyor? ⚐ STANDARD+
 
-[Mağaza görselleri, ilk açılış ve ödeme ekranı: ilk mesaj, kanıt öğesi, kişisel veri/ödeme sırası, boş kalan açı.]
+[⚐ APP: mağaza görselleri, ilk açılış ve ödeme ekranı. ⚐ WEB_SAAS: ana sayfa, fiyat sayfası, deneme/demo kaydı ve güvenlik sayfası. ⚐ SERVICE: teklif sayfası ve rezervasyon/teklif akışı. Her türde: ilk mesaj, kanıt öğesi, kişisel veri/ödeme sırası, boş kalan açı.]
 
 ### 4.7 Hangi kullanıcı ihtiyacı karşılanıyor, hangisi karşılanmıyor?
 
@@ -178,7 +184,7 @@ Bu bölüm şu soruyu yanıtlıyor: Önerdiğimiz ürün nasıl çalışacaktı 
 
 ### 5.1 Ürün nasıl çalışacaktı?
 
-> **Örnek senaryo (kurgusal; tasarlanan akış, yayında bir ürün değil).** [Kullanıcının ilk açılıştan sonuca kadar yaşadığı adımlar.]
+> **Örnek senaryo (kurgusal; tasarlanan akış, yayında bir ürün değil).** [Kullanıcının adımları: ⚐ APP ilk açılıştan sonuca; ⚐ WEB_SAAS kayıt veya demodan ilk sonuca; ⚐ SERVICE talepten teslime.]
 
 ### 5.2 Ayırt edici avantaj hipotezi
 
@@ -206,27 +212,41 @@ Bu bölüm şu soruyu yanıtlıyor: Yeni bir ürün, bu ihtiyacı olan kullanıc
 
 [Gözlem yeri/IP ve tarih notu.]
 
-### 6.1 Mağaza araması ve anahtar kelimeler
+### 6.1 Mağaza araması ve anahtar kelimeler ⚐ APP
 
-**Otomatik tamamlama** (autocomplete): [açıklama]. [Mutlak hacim görülemiyorsa neden.]
+### 6.1 Arama terimleri ve karşılaştırma siteleri ⚐ WEB_SAAS
+
+### 6.1 Yerel arama, harita ve rehber listeleri ⚐ SERVICE
+
+[Yukarıdaki üç başlıktan yalnız ürün türüne ait olanı yazılır.]
+
+**Otomatik tamamlama** (autocomplete): [açıklama; APP mağaza araması, WEB_SAAS arama motoru ve "alternatif/karşılaştırma" sorguları ile inceleme platformu kategori sayfaları, SERVICE harita/yerel sonuçlar ve rehber listeleri]. [Mutlak hacim görülemiyorsa neden.]
 
 | Arama terimi | Öneri sayısı | İlk sıralardakiler (değerlendirme sayısı) | Bu terim bizim için ne ifade ediyor? |
 |---|---:|---|---|
 | [terim] | [n] | [...] | [tam cümle] |
 
-[⚐ DEEP: ad, alt başlık ve anahtar kelime alanı hipotezleri — "hipotez, kanıt değil" etiketiyle.]
+[⚐ DEEP + APP: ad, alt başlık ve anahtar kelime alanı hipotezleri. ⚐ DEEP + WEB_SAAS: sayfa başlığı, karşılaştırma/alternatif sayfası ve fiyat sayfası mesajı hipotezleri. ⚐ DEEP + SERVICE: yerel listeleme ve teklif sayfası metni hipotezleri. Hepsi "hipotez, kanıt değil" etiketiyle.]
 
 ### 6.2 Web araması: insanlar ne arıyor, sonuçlara kim hâkim? ⚐ STANDARD+
 
-[Arama ilgisi ve varsa hacim tahmini; arama türlerine göre ilk 10 sonucun sahipliği; reklam alanları; uygulamalara giden trafik.]
+[Arama ilgisi ve varsa hacim tahmini; arama türlerine göre ilk 10 sonucun sahipliği; reklam alanları; ürünlere giden trafik.]
 
 ### 6.3 Ücretli reklamlar
+
+⚐ STANDARD+ (ilk 5 rakip):
 
 | Reklamveren | Meta'da yayındaki reklam | Google'da son 30 gün | TikTok | Ana mesaj ve teklif |
 |---|---:|---:|---|---|
 | [ad + kütüphane bağlantısı] | [~n] | [n] | [n veya gözlenemedi] | [incelenen N reklamın n'i ...] |
 
-[Kütüphanelerin harcama göstermediği; reklam sayısının harcama ölçüsü olmadığı. Quick: ilk 3 rakip için var/yok, sayı ve hedef.]
+⚐ QUICK (ilk 3 rakip; TikTok ve mesaj kodlaması yok):
+
+| Reklamveren | Meta'da reklam var mı? (sayı) | Google'da reklam var mı? (sayı) | Reklamın götürdüğü yer |
+|---|---|---|---|
+| [ad + kütüphane bağlantısı] | [var/yok, ~n] | [var/yok, n] | [APP: mağaza sayfası/web; WEB_SAAS: ana sayfa, fiyat, deneme veya demo formu; SERVICE: rezervasyon, teklif formu veya telefon] |
+
+[Kütüphanelerin harcama göstermediği; reklam sayısının harcama ölçüsü olmadığı.]
 
 ### 6.4 Satış ortaklığı, inceleme siteleri, içerik üreticileri ⚐ STANDARD+
 
@@ -234,13 +254,13 @@ Bu bölüm şu soruyu yanıtlıyor: Yeni bir ürün, bu ihtiyacı olan kullanıc
 
 ### 6.5 Topluluklar ve yeni girenler
 
-[Topluluk büyüklükleri, kimin konuştuğu, yeni girişlerin görünürlüğü.]
+[Topluluk büyüklükleri, kimin konuştuğu, yeni girişlerin görünürlüğü: ⚐ APP mağaza listeleri; ⚐ WEB_SAAS inceleme platformu kategori sıralamaları, Product Hunt ve entegrasyon pazaryerleri; ⚐ SERVICE harita/yerel sonuçlar ve rehber listeleri.]
 
 ### 6.6 Kanal özeti
 
 | Kanal | Kim hâkim? | Hâkimiyet | Yeni bir uygulama için gerçekçi mi? |
 |---|---|---|---|
-| [kanal] | [...] | [düşük/orta/yüksek/çok yüksek] | [tam cümle] |
+| [kanal] | [...] | [düşük/orta/yüksek/çok yüksek] | [tam cümle; değerlendirilen ürün türü için (uygulama, web yazılımı veya hizmet)] |
 
 > **Bu bölümün sonucu.** Ne öğrendik: [...] Neden önemli: [...] Karara etkisi: [...]
 
@@ -266,7 +286,7 @@ Aşağıdaki tablo bir **senaryodur, kanıt değildir**.
 
 | Girdi | Değer | Türü |
 |---|---|---|
-| [mağaza payı, iade, dönüşüm, yenileme, edinme maliyeti, destek, personel emeği ...] | [değer ve kaynak bağlantısı] | [bağımsız kaynak / bağımsız kaynak, sektör ortalaması / varsayım] |
+| [APP: mağaza payı; WEB_SAAS: ödeme işlemcisi payı, satış/demo emeği, sözleşme süresi; SERVICE: iş başına teslim maliyeti, kapasite, ulaşım. Her türde: iade, dönüşüm, yenileme, edinme maliyeti, destek, personel emeği ...] | [değer ve kaynak bağlantısı] | [bağımsız kaynak / bağımsız kaynak, sektör ortalaması / varsayım] |
 
 [Formül tam cümleyle.]
 
@@ -287,11 +307,11 @@ Bu bölüm şu soruyu yanıtlıyor: Projeyi tek başına durduracak bir engel va
 | Engel | Durum | Açıklama |
 |---|---|---|
 | Hukuki engel | [Yok / Var / Belirsiz (koşullu)] | [tam cümleler ve bağlantılar] |
-| Platform kuralları | [...] | [...] |
+| Platform kuralları | [...] | [APP: App Store/Google Play kuralları; WEB_SAAS ve SERVICE: bağımlı olunan API, veri veya iş ortağı platformunun kuralları] |
 | Teknik yapılabilirlik | [...] | [...] |
 | Güvenlik ve etik | [...] | [...] |
 
-[⚐ STANDARD+ ve ürün özeti varsa: güvenlik ön kontrolü (yönetici yetkisi, kullanıcı verisi sahipliği, istemcide gizli anahtar, sunucu kuralları, tahmin edilebilir kimlikler) sade cümlelerle. ⚐ Gerekiyorsa: Türkiye operasyonu yalnız güncel resmî kaynakla.]
+[⚐ STANDARD+ ve ürün özeti varsa: güvenlik ön kontrolü (yönetici yetkisi, kullanıcı verisi sahipliği, istemcide gizli anahtar, sunucu kuralları, tahmin edilebilir kimlikler) sade cümlelerle; ⚐ WEB_SAAS: müşterilerin satın almadan önce beklediği güvenlik ve uyum belgeleri (SOC 2, tek oturum açma, veri işleme sözleşmesi); ⚐ SERVICE: lisans, sigorta ve teslim sorumluluğu. ⚐ Gerekiyorsa: Türkiye operasyonu yalnız güncel resmî kaynakla.]
 
 > **Bu bölümün sonucu.** Ne öğrendik: [...] Neden önemli: [...] Karara etkisi: [...]
 
@@ -386,6 +406,9 @@ Bu bölüm şu soruları yanıtlıyor: Şimdi ne yapmalıyız, bu öneri hangi b
 | Alan | Değer |
 |---|---|
 | Hangi varsayımı test ediyor? | [varsayım] |
+| Kim yürütecek? | [deney planındaki insan rolü, ör. kurucu; rol belirlenmediyse "henüz atanmadı"] |
+| Başlamadan önce gerekenler | [önkoşullar; yoksa "yok"] |
+| İlk adım | [testi başlatacak somut iş] |
 | Kimlerle? | [segment] |
 | Nasıl bulunacaklar? | [kanal] |
 | Yöntem | [görüşme / ön ödeme / prototip / teknik deneme / concierge / kanal testi] |
@@ -399,9 +422,11 @@ Bu bölüm şu soruları yanıtlıyor: Şimdi ne yapmalıyız, bu öneri hangi b
 | Kalırsa | [karar] |
 | Gizlilik ve iade | [...] |
 
+[Bu tablo testin planıdır. Test yürütülmeden sonucu, "tamamlandı" ifadesi veya varsayımsal bir sonuç yazılmaz; testin güncel durumu rapor dışında, portföy kaydında izlenir. Gerçek sonuç geldiğinde kanıt kaydı ve karar güncellenir, rapor yeniden incelenir.]
+
 ### Ürün kapsamı ⚐ YALNIZ BUILD_SMALL VEYA KOŞULLU TASLAK
 
-[Faz 5.5 tamamlanmadıysa "koşullu taslak, geliştirme talimatı değildir". En fazla 4 ana ekran, 3 ana özellik, gerekirse 1 ödeme ekranı; ilk sürüm dışı liste; önceden yazılmış eşikler.]
+[Faz 5.5 tamamlanmadıysa "koşullu taslak, geliştirme talimatı değildir". `BUILD_SMALL` yalnız en riskli varsayımı doğrudan destekleyen, bu ürüne özgü gerçek davranış kaydı (iade edilebilir ön ödeme, imzalı niyet mektubu, ücretli veya tekrarlı kullanım) varsa yazılır; rakip sayfaları bu kanıtın yerine geçmez. En fazla 4 ana ekran, 3 ana özellik, gerekirse 1 ödeme ekranı; ilk sürüm dışı liste; önceden yazılmış eşikler.]
 
 ### Bu projeyi hayata geçirmek mantıklı mı?
 
@@ -419,6 +444,8 @@ Bu bölüm şu soruyu yanıtlıyor: Bu raporun bulgularına ne kadar güvenebili
 - **Teknik ölçüm.** [...]
 - **Hukuk.** [...]
 - **Araştırma yöntemi.** [...]
+- **Kapsam dışı bırakılan toplama adımları.** [Moda göre yapılmayanlar (⚐ QUICK: yorum örneklemi, organik kanal analizi, pazar büyüklüğü dağılımı, TikTok ve reklam mesajı kodlaması) ve ürün türüne göre uygulanmayanlar (⚐ WEB_SAAS / SERVICE: mağaza verisi, mağaza yorumları, mağaza içi arama optimizasyonu); bunların bulunamayan veri değil kapsam kararı olduğu.]
+- **Bulunamayanlar.** [Karara etki eden ve aranıp bulunamayan bilgiler: kaç farklı sorgu ve kaynakla arandığı, aramanın nerede durdurulduğu ve bu eksikliğin hangi varsayımı zayıf bıraktığı. Kararı etkilemeyen profil ayrıntıları tablolarda "bulunamadı" olarak kalır.]
 
 [⚐ STANDARD+: kanıt denetimi sonuçları — gözlemler doğru bağlamda mı, kaynaklar bağımsız mı, gelir kanıtı davranış mı iddia mı, ürün değiştirme davranışla destekli mi, karşıt kanıt arandı mı, gözlemden çıkarıma sıçrama düzeltildi mi.]
 
@@ -461,8 +488,10 @@ Raporun anlaşılması bu dosyalara bağlı değildir; her iddianın kaydı, tar
 
 - [data/evidence-ledger.md](data/evidence-ledger.md): [N] kanıt kaydının okunabilir defteri. Makine-okunur sürüm: [data/evidence.jsonl](data/evidence.jsonl).
 - [data/assessment.json](data/assessment.json): puanlar, kanıt notları ve karar.
+- [data/portfolio.json](data/portfolio.json): portföy durumu ve deney devri; rapordan ayrı tutulur ve karar yetkisi vermez.
 - [Ham veri dosyaları]
 - [⚐ STANDARD+: faz dosyaları `phases/...`]
+- [⚐ STANDARD+: [data/reader-review.md](data/reader-review.md): bağımsız okur incelemesi ve incelenen revizyon]
 - [Bölüm → claim kimlikleri eşlemesi: ör. Bölüm 5 → `[claim-id]`]
 
 ---

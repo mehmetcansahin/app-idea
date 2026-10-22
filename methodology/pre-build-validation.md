@@ -10,6 +10,13 @@ Faz 5 masa basi karari `TESTE_DEGER` veya `TEST_ONCELIKLI` olmali. `ELENDIR` vey
 fatal gate `blocked` ise plan uretilmez. `BELIRSIZ` ise once eksik masa basi kaniti
 toplanir; yalniz masa basinda kapatilamayacak belirsizlikler deney konusu olur.
 
+Akis butun modlarda aynidir: masa basi deney plani -> insan yurutumu -> sonucun
+`data/evidence.jsonl` ve `data/assessment.json` icine islenmesi. Quick Scan ve
+Compare yalniz masa basi karari ve siradaki testi onerir; Compare'in aday onerisi
+test sonucu degildir. Deney plani, devir kaydi (§10) veya rapordaki "sonraki test"
+tablosu kanit degildir: insan deneyi yurutulmeden asama, karar veya durum
+(`PREBUILD_PENDING`) yukselmez.
+
 ## 2. Riskiest Assumption Test (RAT)
 
 Varsayimlari su risk siniflarinda listele:
@@ -42,6 +49,12 @@ en dusuk olan onceliklidir.
 
 Urunun vaadi "daha hizli/daha guzel/daha kullanisli" ise landing page ana test
 olamaz; kullanici farki deneyimlemelidir.
+
+Urun turu (`scoring-model.md` §1) yukaridaki eslemeyi degistirmez; deneyin
+yuzeyini ve kanalini belirler. Ornek: prototip `app`te TestFlight/app prototipi,
+`web_saas`'ta web prototipidir; odeme testi `web_saas`'ta fiyatli pilot veya B2B
+LOI, `service`'te elle yurutulen ucretli hizmet teklifi olabilir. Evidence
+merdiveni (§4) ve karar kurallari (§8) her turde aynidir.
 
 ## 4. Evidence Merdiveni
 
@@ -109,18 +122,36 @@ planned_dates:
 Esik sonuctan sonra degistirilmez. Degisiklik gerekirse eski deney kapatilir ve yeni
 `experiment_id` ile tekrar kaydedilir.
 
+`owner` deneyi yurutecek insan rolunu yazar; agent veya uydurulmus kisi olamaz.
+Ayni rol §10 devrinde kullanilir. Sozlesme yazilmis olmasi deneyin yapildigi
+anlamina gelmez.
+
 ## 8. Karar
 
 `methodology/scoring-model.md` karar matrisini uygula:
 
 - problem/talep E3+ ile curutuldu -> `KILL`
 - problem B+, wedge/cozum E3+ ile curutuldu -> `PIVOT`
-- firsat `low >= 60`, genel kanit B+, en riskli varsayim B+ ve urun-spesifik E3+
-  davranis -> `BUILD_SMALL`
+- firsat `low >= 60`, fatal gate'ler `clear`, genel kanit B+, en riskli varsayim
+  B+ ve en az bir RAT'in `product_specific_evidence_ids` listesinde uygun E3/E4
+  first-party veya deney kaydi (`evidence-model.md` §7) -> `BUILD_SMALL`
 - aksi -> `TESTE_DEVAM`
 
 Faz 5.5 sonucu `data/evidence.jsonl` ve `data/assessment.json` icine islenmeden
-durum degistirilmez.
+durum degistirilmez. Isleme sirasi:
+
+1. Yurutulen deneyin sonucu, olumsuz olsa da, `phase=5.5` ve
+   `source_ref`/`artifact_path` ile `evidence.jsonl`'e yazilir; deney ve
+   first-party olcumleri `experiment`/`first_party`, gorusmeler `interview`
+   kaynak turunu kullanir.
+2. Claim dereceleri yeniden hesaplanir. Uygunluk kosullarini saglayan
+   destekleyici E3/E4 kayit ilgili RAT'in `product_specific_evidence_ids`
+   listesine eklenir; uygun olmayan kayit eklenmez.
+3. `assessment.json` asama, karar ve durumla guncellenir; `evidence_tool.py render`
+   ve `validate` calistirilir.
+4. `data/portfolio.json` devri sonuc kayitlariyla guncellenir (§10).
+5. Standard/Deep'te rapor veya kanit degistigi icin bagimsiz okur incelemesi
+   guncel revizyon icin yenilenir (`report-writing.md` §13).
 
 ## 9. BUILD_SMALL Siniri
 
@@ -132,3 +163,42 @@ durum degistirilmez.
 - activation, retention ve ekonomi esikleri build oncesi yazilmis
 
 Sonraki karar gercek MVP kohortlarindan `SCALE`, `ITERATE` veya `STOP` olur.
+
+## 10. Insan Deneyi Devri
+
+Ajan deneyi yurutmez; deney sozlesmesini hazirlar ve yurutecek insana devreder.
+Devir `data/portfolio.json` icindeki `handoff` nesnesinde tutulur (alan sozlesmesi
+`evidence-model.md` §11) ve `output/INDEX.md` insan deney kuyrugunda gorunur.
+Devir bir sonuc degil, insan icin is tanimidir: sorumlu, on kosullar ve siradaki
+adim.
+
+`owner`, §7 deney sozlesmesindeki `owner` veya mevcut planda adi gecen insan
+rolu olur. Planda deney veya sorumlu yoksa plan ya da kisi uydurulmaz;
+`handoff=null` kalir ve kuyrukta devri olmayan kosu olarak gorunur. `next_action`
+her durumda siradaki somut insan adimini yazar.
+
+`state` degerleri:
+
+- `blocked`: deney baslamadan kapanmasi gereken on kosullar (hukuk, platform,
+  veri erisimi, urun duzeltmesi) `prerequisites` listesinde yazilir; liste bos
+  olamaz.
+- `ready`: sozlesme ve on kosullar hazir; insan deneyi baslatabilir.
+- `in_progress`: insan deneyi fiilen yurutuyor.
+- `completed`: deney yurutuldu ve sonuc kayitlari `result_evidence_ids` ile
+  baglandi. Liste bos olamaz; her kayit `observed`, `first_party` veya
+  `experiment` kaynakli ve `source_ref` ya da `artifact_path` tasir. Olumsuz sonuc
+  da `completed`tir.
+- `not_planned`: bu kosu icin insan deneyi planlanmadi.
+
+Devir durumu gate, karar veya assessment durumunu yukseltmez. `ready`,
+`in_progress` ve `completed` yalniz portfoy metadatasidir; karar ve durum §8'deki
+gibi evidence ve assessment uzerinden degisir. Yerine baska kosu gelen
+(`superseded`) veya arsivlenen kosunun deneyi aktif kuyrukta yer almaz; yurutulecek
+deney aktif kosunun devrindedir.
+
+Her devir guncellemesinden sonra:
+
+```bash
+python3 scripts/portfolio_tool.py render
+python3 scripts/portfolio_tool.py validate
+```

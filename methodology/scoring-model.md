@@ -8,13 +8,15 @@
 Puanlamadan once su alanlar kilitlenir:
 
 - problem, hedef segment ve cozulmek istenen is (JTBD)
-- platform ve 3-5 oncelikli geo/storefront
+- urun turu (`product_type`): `app`, `web_saas` veya `service`
+- platform/teslim yuzeyi ve 3-5 oncelikli geo (`app` icin storefront)
 - analiz modu ve karar asamasi
 - tek birincil arketip
 - risk modifier'lari
 - arastirma tarihi ve zaman-duyarli veri penceresi
 
-Iki arketip makulse ve secim sonucu anlamli degistirecekse kullaniciya sor.
+Iki arketip veya iki urun turu makulse ve secim sonucu anlamli degistirecekse
+kullaniciya sor.
 
 ### Birincil arketipler
 
@@ -28,6 +30,25 @@ Iki arketip makulse ve secim sonucu anlamli degistirecekse kullaniciya sor.
 Risk modifier'lari: `regulated`, `sensitive_data`, `ai_variable_cost`,
 `hardware_dependency`, `children`, `platform_dependency`.
 
+### Urun turu
+
+| `product_type` | Tanim |
+|---|---|
+| `app` | Deger iOS/Android uygulamasiyla teslim edilir |
+| `web_saas` | Deger tarayicida calisan web urunu veya SaaS ile teslim edilir |
+| `service` | Deger insan emegiyle veya yonetilen hizmetle teslim edilir; yazilim destekleyici olabilir |
+
+Urun turu yalniz arastirma toplamasini degistirir: `app` storefront aramasi,
+rating/review ve magaza kanallarini kullanir; `web_saas` ve `service` icin
+storefront ve mobil uygunluk zorunlu degildir, rakip/ikame, kanal ve odeme kaniti
+web, satis/LOI ve hizmet saglayicilari uzerinden toplanir. Toplama adimlari
+`data-collection-protocol.md` icindedir.
+
+Urun turu arketip, boyut, agirlik, skor sinifi, fatal gate veya karar matrisini
+degistirmez. Her tur ayni dort arketip modeliyle puanlanir; ornegin web SaaS bir
+B2B urunu `b2b_prosumer`, mobil bir B2B urunu da `b2b_prosumer` agirliklarini
+kullanir. Ikinci bir puanlama sistemi kurulmaz.
+
 ## 2. Fatal Gate'ler
 
 Rating veya rakip sayisi fatal gate degildir. Yalniz su gate'ler kullanilir:
@@ -36,7 +57,7 @@ Rating veya rakip sayisi fatal gate degildir. Yalniz su gate'ler kullanilir:
 |---|---|
 | `LEGAL_BLOCKED` | Gerekli lisans, hak veya mevzuat indie olcekte asilamiyor |
 | `CORE_FEASIBILITY_BLOCKED` | Cekirdek veri/API/teknoloji yasal ve pratik olarak erisilebilir degil |
-| `PLATFORM_BLOCKED` | Urun App Store/Google Play kurallariyla yayinlanamiyor |
+| `PLATFORM_BLOCKED` | Urun dagitim yaptigi veya bagimli oldugu platformun kurallariyla yayinlanamiyor: `app` icin App Store/Google Play; `web_saas`/`service` icin bagimli API, veri veya partner platformu kosullari |
 | `SAFETY_ETHICS_BLOCKED` | Kabul edilemez guvenlik, gizlilik veya zarar riski var |
 
 Her gate `clear`, `blocked` veya `unknown` olur ve evidence ID'lerine baglanir.
@@ -160,9 +181,26 @@ Masa basi arastirmasi `BUILD_SMALL`, `SCALE` veya eski `GO` kararini uretemez.
 
 1. Fatal gate `blocked` veya problem/talep E3+ ile curutulmus -> `KILL`.
 2. Problem B+ fakat mevcut wedge/cozum E3+ ile curutulmus -> `PIVOT`.
-3. `opportunity.low >= 60`, genel kanit B+, en riskli varsayim B+ ve en az bir
-   urun-spesifik E3+ davranis varsa -> `BUILD_SMALL`.
+3. `opportunity.low >= 60`, fatal gate'lerin hepsi `clear`, genel kanit B+, en
+   riskli varsayim B+ ve en az bir RAT'in `product_specific_evidence_ids` listesi
+   uygun bir urun-spesifik E3/E4 kaydina baglanmissa -> `BUILD_SMALL`.
 4. Diger tum durumlar -> `TESTE_DEVAM`.
+
+Urun-spesifik kayit uygunlugu `evidence-model.md` §7'dedir. Ozet: kayit RAT ile
+ayni `claim_id` ve assessment ile ayni `idea_id`'ye aittir; `status=observed`,
+`observation_quality=direct`, `claim_relevance=direct`, `direction=supports`,
+`evidence_level` E3/E4, `source_type` `first_party` veya `experiment`'tir ve bos
+olmayan `source_ref` ya da `artifact_path` tasir. Bayrak, rakip URL'si, masa basi
+kaniti veya deney plani bu kosulu karsilamaz. Arketipe gore ek kosullar:
+
+- `consumer_subscription`: `retention` kategorisindeki bir RAT B+ olmali ve kendi
+  `product_specific_evidence_ids` listesinde uygun kayit bulunmali.
+- `marketplace_network`: `liquidity` kategorisindeki bir RAT B+ olmali ve kendi
+  `product_specific_evidence_ids` listesinde uygun kayit bulunmali.
+
+Portfoy yasam dongusu (`data/portfolio.json`) ve deney devri bu karara girdi
+degildir; `BUILD_SMALL` yalniz `assessment.json` ve `evidence.jsonl` uzerinden
+verilir.
 
 ### MVP sonrasi (`post_mvp`)
 
@@ -190,8 +228,13 @@ Standard/Deep'te top 5 rakip icin hedef 30, erisim sinirliysa minimum 15 yorum:
 - en az 5 adet 3 yildiz
 - en az 5 adet 4-5 yildiz
 
-Son 12 ay, app surumu ve storefront kaydedilir. Tema orani yalniz incelenen
-orneklem icin yazilir. Random sample yoksa pazar prevalansi iddia edilmez.
+Son 12 ay kaydedilir; `app` icin storefront ve app surumu da yazilir.
+`web_saas`/`service` urunlerinde ayni hedef ve tabakalar gecerlidir; storefront
+yerine yorum platformu, ulke/listing URL'si ve tarih yazilir. Ulasilamayan yildiz
+tabakasinin nasil kaydedilecegi ve urun turune gore kaynaklar
+`data-collection-protocol.md` icindedir. Tema orani yalniz incelenen orneklem icin
+yazilir. Random sample yoksa pazar prevalansi iddia edilmez. Quick'te stratified
+review mining yapilmaz.
 
 ## 9. Cross-Report Karsilastirma
 
@@ -204,4 +247,13 @@ Yalniz ayni metodoloji surumu icinde karsilastir:
 5. Kurucu/operasyon kisitlari
 
 Farkli arketip skorlarini tek basina siralama gerekcesi yapma; agirlik farklarini
-acikca goster.
+acikca goster. Urun turu farki karsilastirmayi engellemez; ayni arketip ayni
+agirliklarla puanlanir.
+
+Portfoy karsilastirmasinda yalniz `data/portfolio.json` icinde
+`lifecycle=active` olan kosular aktif aday sayilir; `superseded` kosu yerini alan
+kosuya, `archived` kosu tarihsel kayda isaret eder. Yasam dongusu arastirma
+durumunu, skoru veya karari degistirmez (`evidence-model.md` §11).
+`output/INDEX.md` scoreboard'u `portfolio_tool.py render` ile uretilir; tarihe
+gore yeniden eskiye, sonra klasor adina gore siralanir ve ciplak skorla siralama
+yapmaz.

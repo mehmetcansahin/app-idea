@@ -24,7 +24,8 @@ cevaplayabilir:
 - Baslik konu etiketi degil, degerlendirilen urundur: kullanici + is + urun turu +
   geo/platform. Ornek: "ABD'de kisi-arama sitelerinden adres ve telefon kaldirma:
   iPhone uygulamasi fikri". "Dijital ayak izi silme" gibi incelenen urunden genis
-  basliklar kullanilmaz.
+  basliklar kullanilmaz. Basliktaki urun turu `assessment.json` `product_type`
+  degeriyle uyusur: `app` uygulama, `web_saas` web urunu/SaaS, `service` hizmet.
 - Bolum 1 kullaniciyi, sorunu ve urun onerisini tam cumlelerle tarif eder.
 - `### Kapsam dışında kalanlar` zorunludur. Arastirilmayan ihtiyaclar burada
   listelenir; sonuc bunlara genellenmez.
@@ -184,7 +185,10 @@ iki duzeyli numara kullanilmaz.
 3. `### Belirsiz olan tam olarak ne?` — talep, teknik yapilabilirlik, karlilik ve
    kullanicinin bizi tercih etmesi ayri satirlarda
 4. `### Hangi yeni bilgi önerimizi değiştirebilir?`
-5. Varsa sonraki test: Faz 5.5 sozlesme alanlari sade Turkce tabloyla
+5. Varsa sonraki test: Faz 5.5 sozlesme alanlari sade Turkce tabloyla. Test
+   yapilmamissa plan olarak anlatilir; sonucu varmis gibi yazilmaz. Planda belliyse
+   deneyi yurutecek insan rolu ve on kosullar yazilir; belli degilse bu acikca
+   soylenir, sorumlu uydurulmaz.
 6. `### Bu projeyi hayata geçirmek mantıklı mı?` — dogrudan cevap
 
 ## 10. Rakip ve Pazar Anlatimi
@@ -205,13 +209,17 @@ Toplama adimlari `data-collection-protocol.md` icindedir. Raporda:
 - **Kanallar:** magaza aramasi ve anahtar kelimeler, web aramasi ve sonuc sayfasi
   sahipligi, ucretli reklam, satis ortakligi ve icerik ureticileri, topluluklar,
   yeni girenlerin sonucu; `Kanal | Kim hâkim? | Hâkimiyet | Yeni bir uygulama için
-  gerçekçi mi?` ozet tablosu.
+  gerçekçi mi?` ozet tablosu. `web_saas` ve `service` raporlarinda magaza aramasi
+  zorunlu degildir; web aramasi, dogrudan satis/LOI ve hizmet kanallari anlatilir.
+  Ozet tablonun sutun basliklari validator icin her urun turunde aynidir.
 
 ## 11. Validator Kontrolleri
 
 `python3 scripts/evidence_tool.py validate` `analysis_date` degeri **2026-10-20 ve
 sonrasi** olan raporlarda su kurallari uygular. Daha eski v4.0 raporlari geriye
-donuk kontrol edilmez; yeniden yazilirlarsa bu sozlesmeye uyulur.
+donuk kontrol edilmez; yeniden yazilirlarsa bu sozlesmeye uyulur. Tek istisna okur
+incelemesidir: Standard/Deep kosusunda `data/reader-review.md` varsa tarihten
+bagimsiz olarak asagidaki okur incelemesi kurallariyla kontrol edilir.
 
 Hata:
 
@@ -234,9 +242,15 @@ Hata:
 - Arastirma kaniti (Standard/Deep): `<prefix>-market-size` claim'li en az bir kayit
   ve `<prefix>-distribution` claim'inde en az bir web/video arama sonucu kaydi
   (Google, Bing, DuckDuckGo arama sayfasi veya YouTube sonuc sayfasi URL'si).
-- Okur incelemesi (Standard/Deep): `data/reader-review.md` var; 11 olcutun hepsi
-  `GEÇTİ`; `Açık` sorun yok; `Kabul edilmedi` sorunlarin gerekcesi var; en az 10
-  iddia kontrol edilmis ve hicbiri `Hayır` degil; `İnceleyen:` dolu (§13).
+- Okur incelemesi (Standard/Deep): 2026-10-20 ve sonrasi raporlarda
+  `data/reader-review.md` zorunludur; daha eski raporlarda yoksa hata olmaz, varsa
+  ayni kurallarla kontrol edilir. `İnceleyen:` dolu;
+  `- İncelenen revizyon: <hash>` satiri var ve guncel rapor/kanit revizyonuna esit;
+  11 olcutun hepsi `GEÇTİ`; `Açık` sorun yok; `Kabul edilmedi` sorunlarin gerekcesi
+  var; en az 10 benzersiz iddia kontrolu var ve hicbiri `Hayır` degil. Iddia ve yer
+  hucresi bos olamaz; tekrar eden kontrol hata verir ve sayilmaz; `Kanıt kaydı`
+  hucresi yalniz `evidence.jsonl`'de bulunan evidence ID'lerini tasir, kimliksiz
+  satir veya bilinmeyen kimlik hatadir (§13). Quick incelemesi kontrol edilmez.
 - `## Özet` var ve bolum sonuc kutulari ile `assessment.json` ile guncel (§14).
   Ozet disindaki kontroller yalniz yazarin yazdigi metne bakar; ozet karar ve firsat
   araligi kontrollerini karsilamaz.
@@ -264,21 +278,83 @@ Stil: `templates/report-pdf.css`.
 
 Rapor yazildiktan ve `validate` disindaki tum adimlar bittikten sonra, raporu
 yazmamis bir okur (ayri alt ajan veya kisi) raporu bu sozlesmeye gore inceler.
+Yazarin kendisi okur olamaz.
 
 1. Inceleyen once yalniz `REPORT.md`'yi okur; anlamak icin `data/` veya `phases/`
    acmaz. Iddia kontrolu icin `data/evidence.jsonl` acilir.
 2. Sonuc `templates/reader-review-template.md` bicimiyle `data/reader-review.md`
-   dosyasina yazilir: 11 olcut, bulunan sorunlar ve en az 10 iddia kontrolu.
-   Inceleyen sorunlari `Açık` durumuyla yazar ve rapora dokunmaz.
+   dosyasina yazilir: 11 olcut, bulunan sorunlar ve iddia kontrolu. Inceleyen
+   sorunlari `Açık` durumuyla yazar ve rapora dokunmaz.
 3. Yazar her sorunu duzeltir ve durumunu `Düzeltildi` yapar ya da gerekcesiyle
-   `Kabul edilmedi` yazar. `Hayır` iddialar duzeltilip `Düzeltildi` olur.
-4. Duzeltmeler `KALDI` olcutleri ortadan kaldiriyorsa olcut `GEÇTİ` yapilir ve
-   Not sutununa duzeltmenin yeri yazilir. Kapsamli degisiklikte inceleme yeniden
-   calistirilir.
-5. `validate` bu dosyayi §11'deki kurallarla kontrol eder; gecmeden rapor
+   `Kabul edilmedi` yazar. `Hayır` iddialar duzeltilip `Düzeltildi` olur. Yazar
+   `İncelenen revizyon` satirini yazmaz ve degistirmez.
+4. Ayni bagimsiz okur guncel `REPORT.md`'yi yeniden okur; duzeltmeleri ve iddia
+   kontrollerini guncel kanitla dogrular. Duzeltmeler `KALDI` olcutleri ortadan
+   kaldiriyorsa olcut `GEÇTİ` yapilir ve Not sutununa duzeltmenin yeri yazilir.
+5. Okur ancak bu kontrolden sonra incelemeyi guncel revizyona baglar (asagida).
+6. `validate` bu dosyayi §11'deki kurallarla kontrol eder; gecmeden rapor
    tamamlanmis sayilmaz.
 
-Quick Scan'de okur incelemesi istege baglidir.
+Var olan inceleme ile zorunlu inceleme ayridir: `data/reader-review.md`
+2026-10-20 ve sonrasi Standard/Deep raporlarda zorunludur. Daha eski bir
+Standard/Deep kosusunda dosya yoksa hata olmaz; dosya varsa tarihten bagimsiz
+olarak ayni kurallarla dogrulanir, boylece eski incelemede bulunan sorun veya
+eskimis revizyon sessizce gecmez.
+
+### Iddia kontrolu: 10 asgari, 12 hedef
+
+Okur Bolum 2-10'a yayilan 12 iddiayi hedefler; validator en az 10 benzersiz
+kontrol ister. Bir kontrolun kimligi normalize iddia metni ile normalize yerin
+ciftidir; normalizasyon Markdown vurgusunu, backtick'i, baglanti bicimini ve
+kacislari kaldirir, Turkce kurallariyla buyuk/kucuk harf farkini ve fazla
+boslugu yok sayar. Ayni kaynak farkli iddialari destekleyebildigi icin ayni
+evidence ID birden fazla satirda kullanilabilir; ayni iddia ve yerin tekrari ise
+hata verir ve sayilmaz. `Kanıt kaydı` hucresine yalniz evidence ID'leri (virgul,
+noktali virgul veya boslukla ayrilmis, istege bagli backtick) yazilir; aciklama
+`Uyuyor mu?` sutununa gider.
+
+### Inceleme revizyonu
+
+`- İncelenen revizyon: <hash>` satiri incelemeyi raporun ve kanitin belirli bir
+surumune baglar. Revizyon 64 karakterlik kucuk harfli SHA-256 degeridir
+(`scripts/evidence_tool.py` `report_revision`) ve su JSON'un UTF-8 baytlarindan
+hesaplanir (`ensure_ascii=False`, `sort_keys=True`, ayiricilar `,` ve `:`):
+
+- `report`: `REPORT.md`'nin yazar metni, su sirayla kanonik hale getirilir:
+  1. otomatik `## Özet` blogu cevresindeki bos satirlarla birlikte cikarilir,
+     yerine tek bos satir (`\n\n`) konur;
+  2. `\r\n` satir sonlari `\n` olur;
+  3. ilk `## Ek <Harf>` basligi varsa, ondan onceki metnin sonundaki bosluk ve
+     satir sonlari kirpilir ve baslikla arasina tam bir bos satir (`\n\n`) konur.
+     `render` Ozet'i eklerken bu boslugu ayni bicimde yeniden yazar; bu adim
+     sayesinde ilk `render` de sonrakiler de revizyonu degistirmez;
+  4. bas/son bosluk kirpilir.
+
+  Bunun disinda hicbir yerde bosluk normallestirilmez. Ozet ayrica tazelik
+  kontrolunden gecer (§14).
+- `evidence`: `data/evidence.jsonl` kayitlari, `evidence_id`'ye gore sirali.
+
+Guncel revizyonu yazdirmak icin:
+
+```bash
+python3 scripts/evidence_tool.py revision output/{tarih}-{konu}
+```
+
+Komut yalniz degeri yazdirir; `reader-review.md`'ye yazmaz ve incelemeyi
+onaylamaz. `REPORT.md` veya `evidence.jsonl` eksik ya da yapisal olarak
+gecersizse deger uretmez ve hata verir. `render` dahil hicbir komut incelemeyi
+onaylamaz veya revizyonu yeniden baglamaz. Degeri satira, guncel raporu okuyup
+duzeltmeleri ve iddialari kontrol etmis bagimsiz okur yazar.
+
+Yukaridaki kanonik adimlar disinda yazar metninde (bosluk dahil) veya
+`evidence.jsonl` kayitlarinda yapilan her degisiklik revizyonu degistirir. Satir
+eksikse veya eskimisse `validate` hata verir; inceleme guncel surum icin
+yenilenmeden rapor tamamlanmis sayilmaz. `render` ilk calismada da sonrakilerde
+de yalniz Ozet'i ve ilk ekten onceki boslugu yeniden yazar; bu incelemeyi
+bayatlatmaz.
+
+Quick Scan'de okur incelemesi istege baglidir; Quick'te `data/reader-review.md`
+varsa validator onu kontrol etmez.
 
 ## 14. Ozet (Otomatik)
 

@@ -1,6 +1,6 @@
 +# App Idea Research Agent v4.0
 
-> Mobil app fikirleri icin denetlenebilir pazar arastirmasi ve deney tasarimi.
+> Mobil app, web/SaaS ve hizmet fikirleri icin denetlenebilir pazar arastirmasi ve deney tasarimi.
 > Sistem bir fikri otomatik olarak "dogrulamaz"; kanit toplar, riskleri siralar ve
 > bir sonraki gercek davranis testini belirler.
 
@@ -18,7 +18,7 @@ Bu dosya workflow ozetidir; puanlama tablosunu kopyalamaz.
 
 ## Nasil Calisir
 
-1. Konu, segment, platform, geo ve karar asamasini netlestir.
+1. Konu, segment, `product_type` (`app`, `web_saas`, `service`), platform, geo ve karar asamasini netlestir.
 2. Research Contract Preflight ile birincil arketip ve risk modifier'larini sec.
 3. Moda uygun arastirmayi calistir; her kritik iddiayi evidence kaydina bagla.
 4. Arketip-bazli Firsat Cekiciligi low/base/high ve Kanit Gucu A-D hesapla.
@@ -27,11 +27,16 @@ Bu dosya workflow ozetidir; puanlama tablosunu kopyalamaz.
    kurallariyla, makine-okunur dosyalarla birlikte yaz.
 7. Standard/Deep: raporu yazmayan bir okura (ayri alt ajan veya kisi)
    `templates/reader-review-template.md` ile inceleme yaptir; sonuc
-   `data/reader-review.md`'ye yazilir, yazar her sorunu kapatir.
+   `data/reader-review.md`'ye yazilir. Okur en az 10 farkli iddiayi kontrol eder ve
+   incelemeyi rapor/kanit revizyonuna baglar; yazar her sorunu kapatir.
 8. `python3 scripts/evidence_tool.py render <output-dir>` ve sonra `validate` calistir;
    `render` ledger'i ve raporun sonundaki `## Özet` bolumunu otomatik uretir.
    Paylasim kopyasi gerekiyorsa `pdf` ile `REPORT.pdf` uret.
-9. `output/INDEX.md` scoreboard'unu guncelle.
+9. `data/portfolio.json` icinde yasam dongusu, varsa yerini alan rapor ve insan
+   deneyinin sorumlusu/on kosullari/sonraki adimini kaydet.
+   `python3 scripts/portfolio_tool.py render output` ve
+   `python3 scripts/portfolio_tool.py validate output` ile `output/INDEX.md`
+   scoreboard ve deney kuyrugunu uret; bu bolumleri elle tutma.
 
 Masa basi karar enum'lari: `ELENDIR`, `BELIRSIZ`, `TESTE_DEGER`,
 `TEST_ONCELIKLI`. Masa basi build/scale izni vermez.
@@ -58,6 +63,7 @@ output/{tarih}-{konu}/
 ├── REPORT.md
 └── data/
     ├── assessment.json
+    ├── portfolio.json
     ├── evidence.jsonl
     └── evidence-ledger.md
 ```
@@ -67,7 +73,7 @@ output/{tarih}-{konu}/
 Quick'e ek olarak:
 
 - top 10 rakip/ikame metadata ve sirket profili; bagimsiz basari olcumleri
-- top 5 icin stratified review mining
+- top 5 icin stratified review mining; urun turune uygun yorum/musteri orneklemi
 - pazar buyuklugu dagilimi (en az 3 yayinci + resmi dosya + davranis sayilari)
 - gelir/odeme, fiyat, ad/channel (top 5 rakip Meta/Google/TikTok, `ad_library`
   kayitlari + screenshot), organik kanal sahipligi (web/video aramasi,
@@ -88,7 +94,8 @@ Zorunlu `phases/`:
 06-prebuild-plan.md       # yalniz test/pivot/build adayiysa
 ```
 
-Standard insan deneyi yurutulmediyse `PREBUILD_PENDING` ile biter.
+Standard test adayiysa ve insan deneyi yurutulmediyse `PREBUILD_PENDING` kalir;
+`BELIRSIZ` ve `ELENDIR` kararlarinin kendi durumlari korunur.
 
 ### Deep
 
@@ -117,6 +124,8 @@ Brief, Faz 5.5 gecilmediyse kosullu taslaktir.
 - Ayni birincil raporu aktaran URL'leri bagimsiz kaynak sayma.
 - Rating yalniz `E2/supporting` proxy'dir; eleme gate'i degildir.
 - App rakibi yoksa manuel workflow, spreadsheet, web urunu ve hizmet ikamelerini ara.
+- Magaza/ASO gorevleri `app` icindir; web/SaaS ve hizmette ilgili satis, teslim ve
+  musteri kanallarini kullan; ilgisiz app gorevlerini `not_applicable` kaydet.
 - Bulunamayan veriyi `not_found_after_protocol` veya
   `structurally_unobservable` olarak kaydet; yokluk diye sunma.
 - AI persona/sentetik kullanici `E0`dir ve karar kaniti degildir.
@@ -160,6 +169,9 @@ degildir. Waitlist en fazla E1; gercek depozito/LOI E3; ucretli tekrarli urun
 davranisi E4'tur. Gorusmeler yuzde guven uretmez.
 
 `BUILD_SMALL` icin tum kosullar `scoring-model.md` karar matrisine uymali.
+RAT icindeki `product_specific_evidence_ids`, ayni iddia/urun icin dogrudan
+gozlenmis, destekleyici E3/E4 deney veya first-party kayitlarina baglanir;
+bir bayrak, rakip verisi veya yalniz URL gelistirme izni uretmez.
 Scope max 4 core ekran, 3 ana ozellik ve gerekiyorsa 1 paywall/upgrade ekranidir.
 
 ## Finans ve Post-Launch

@@ -1,17 +1,21 @@
 #!/usr/bin/env python3
 """Render, validate and print App Idea Research Agent v4.0 outputs.
 
-Validation uses only the Python standard library. JSON Schema files are the portable
-contract; this tool enforces the same required fields plus cross-file business rules
-and, for reports analysed on or after NARRATIVE_REPORT_FROM, the reader-facing report
-contract in methodology/report-writing.md. ``render`` also writes the report's
-generated ``## Özet`` section. The ``pdf`` command additionally needs pandoc and a
+Validation uses only the Python standard library. JSON Schema files in schemas/ are
+the portable contract: every evidence record and assessment is first checked against
+them (scripts/schema_validation.py) and only structurally valid data reaches the
+cross-file business rules, grades and decisions. Reports analysed on or after
+NARRATIVE_REPORT_FROM must also follow the reader-facing report contract in
+methodology/report-writing.md. ``render`` also writes the report's generated
+``## Özet`` section; ``revision`` prints the report revision an independent reader
+records in data/reader-review.md. The ``pdf`` command additionally needs pandoc and a
 Chromium-based browser.
 """
 
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -19,11 +23,16 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import unicodedata
 from dataclasses import dataclass, field
 from datetime import date, datetime
+from functools import lru_cache
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
 from urllib.parse import urlparse
+
+from portfolio_tool import validate_portfolio
+from schema_validation import Schema, format_errors, is_date, load_schema
 
 
 METHODOLOGY_VERSION = "4.0"
@@ -75,32 +84,6 @@ FATAL_CODES = {
     "PLATFORM_BLOCKED",
     "SAFETY_ETHICS_BLOCKED",
 }
-FATAL_STATUSES = {"clear", "blocked", "unknown"}
-EVIDENCE_LEVELS = set(LEVEL_VALUE)
-CLAIM_GRADES = set(GRADE_VALUE)
-AD_LIBRARY_LEVELS = {"E1", "E2"}
-OBSERVATION_QUALITIES = {"direct", "estimated", "inferred"}
-CLAIM_RELEVANCES = {"direct", "supporting", "weak"}
-DIRECTIONS = {"supports", "contradicts", "neutral"}
-EVIDENCE_STATUSES = {
-    "observed",
-    "not_found_after_protocol",
-    "structurally_unobservable",
-    "not_applicable",
-}
-SOURCE_TYPES = {
-    "official_primary",
-    "marketplace_primary",
-    "ad_library",
-    "first_party",
-    "third_party_estimate",
-    "community",
-    "interview",
-    "experiment",
-    "user_input",
-    "local_artifact",
-    "synthetic",
-}
 WEB_SOURCE_TYPES = {
     "official_primary",
     "marketplace_primary",
@@ -108,43 +91,10 @@ WEB_SOURCE_TYPES = {
     "third_party_estimate",
     "community",
 }
-MODES = {"quick", "standard", "deep", "compare"}
-STAGES = {"desk_research", "prebuild_validation", "post_mvp"}
-DECISIONS = {
-    "ELENDIR",
-    "BELIRSIZ",
-    "TESTE_DEGER",
-    "TEST_ONCELIKLI",
-    "KILL",
-    "PIVOT",
-    "BUILD_SMALL",
-    "TESTE_DEVAM",
-    "SCALE",
-    "ITERATE",
-    "STOP",
-}
-STATUSES = {
-    "DESK_RESEARCH_COMPLETE",
-    "PREBUILD_PENDING",
-    "PREBUILD_PASSED",
-    "BUILDING",
-    "POSTLAUNCH",
-    "KILLED",
-    "ARCHIVED",
-    "LEGACY",
-}
-RISK_CATEGORIES = {
-    "value",
-    "usability",
-    "technical_feasibility",
-    "business_viability",
-    "retention",
-    "distribution",
-    "regulation_safety",
-    "liquidity",
-}
-
-ID_RE = re.compile(r"^[a-z0-9][a-z0-9._-]*$")
+# Only the team's own observed behaviour proves something about this product; a
+# competitor page, estimate or interview quote does not (methodology/evidence-model.md).
+PRODUCT_EVIDENCE_SOURCE_TYPES = ("first_party", "experiment")
+PRODUCT_EVIDENCE_LEVELS = ("E3", "E4")
 
 ROOT = Path(__file__).resolve().parents[1]
 PDF_STYLESHEET = ROOT / "templates" / "report-pdf.css"
@@ -267,6 +217,14 @@ READER_REVIEW_CRITERIA = (
     "Başarı ölçütü",
 )
 MIN_REVIEWED_CLAIMS = 10
+# The reader records the report_revision of the report they actually read; any later
+# authored-text or evidence change makes the review stale (report-writing.md §13).
+REVIEW_REVISION_LINE_RE = re.compile(r"^- İncelenen revizyon:(.*)$", re.MULTILINE)
+REVISION_VALUE_RE = re.compile(r" [0-9a-f]{64}")
+# Claim-check identity ignores Markdown styling: [text](url) links, *, _, `, ~.
+REVIEW_LINK_RE = re.compile(r"\[([^\]]*)\]\([^)]*\)")
+REVIEW_MARKUP_RE = re.compile(r"[*_`~]+")
+REVIEW_EVIDENCE_SPLIT_RE = re.compile(r"[\s,;]+")
 TABLE_SEPARATOR_CELL_RE = re.compile(r":?-{3,}:?")
 UNESCAPED_PIPE_RE = re.compile(r"(?<!\\)\|")
 
@@ -291,20 +249,13 @@ class ValidationResult:
         self.warnings.extend(prefix + item for item in other.warnings)
 
 
-def is_iso_date(value: Any) -> bool:
-    if not isinstance(value, str):
-        return False
-    try:
-        date.fromisoformat(value)
-        return True
-    except ValueError:
-        return False
-
-
 def is_url(value: Any) -> bool:
     if not isinstance(value, str) or not value:
         return False
-    parsed = urlparse(value)
+    try:
+        parsed = urlparse(value)
+    except ValueError:
+        return False
     return parsed.scheme in {"http", "https"} and bool(parsed.netloc)
 
 
@@ -312,13 +263,69 @@ def round_score(value: float) -> int:
     return int(value + 0.5)
 
 
-def load_json(path: Path, result: ValidationResult) -> Optional[Dict[str, Any]]:
+class StrictJSONError(ValueError):
+    """Text ``json.loads`` would accept although it is not faithful JSON data."""
+
+
+def reject_constant(name: str) -> Any:
+    raise StrictJSONError(f"{name} is not valid JSON")
+
+
+def reject_duplicate_keys(pairs: List[Tuple[str, Any]]) -> Dict[str, Any]:
+    value: Dict[str, Any] = {}
+    for key, item in pairs:
+        if key in value:
+            raise StrictJSONError(f"duplicate key {key!r}")
+        value[key] = item
+    return value
+
+
+def reject_unpaired_surrogates(value: Any) -> None:
+    """JSON "\\ud800" escapes decode to text that cannot be written back as UTF-8."""
+    pending = [value]
+    while pending:
+        item = pending.pop()
+        if isinstance(item, list):
+            pending.extend(item)
+            continue
+        if isinstance(item, dict):
+            pending.extend(item.values())
+            strings: Iterable[str] = item.keys()
+        elif isinstance(item, str):
+            strings = (item,)
+        else:
+            continue
+        for text in strings:
+            try:
+                text.encode("utf-8")
+            except UnicodeEncodeError:
+                raise StrictJSONError("string contains an unpaired surrogate escape") from None
+
+
+def parse_json(text: str) -> Any:
+    """``json.loads`` that rejects NaN/Infinity, duplicate keys and unpaired surrogates."""
+    value = json.loads(text, parse_constant=reject_constant, object_pairs_hook=reject_duplicate_keys)
+    reject_unpaired_surrogates(value)
+    return value
+
+
+def read_text_file(path: Path, result: ValidationResult) -> Optional[str]:
     try:
-        value = json.loads(path.read_text(encoding="utf-8"))
+        return path.read_text(encoding="utf-8")
     except FileNotFoundError:
         result.error(f"missing file: {path}")
+    except (OSError, UnicodeDecodeError) as exc:
+        result.error(f"cannot read {path}: {exc}")
+    return None
+
+
+def load_json(path: Path, result: ValidationResult) -> Optional[Dict[str, Any]]:
+    text = read_text_file(path, result)
+    if text is None:
         return None
-    except json.JSONDecodeError as exc:
+    try:
+        value = parse_json(text)
+    except (ValueError, RecursionError) as exc:
         result.error(f"invalid JSON {path}: {exc}")
         return None
     if not isinstance(value, dict):
@@ -327,135 +334,104 @@ def load_json(path: Path, result: ValidationResult) -> Optional[Dict[str, Any]]:
     return value
 
 
+# load_jsonl tags each record with its line number. The tag is an internal trace,
+# not evidence data: schema validation, the ledger and report_revision ignore it.
+LINE_KEY = "__line__"
+
+
 def load_jsonl(path: Path, result: ValidationResult) -> List[Dict[str, Any]]:
     records: List[Dict[str, Any]] = []
-    try:
-        lines = path.read_text(encoding="utf-8").splitlines()
-    except FileNotFoundError:
-        result.error(f"missing file: {path}")
+    text = read_text_file(path, result)
+    if text is None:
         return records
-    for line_number, line in enumerate(lines, 1):
+    # Split on "\n" only: str.splitlines() also breaks on U+2028, U+0085 and other
+    # separators that JSON strings may contain unescaped.
+    for line_number, line in enumerate(text.split("\n"), 1):
         if not line.strip():
             continue
         try:
-            value = json.loads(line)
-        except json.JSONDecodeError as exc:
+            value = parse_json(line)
+        except (ValueError, RecursionError) as exc:
             result.error(f"invalid JSONL {path}:{line_number}: {exc}")
             continue
         if not isinstance(value, dict):
             result.error(f"JSONL record must be an object: {path}:{line_number}")
             continue
-        value["__line__"] = line_number
+        if LINE_KEY in value:
+            result.error(f"invalid JSONL {path}:{line_number}: {LINE_KEY} is reserved for the line trace")
+            continue
+        value[LINE_KEY] = line_number
         records.append(value)
     return records
 
 
-def validate_evidence_records(records: Sequence[Dict[str, Any]]) -> ValidationResult:
+def without_line(record: Dict[str, Any]) -> Dict[str, Any]:
+    return {key: value for key, value in record.items() if key != LINE_KEY}
+
+
+def record_line(record: Any, index: int) -> Any:
+    return record.get(LINE_KEY, index) if isinstance(record, dict) else index
+
+
+SCHEMA_DIR = ROOT / "schemas"
+EVIDENCE_SCHEMA = "evidence-record.schema.json"
+ASSESSMENT_SCHEMA = "assessment.schema.json"
+
+
+@lru_cache(maxsize=None)
+def contract_schema(name: str) -> Schema:
+    return load_schema(SCHEMA_DIR / name)
+
+
+def evidence_structure_errors(record: Any) -> List[Tuple[str, str]]:
+    """schemas/evidence-record.schema.json violations of one record (line trace excluded)."""
+    instance = without_line(record) if isinstance(record, dict) else record
+    return contract_schema(EVIDENCE_SCHEMA).errors(instance)
+
+
+def validate_assessment_structure(assessment: Any) -> ValidationResult:
+    """schemas/assessment.schema.json violations; nothing is computed from the data."""
     result = ValidationResult()
-    required = {
-        "evidence_id",
-        "claim_id",
-        "idea_id",
-        "phase",
-        "source_type",
-        "source_title",
-        "source_url",
-        "source_ref",
-        "artifact_path",
-        "independence_root",
-        "collected_at",
-        "data_period",
-        "geo",
-        "storefront",
-        "platform",
-        "status",
-        "observation",
-        "value",
-        "unit",
-        "evidence_level",
-        "observation_quality",
-        "claim_relevance",
-        "direction",
-        "sample_n",
-        "denominator",
-        "limitations",
-        "search_queries",
-        "attempted_sources",
-    }
+    result.errors.extend(
+        format_errors("assessment", contract_schema(ASSESSMENT_SCHEMA).errors(assessment))
+    )
+    return result
+
+
+def validate_evidence_records(records: Sequence[Any]) -> ValidationResult:
+    result = ValidationResult()
+    valid: List[Dict[str, Any]] = []
     seen: set = set()
     for index, record in enumerate(records, 1):
-        line = record.get("__line__", index)
-        label = f"evidence line {line}"
-        missing = sorted(required - set(record))
-        extra = sorted(set(record) - required - {"__line__"})
-        if missing:
-            result.error(f"{label}: missing fields: {', '.join(missing)}")
+        label = f"evidence line {record_line(record, index)}:"
+        structural = evidence_structure_errors(record)
+        if structural:
+            result.errors.extend(format_errors(label, structural))
             continue
-        if extra:
-            result.error(f"{label}: unknown fields: {', '.join(extra)}")
+        valid.append(record)
         evidence_id = record["evidence_id"]
-        if not isinstance(evidence_id, str) or not ID_RE.match(evidence_id):
-            result.error(f"{label}: invalid evidence_id")
-        elif evidence_id in seen:
-            result.error(f"{label}: duplicate evidence_id {evidence_id}")
+        if evidence_id in seen:
+            result.error(f"{label} duplicate evidence_id {evidence_id}")
         seen.add(evidence_id)
-        for key in ("claim_id", "idea_id"):
-            if not isinstance(record[key], str) or not ID_RE.match(record[key]):
-                result.error(f"{label}: invalid {key}")
-        if record["source_type"] not in SOURCE_TYPES:
-            result.error(f"{label}: invalid source_type {record['source_type']!r}")
-        if record["status"] not in EVIDENCE_STATUSES:
-            result.error(f"{label}: invalid status {record['status']!r}")
-        if record["evidence_level"] not in EVIDENCE_LEVELS:
-            result.error(f"{label}: invalid evidence_level")
-        if record["observation_quality"] not in OBSERVATION_QUALITIES:
-            result.error(f"{label}: invalid observation_quality")
-        if record["claim_relevance"] not in CLAIM_RELEVANCES:
-            result.error(f"{label}: invalid claim_relevance")
-        if record["direction"] not in DIRECTIONS:
-            result.error(f"{label}: invalid direction")
-        if not is_iso_date(record["collected_at"]):
-            result.error(f"{label}: collected_at must be YYYY-MM-DD")
-        else:
-            collected = date.fromisoformat(record["collected_at"])
-            age_days = (date.today() - collected).days
-            if age_days < -1:
-                result.error(f"{label}: collected_at cannot be in the future")
-            elif age_days > 183 and record["source_type"] in WEB_SOURCE_TYPES:
-                result.warn(f"{label}: time-sensitive web evidence is older than 6 months")
-        if not isinstance(record["source_title"], str) or not record["source_title"].strip():
-            result.error(f"{label}: source_title is required")
-        if not isinstance(record["independence_root"], str) or not record["independence_root"].strip():
-            result.error(f"{label}: independence_root is required")
-        if not isinstance(record["observation"], str) or not record["observation"].strip():
-            result.error(f"{label}: observation is required")
-        if record["source_type"] in WEB_SOURCE_TYPES and not is_url(record["source_url"]):
-            result.error(f"{label}: web evidence requires an http(s) source_url")
+        age_days = (date.today() - date.fromisoformat(record["collected_at"])).days
+        if age_days < -1:
+            result.error(f"{label} collected_at cannot be in the future")
+        elif age_days > 183 and record["source_type"] in WEB_SOURCE_TYPES:
+            result.warn(f"{label} time-sensitive web evidence is older than 6 months")
         if record["source_url"] is not None and not is_url(record["source_url"]):
-            result.error(f"{label}: source_url must be an http(s) URL or null")
-        if not any(record.get(key) for key in ("source_url", "source_ref", "artifact_path")):
-            result.error(f"{label}: source_url, source_ref or artifact_path is required")
-        if record["source_type"] == "synthetic" and record["evidence_level"] != "E0":
-            result.error(f"{label}: synthetic evidence must be E0")
-        if record["source_type"] == "ad_library":
-            if record["evidence_level"] not in AD_LIBRARY_LEVELS:
-                result.error(f"{label}: ad_library evidence must be E1 or E2")
-            if record["status"] == "observed" and record["artifact_path"] is None:
-                result.warn(
-                    f"{label}: observed ad_library evidence has no artifact_path; "
-                    "ad libraries only show live ads, save a screenshot"
-                )
-        if record["status"] == "not_found_after_protocol":
-            if not record["search_queries"] or not record["attempted_sources"]:
-                result.error(f"{label}: not_found_after_protocol requires searches and attempted sources")
-        if not isinstance(record["limitations"], list):
-            result.error(f"{label}: limitations must be an array")
-        if record["sample_n"] is not None:
-            if not isinstance(record["sample_n"], int) or record["sample_n"] < 0:
-                result.error(f"{label}: sample_n must be a non-negative integer or null")
-            elif record["sample_n"] > 0 and record["denominator"] is None:
-                result.warn(f"{label}: sample_n is set but denominator is missing")
-    for claim_id, claim_records in group_by_claim(records).items():
+            result.error(f"{label} source_url must be an http(s) URL or null")
+        if (
+            record["source_type"] == "ad_library"
+            and record["status"] == "observed"
+            and record["artifact_path"] is None
+        ):
+            result.warn(
+                f"{label} observed ad_library evidence has no artifact_path; "
+                "ad libraries only show live ads, save a screenshot"
+            )
+        if record["sample_n"] is not None and record["sample_n"] > 0 and record["denominator"] is None:
+            result.warn(f"{label} sample_n is set but denominator is missing")
+    for claim_id, claim_records in group_by_claim(valid).items():
         for root, base, split in grade_inflating_roots(claim_records):
             result.warn(
                 f"claim {claim_id}: root {root} spans multiple URLs that would grade "
@@ -464,10 +440,14 @@ def validate_evidence_records(records: Sequence[Dict[str, Any]]) -> ValidationRe
     return result
 
 
-def group_by_claim(records: Iterable[Dict[str, Any]]) -> Dict[str, List[Dict[str, Any]]]:
+def group_by_claim(records: Iterable[Any]) -> Dict[str, List[Dict[str, Any]]]:
+    """Records by claim_id; a record without a string claim_id groups under ""."""
     claims: Dict[str, List[Dict[str, Any]]] = {}
     for record in records:
-        claims.setdefault(record.get("claim_id", ""), []).append(record)
+        if not isinstance(record, dict):
+            continue
+        claim_id = record.get("claim_id")
+        claims.setdefault(claim_id if isinstance(claim_id, str) else "", []).append(record)
     return claims
 
 
@@ -621,75 +601,50 @@ def compute_opportunity(
     return scores
 
 
-def validate_assessment(
-    assessment: Dict[str, Any], records: Sequence[Dict[str, Any]]
-) -> ValidationResult:
-    result = ValidationResult()
-    required = {
-        "methodology_version",
-        "idea_id",
-        "analysis_date",
-        "mode",
-        "stage",
-        "target_segment",
-        "target_geos",
-        "primary_archetype",
-        "risk_modifiers",
-        "dimensions",
-        "opportunity",
-        "fatal_gates",
-        "riskiest_assumptions",
-        "overall_evidence_grade",
-        "decision",
-        "status",
-        "next_test",
-        "stopping_rule",
-        "post_mvp_result",
-    }
-    missing = sorted(required - set(assessment))
-    extra = sorted(set(assessment) - required)
-    if missing:
-        result.error(f"assessment missing fields: {', '.join(missing)}")
-        return result
-    if extra:
-        result.error(f"assessment has unknown fields: {', '.join(extra)}")
-    if assessment["methodology_version"] != METHODOLOGY_VERSION:
-        result.error("assessment methodology_version must be 4.0")
-    if not is_iso_date(assessment["analysis_date"]):
-        result.error("assessment analysis_date must be YYYY-MM-DD")
-    if assessment["mode"] not in MODES:
-        result.error("assessment mode is invalid")
-    if assessment["stage"] not in STAGES:
-        result.error("assessment stage is invalid")
-    archetype = assessment["primary_archetype"]
-    if archetype not in ARCHETYPE_WEIGHTS:
-        result.error("assessment primary_archetype is invalid")
-        return result
-    if assessment["decision"] not in DECISIONS:
-        result.error("assessment decision is invalid")
-    if assessment["status"] not in STATUSES:
-        result.error("assessment status is invalid")
-    if assessment["overall_evidence_grade"] not in CLAIM_GRADES:
-        result.error("assessment overall_evidence_grade is invalid")
-    if not isinstance(assessment["target_segment"], str) or not assessment["target_segment"].strip():
-        result.error("assessment target_segment is required")
-    if not isinstance(assessment["target_geos"], list) or not assessment["target_geos"]:
-        result.error("assessment target_geos requires at least one geo")
-    allowed_modifiers = {
-        "regulated",
-        "sensitive_data",
-        "ai_variable_cost",
-        "hardware_dependency",
-        "children",
-        "platform_dependency",
-    }
-    modifiers = assessment["risk_modifiers"]
-    if not isinstance(modifiers, list) or len(modifiers) != len(set(modifiers)):
-        result.error("assessment risk_modifiers must be a unique array")
-    elif any(modifier not in allowed_modifiers for modifier in modifiers):
-        result.error("assessment risk_modifiers contains an invalid modifier")
+def product_evidence_problems(record: Dict[str, Any], claim_id: str, idea_id: str) -> List[str]:
+    """Why ``record`` cannot attest product-specific behaviour for ``claim_id``; [] if it can.
 
-    evidence_ids = {record.get("evidence_id") for record in records}
+    Listing a record in a RAT's product_specific_evidence_ids is the attestation, so the
+    record itself must be the team's own observed, direct, supporting E3/E4 result for
+    that very claim and idea, traceable to a result reference or artifact.
+    """
+    problems: List[str] = []
+    expected = (
+        ("claim_id", claim_id),
+        ("idea_id", idea_id),
+        ("status", "observed"),
+        ("observation_quality", "direct"),
+        ("claim_relevance", "direct"),
+        ("direction", "supports"),
+    )
+    for key, wanted in expected:
+        if record[key] != wanted:
+            problems.append(f"{key} is {record[key]!r} (needs {wanted!r})")
+    if record["evidence_level"] not in PRODUCT_EVIDENCE_LEVELS:
+        problems.append(f"evidence_level is {record['evidence_level']!r} (needs E3 or E4)")
+    if record["source_type"] not in PRODUCT_EVIDENCE_SOURCE_TYPES:
+        problems.append(f"source_type is {record['source_type']!r} (needs first_party or experiment)")
+    if not any(
+        isinstance(record[key], str) and record[key].strip() for key in ("source_ref", "artifact_path")
+    ):
+        problems.append("source_ref or artifact_path is blank (needs the result reference or artifact)")
+    return problems
+
+
+def validate_assessment(assessment: Any, records: Sequence[Any]) -> ValidationResult:
+    """Schema structure first; business rules run only on structurally valid data."""
+    result = validate_assessment_structure(assessment)
+    if not result.ok:
+        return result
+    invalid_records = sum(1 for record in records if evidence_structure_errors(record))
+    if invalid_records:
+        result.error(
+            f"assessment cross-checks skipped: {invalid_records} evidence record(s) are structurally invalid"
+        )
+        return result
+
+    archetype = assessment["primary_archetype"]
+    evidence_by_id = {record["evidence_id"]: record for record in records}
     claim_groups = group_by_claim(records)
     computed_grades = {
         claim_id: compute_claim_grade(claim_records)
@@ -697,29 +652,12 @@ def validate_assessment(
     }
 
     dimensions = assessment["dimensions"]
-    if not isinstance(dimensions, dict):
-        result.error("assessment dimensions must be an object")
-        return result
     for key in ARCHETYPE_WEIGHTS[archetype]:
-        if key not in dimensions:
-            result.error(f"assessment missing dimension {key}")
-            continue
         dimension = dimensions[key]
         if dimension is None:
             continue
-        if not isinstance(dimension, dict):
-            result.error(f"dimension {key} must be object or null")
-            continue
-        if not all(name in dimension for name in ("low", "base", "high", "claim_ids")):
-            result.error(f"dimension {key} is incomplete")
-            continue
-        low, base, high = dimension["low"], dimension["base"], dimension["high"]
-        if not all(isinstance(value, int) and 1 <= value <= 5 for value in (low, base, high)):
-            result.error(f"dimension {key} scores must be integers 1..5")
-        elif not low <= base <= high:
+        if not dimension["low"] <= dimension["base"] <= dimension["high"]:
             result.error(f"dimension {key} must satisfy low <= base <= high")
-        if not dimension["claim_ids"]:
-            result.error(f"dimension {key} requires at least one claim_id")
         for claim_id in dimension["claim_ids"]:
             if claim_id not in claim_groups:
                 result.error(f"dimension {key} references unknown claim_id {claim_id}")
@@ -732,49 +670,51 @@ def validate_assessment(
         )
 
     gates = assessment["fatal_gates"]
-    if not isinstance(gates, list):
-        result.error("fatal_gates must be an array")
-        gates = []
-    codes = [gate.get("code") for gate in gates if isinstance(gate, dict)]
-    if set(codes) != FATAL_CODES or len(codes) != 4:
+    if {gate["code"] for gate in gates} != FATAL_CODES:
         result.error("fatal_gates must contain each v4 gate exactly once")
     for gate in gates:
-        if not isinstance(gate, dict):
-            result.error("fatal gate must be an object")
-            continue
-        if gate.get("status") not in FATAL_STATUSES:
-            result.error(f"fatal gate {gate.get('code')} has invalid status")
-        if not gate.get("evidence_ids"):
-            result.error(f"fatal gate {gate.get('code')} requires evidence_ids")
-        for evidence_id in gate.get("evidence_ids", []):
-            if evidence_id not in evidence_ids:
-                result.error(f"fatal gate {gate.get('code')} references unknown evidence {evidence_id}")
+        for evidence_id in gate["evidence_ids"]:
+            if evidence_id not in evidence_by_id:
+                result.error(f"fatal gate {gate['code']} references unknown evidence {evidence_id}")
 
+    idea_id = assessment["idea_id"]
     assumptions = assessment["riskiest_assumptions"]
-    if not isinstance(assumptions, list):
-        result.error("riskiest_assumptions must be an array")
-        assumptions = []
+    # Per RAT: does it link at least one eligible product-specific record?
+    product_ready: List[bool] = []
     for assumption in assumptions:
-        claim_id = assumption.get("claim_id")
+        claim_id = assumption["claim_id"]
         if claim_id not in claim_groups:
             result.error(f"RAT references unknown claim_id {claim_id}")
-        if assumption.get("category") not in RISK_CATEGORIES:
-            result.error(f"RAT {claim_id} has invalid category")
-        if assumption.get("claim_grade") not in CLAIM_GRADES:
-            result.error(f"RAT {claim_id} has invalid claim_grade")
         expected_grade = computed_grades.get(claim_id, "D")
-        if assumption.get("claim_grade") != expected_grade:
+        if assumption["claim_grade"] != expected_grade:
             result.error(
-                f"RAT {claim_id} grade {assumption.get('claim_grade')} does not match evidence grade {expected_grade}"
+                f"RAT {claim_id} grade {assumption['claim_grade']} does not match evidence grade {expected_grade}"
             )
+        eligible = 0
+        for evidence_id in assumption["product_specific_evidence_ids"]:
+            record = evidence_by_id.get(evidence_id)
+            if record is None:
+                result.error(
+                    f"RAT {claim_id} product_specific_evidence_ids cites unknown evidence {evidence_id}"
+                )
+                continue
+            problems = product_evidence_problems(record, claim_id, idea_id)
+            if problems:
+                result.error(
+                    f"RAT {claim_id} product-specific evidence {evidence_id} is not eligible: "
+                    + "; ".join(problems)
+                )
+            else:
+                eligible += 1
+        product_ready.append(eligible > 0)
     overall = expected_overall_grade(assumptions, computed_grades)
     if assessment["overall_evidence_grade"] != overall:
         result.error(
             f"overall_evidence_grade must be minimum of top three RAT claims: expected {overall}"
         )
 
-    blocked = any(gate.get("status") == "blocked" for gate in gates if isinstance(gate, dict))
-    unknown = any(gate.get("status") == "unknown" for gate in gates if isinstance(gate, dict))
+    blocked = any(gate["status"] == "blocked" for gate in gates)
+    unknown = any(gate["status"] == "unknown" for gate in gates)
     decision = assessment["decision"]
     stage = assessment["stage"]
     opportunity = expected_opportunity
@@ -824,30 +764,29 @@ def validate_assessment(
                 reverse=True,
             )[:1]
             top_grade_ok = bool(top) and top[0].get("claim_grade") in {"A", "B"}
-            behavior_ok = any(item.get("product_specific_behavior") for item in assumptions)
             if blocked or unknown:
                 result.error("BUILD_SMALL cannot have blocked/unknown fatal gates")
             if opportunity is None or opportunity["low"] < 60:
                 result.error("BUILD_SMALL requires opportunity.low >= 60")
             if grade not in {"A", "B"} or not top_grade_ok:
                 result.error("BUILD_SMALL requires overall and top RAT grade B+")
-            if not behavior_ok:
-                result.error("BUILD_SMALL requires product-specific behavior")
+            if not any(product_ready):
+                result.error(
+                    "BUILD_SMALL requires product-specific evidence: list at least one observed, "
+                    "direct, supporting E3/E4 first_party or experiment record of the RAT's own "
+                    "claim in product_specific_evidence_ids"
+                )
             if archetype == "consumer_subscription":
                 retention_ready = any(
-                    item.get("category") == "retention"
-                    and item.get("claim_grade") in {"A", "B"}
-                    and item.get("product_specific_behavior")
-                    for item in assumptions
+                    item["category"] == "retention" and item["claim_grade"] in {"A", "B"} and ready
+                    for item, ready in zip(assumptions, product_ready)
                 )
                 if not retention_ready:
                     result.error("subscription BUILD_SMALL requires product-specific retention evidence B+")
             if archetype == "marketplace_network":
                 liquidity_ready = any(
-                    item.get("category") == "liquidity"
-                    and item.get("claim_grade") in {"A", "B"}
-                    and item.get("product_specific_behavior")
-                    for item in assumptions
+                    item["category"] == "liquidity" and item["claim_grade"] in {"A", "B"} and ready
+                    for item, ready in zip(assumptions, product_ready)
                 )
                 if not liquidity_ready:
                     result.error("marketplace BUILD_SMALL requires product-specific liquidity evidence B+")
@@ -856,33 +795,30 @@ def validate_assessment(
             result.error("post_mvp decision must be SCALE, ITERATE or STOP")
         if blocked and decision != "STOP":
             result.error("blocked fatal gate requires STOP at post_mvp stage")
-        post = assessment.get("post_mvp_result")
-        if not isinstance(post, dict):
-            result.error("post_mvp stage requires post_mvp_result")
-        elif decision == "SCALE":
+        # The schema guarantees post_mvp_result is an object at this stage, null before.
+        post = assessment["post_mvp_result"]
+        if decision == "SCALE":
             if (
-                post.get("consecutive_passing_cohorts", 0) < 2
-                or not post.get("value_activation_passed")
-                or not post.get("retention_passed")
-                or not post.get("economics_passed")
-                or post.get("remaining_failed_metrics") != 0
+                post["consecutive_passing_cohorts"] < 2
+                or not post["value_activation_passed"]
+                or not post["retention_passed"]
+                or not post["economics_passed"]
+                or post["remaining_failed_metrics"] != 0
             ):
                 result.error("SCALE requires two passing cohorts and all core thresholds")
         elif decision == "ITERATE":
             if (
-                not post.get("value_activation_passed")
-                or post.get("remaining_failed_metrics") != 1
-                or post.get("consecutive_value_or_retention_failures", 0) >= 2
+                not post["value_activation_passed"]
+                or post["remaining_failed_metrics"] != 1
+                or post["consecutive_value_or_retention_failures"] >= 2
             ):
                 result.error("ITERATE requires value pass, one failed metric, and no two-cohort stop condition")
         elif decision == "STOP" and not blocked:
             if (
-                post.get("consecutive_value_or_retention_failures", 0) < 2
-                and post.get("value_activation_passed")
+                post["consecutive_value_or_retention_failures"] < 2
+                and post["value_activation_passed"]
             ):
                 result.error("STOP requires a fatal gate, value failure, or two value/retention failures")
-    if stage != "post_mvp" and assessment.get("post_mvp_result") is not None:
-        result.error("post_mvp_result must be null before post_mvp stage")
 
     allowed_status = {
         "ELENDIR": {"KILLED"},
@@ -908,8 +844,21 @@ def markdown_escape(value: Any) -> str:
     return str(value).replace("|", "\\|").replace("\n", " ").strip()
 
 
-def render_ledger(records: Sequence[Dict[str, Any]]) -> str:
-    ordered = sorted(records, key=lambda item: (item.get("claim_id", ""), item.get("evidence_id", "")))
+def ledger_text(value: Any) -> str:
+    """Text of any JSON value; strings verbatim, null as empty, others as JSON."""
+    if isinstance(value, str):
+        return value
+    if value is None:
+        return ""
+    return json.dumps(value, ensure_ascii=False, sort_keys=True)
+
+
+def render_ledger(records: Sequence[Any]) -> str:
+    """Deterministic ledger; never fails on malformed records (validation reports those)."""
+    rows = [record for record in records if isinstance(record, dict)]
+    ordered = sorted(
+        rows, key=lambda item: (ledger_text(item.get("claim_id")), ledger_text(item.get("evidence_id")))
+    )
     lines = [
         "# Kanit Defteri",
         "",
@@ -930,7 +879,11 @@ def render_ledger(records: Sequence[Dict[str, Any]]) -> str:
             for value in (record.get("geo"), record.get("storefront"), record.get("platform"))
             if value
         ) or "—"
-        limitations = "; ".join(record.get("limitations") or []) or "—"
+        raw_limitations = record.get("limitations") or []
+        if isinstance(raw_limitations, list):
+            limitations = "; ".join(ledger_text(item) for item in raw_limitations) or "—"
+        else:
+            limitations = ledger_text(raw_limitations)
         lines.append(
             "| {evidence} | {claim} | {level} | {direction} | {observation} | {source} | {context} | {limitations} |".format(
                 evidence=markdown_escape(record.get("evidence_id")),
@@ -974,7 +927,7 @@ def required_phase_files(mode: str, decision: str) -> List[str]:
 
 def narrative_report_required(assessment: Dict[str, Any]) -> bool:
     value = assessment.get("analysis_date")
-    if not is_iso_date(value):
+    if not is_date(value):
         return False
     return date.fromisoformat(value) >= NARRATIVE_REPORT_FROM
 
@@ -1017,11 +970,15 @@ def without_urls(text: str) -> str:
     return BARE_URL_RE.sub(" ", text)
 
 
-def known_evidence_urls(records: Sequence[Dict[str, Any]]) -> set:
+def known_evidence_urls(records: Sequence[Any]) -> set:
     urls: set = set()
     for record in records:
+        if not isinstance(record, dict):
+            continue
         values = [record.get("source_url"), record.get("source_ref")]
-        values.extend(record.get("attempted_sources") or [])
+        attempted = record.get("attempted_sources")
+        if isinstance(attempted, list):
+            values.extend(attempted)
         for value in values:
             if isinstance(value, str):
                 urls.update(BARE_URL_RE.findall(value))
@@ -1155,7 +1112,8 @@ def build_report_summary(report: str, assessment: Dict[str, Any]) -> Optional[st
     opportunity = assessment.get("opportunity")
     if isinstance(opportunity, dict):
         bounds = " / ".join(str(opportunity.get(bound)) for bound in ("low", "base", "high"))
-        label = OPPORTUNITY_CLASS_NAMES.get(opportunity.get("classification"), "")
+        classification = opportunity.get("classification")
+        label = OPPORTUNITY_CLASS_NAMES.get(classification, "") if isinstance(classification, str) else ""
         score = f"Fırsat Çekiciliği {bounds} (kötümser / temel / iyimser, 20–100 ölçeğinde"
         score += f"; {label})" if label else ")"
     else:
@@ -1287,14 +1245,79 @@ def review_cell(row: Sequence[str], index: int) -> str:
     return row[index].strip() if index < len(row) else ""
 
 
-def validate_reader_review(text: str, records: Sequence[Dict[str, Any]]) -> ValidationResult:
-    """Independent reader review in data/reader-review.md (report-writing.md §13)."""
+def report_revision(report: str, records: Sequence[Dict[str, Any]]) -> str:
+    """SHA-256 of what an independent reader reviews: authored REPORT.md text plus evidence.
+
+    The generated '## Özet' is excluded because validate_report_summary keeps it fresh
+    separately, and the whitespace gap before the first appendix is canonicalized exactly
+    as with_report_summary rewrites it (head rstripped, one blank line), so neither the
+    first nor any later render invalidates a review. Beyond that gap, CRLF line endings
+    and leading/trailing whitespace, any change to the authored report text (whitespace
+    included) or to data/evidence.jsonl does. The internal line trace is not evidence.
+    """
+    authored = without_report_summary(report).replace("\r\n", "\n")
+    appendix = APPENDIX_RE.search(authored)
+    if appendix:
+        authored = authored[: appendix.start()].rstrip() + "\n\n" + authored[appendix.start() :]
+    payload = {
+        "report": authored.strip(),
+        "evidence": sorted(
+            (without_line(record) for record in records),
+            key=lambda record: ledger_text(record.get("evidence_id")),
+        ),
+    }
+    text = json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(text.encode("utf-8", "surrogatepass")).hexdigest()
+
+
+def review_identity_text(cell: str) -> str:
+    """A claim-check cell reduced to its identity: no Markdown styling, case or spacing."""
+    text = unicodedata.normalize("NFKC", cell)
+    text = REVIEW_LINK_RE.sub(r"\1", text).replace("\\", "")
+    text = REVIEW_MARKUP_RE.sub("", text)
+    # Turkish-aware casefold: İ/I/ı/i are one letter here (casefold("İ") is "i̇").
+    text = text.casefold().replace("\u0307", "").replace("ı", "i")
+    return " ".join(text.split())
+
+
+def review_evidence_ids(cell: str) -> List[str]:
+    """Evidence IDs listed in a 'Kanıt kaydı' cell (comma/semicolon/space separated)."""
+    return [token for token in REVIEW_EVIDENCE_SPLIT_RE.split(cell.replace("`", " ")) if token]
+
+
+def validate_reader_review(
+    text: str, records: Sequence[Dict[str, Any]], report: str
+) -> ValidationResult:
+    """Independent reader review in data/reader-review.md (report-writing.md §13).
+
+    ``report`` is the current REPORT.md text; the review must name its revision.
+    """
     result = ValidationResult()
     text = HTML_COMMENT_RE.sub("", text)
     label = READER_REVIEW_PATH.as_posix()
     reviewer = re.search(r"^- İnceleyen:[ \t]*(.*)$", text, re.MULTILINE)
     if not reviewer or not reviewer.group(1).strip() or reviewer.group(1).lstrip().startswith("["):
         result.error(f"{label} does not name the reviewer ('- İnceleyen:')")
+
+    revisions = REVIEW_REVISION_LINE_RE.findall(text)
+    if not revisions:
+        result.error(
+            f"{label} has no '- İncelenen revizyon: <hash>' line; the independent reader "
+            "records the `evidence_tool.py revision` output of the report they actually read"
+        )
+    elif len(revisions) > 1:
+        result.error(f"{label} has {len(revisions)} '- İncelenen revizyon:' lines; keep exactly one")
+    elif not REVISION_VALUE_RE.fullmatch(revisions[0]):
+        result.error(
+            f"{label}: '- İncelenen revizyon:' must be followed by one space and the "
+            "64-character lowercase revision hash"
+        )
+    elif revisions[0][1:] != report_revision(report, records):
+        result.error(
+            f"{label}: İncelenen revizyon is stale; REPORT.md or data/evidence.jsonl changed "
+            "after the review. The independent reader must re-read the report and re-check "
+            "the claims before recording the new revision"
+        )
 
     headings = report_headings(text)
 
@@ -1340,22 +1363,45 @@ def validate_reader_review(text: str, records: Sequence[Dict[str, Any]]) -> Vali
 
     claims_block = section("İddia kontrolü")
     if claims_block is not None:
-        claims = markdown_table_rows(claims_block)
-        if len(claims) < MIN_REVIEWED_CLAIMS:
-            result.error(
-                f"{label} checks {len(claims)} claim(s); at least {MIN_REVIEWED_CLAIMS} required"
-            )
         evidence_ids = {
-            record["evidence_id"] for record in records if isinstance(record.get("evidence_id"), str)
+            record["evidence_id"]
+            for record in records
+            if isinstance(record, dict) and isinstance(record.get("evidence_id"), str)
         }
-        for index, row in enumerate(claims, start=1):
+        # One claim check = one claim at one place; the same source may back several claims.
+        first_check: Dict[Tuple[str, str], int] = {}
+        for index, row in enumerate(markdown_table_rows(claims_block), start=1):
             verdict = review_cell(row, 3).casefold()
             if verdict.startswith("hayır"):
                 result.error(f"{label}: claim check {index} does not match its evidence")
             elif not (verdict.startswith("evet") or verdict.startswith("düzeltildi")):
                 result.error(f"{label}: claim check {index} needs Evet, Düzeltildi or Hayır")
-            if not evidence_ids.intersection(SLUG_TOKEN_RE.findall(review_cell(row, 2))):
-                result.warn(f"{label}: claim check {index} cites no known evidence_id")
+            cited = review_evidence_ids(review_cell(row, 2))
+            unknown = [evidence_id for evidence_id in cited if evidence_id not in evidence_ids]
+            if not cited:
+                result.error(f"{label}: claim check {index} cites no evidence_id")
+            elif unknown:
+                result.error(
+                    f"{label}: claim check {index} cites unknown evidence_id(s): {', '.join(unknown)}"
+                )
+            identity = (
+                review_identity_text(review_cell(row, 0)),
+                review_identity_text(review_cell(row, 1)),
+            )
+            if not all(identity):
+                result.error(f"{label}: claim check {index} needs claim text and location")
+            elif identity in first_check:
+                result.error(
+                    f"{label}: claim check {index} repeats claim check {first_check[identity]} "
+                    "(same claim and location)"
+                )
+            else:
+                first_check[identity] = index
+        if len(first_check) < MIN_REVIEWED_CLAIMS:
+            result.error(
+                f"{label} checks {len(first_check)} unique claim(s); "
+                f"at least {MIN_REVIEWED_CLAIMS} required"
+            )
     return result
 
 
@@ -1365,27 +1411,31 @@ def validate_output(output_dir: Path) -> ValidationResult:
     evidence_path = output_dir / "data" / "evidence.jsonl"
     assessment_path = output_dir / "data" / "assessment.json"
     ledger_path = output_dir / "data" / "evidence-ledger.md"
-    records = load_jsonl(evidence_path, result)
+    evidence_load = ValidationResult()
+    records = load_jsonl(evidence_path, evidence_load)
+    result.merge(evidence_load)
     result.merge(validate_evidence_records(records))
     assessment = load_json(assessment_path, result)
     if assessment is not None:
-        result.merge(validate_assessment(assessment, records))
-    if not ledger_path.exists():
-        result.error(f"missing file: {ledger_path}")
-    else:
-        expected_ledger = render_ledger(records)
-        actual_ledger = ledger_path.read_text(encoding="utf-8")
-        if actual_ledger != expected_ledger:
-            result.error("evidence-ledger.md is not in sync; run evidence_tool.py render")
-    if not report_path.exists():
-        result.error(f"missing file: {report_path}")
-    elif assessment is not None:
-        report = report_path.read_text(encoding="utf-8")
+        structure = validate_assessment_structure(assessment)
+        if not structure.ok:
+            # Nothing below can be judged from a structurally invalid assessment.
+            result.merge(structure)
+            assessment = None
+        elif not evidence_load.ok:
+            result.error("assessment cross-checks skipped: data/evidence.jsonl did not load cleanly")
+        else:
+            result.merge(validate_assessment(assessment, records))
+    actual_ledger = read_text_file(ledger_path, result)
+    if actual_ledger is not None and actual_ledger != render_ledger(records):
+        result.error("evidence-ledger.md is not in sync; run evidence_tool.py render")
+    report = read_text_file(report_path, result)
+    if report is not None and assessment is not None:
         authored = without_report_summary(report)
-        decision = assessment.get("decision")
+        decision = assessment["decision"]
         if "v4.0" not in authored:
             result.error("REPORT.md must identify methodology v4.0")
-        if isinstance(decision, str) and decision not in authored:
+        if decision not in authored:
             result.error("REPORT.md decision does not match assessment.json")
         if "data/evidence-ledger.md" not in report:
             result.error("REPORT.md must link data/evidence-ledger.md")
@@ -1394,22 +1444,23 @@ def validate_output(output_dir: Path) -> ValidationResult:
         if narrative_report_required(assessment):
             result.merge(validate_report_narrative(report, assessment, records))
             result.merge(validate_report_research(report, assessment, records))
-            if assessment.get("mode") in RESEARCH_MODES:
-                review_path = output_dir / READER_REVIEW_PATH
-                if not review_path.exists():
-                    result.error(
-                        f"{assessment.get('mode')} mode requires {READER_REVIEW_PATH.as_posix()} "
-                        "(methodology/report-writing.md §13)"
-                    )
-                else:
-                    result.merge(
-                        validate_reader_review(review_path.read_text(encoding="utf-8"), records)
-                    )
+        if assessment["mode"] in RESEARCH_MODES:
+            # A Standard/Deep review is required from the narrative cutoff on; one that
+            # exists is always judged, so an older voluntary review cannot pass stale.
+            review_path = output_dir / READER_REVIEW_PATH
+            if review_path.exists():
+                review = read_text_file(review_path, result)
+                if review is not None:
+                    result.merge(validate_reader_review(review, records, report))
+            elif narrative_report_required(assessment):
+                result.error(
+                    f"{assessment['mode']} mode requires {READER_REVIEW_PATH.as_posix()} "
+                    "(methodology/report-writing.md §13)"
+                )
     if assessment is not None:
-        # An incomplete assessment is already reported by validate_assessment.
-        mode = assessment.get("mode")
+        mode = assessment["mode"]
         phases = output_dir / "phases"
-        for name in required_phase_files(mode, assessment.get("decision")):
+        for name in required_phase_files(mode, assessment["decision"]):
             if not (phases / name).exists():
                 result.error(f"missing phase file for {mode}: phases/{name}")
         if mode == "deep" and not (output_dir / "data" / "raw-search-results.md").exists():
@@ -1427,6 +1478,10 @@ def print_result(label: str, result: ValidationResult) -> None:
 
 
 def command_render(output_dir: Path) -> int:
+    """Write the ledger and the generated '## Özet'.
+
+    Never touches data/reader-review.md: only an independent reader records a revision.
+    """
     result = ValidationResult()
     records = load_jsonl(output_dir / "data" / "evidence.jsonl", result)
     result.merge(validate_evidence_records(records))
@@ -1438,13 +1493,35 @@ def command_render(output_dir: Path) -> int:
     ledger_path.write_text(render_ledger(records), encoding="utf-8")
     print(f"WROTE {ledger_path}")
     report_path = output_dir / "REPORT.md"
-    assessment = load_json(output_dir / "data" / "assessment.json", ValidationResult())
-    if report_path.exists() and isinstance(assessment, dict):
-        report = report_path.read_text(encoding="utf-8")
-        updated = with_report_summary(report, assessment)
-        if updated is not None and updated != report:
-            report_path.write_text(updated, encoding="utf-8")
-            print(f"WROTE {report_path} (## Özet)")
+    assessment_path = output_dir / "data" / "assessment.json"
+    if not report_path.exists() or not assessment_path.exists():
+        return 0
+    summary_inputs = ValidationResult()
+    assessment = load_json(assessment_path, summary_inputs)
+    if assessment is not None:
+        summary_inputs.merge(validate_assessment_structure(assessment))
+    report = read_text_file(report_path, summary_inputs)
+    if not summary_inputs.ok or assessment is None or report is None:
+        print_result(str(output_dir), summary_inputs)
+        print("REPORT.md '## Özet' not written: fix the errors first")
+        return 1
+    updated = with_report_summary(report, assessment)
+    if updated is not None and updated != report:
+        report_path.write_text(updated, encoding="utf-8")
+        print(f"WROTE {report_path} (## Özet)")
+    return 0
+
+
+def command_revision(output_dir: Path) -> int:
+    """Print the current report_revision. Read-only: it never edits data/reader-review.md."""
+    result = ValidationResult()
+    records = load_jsonl(output_dir / "data" / "evidence.jsonl", result)
+    result.merge(validate_evidence_records(records))
+    report = read_text_file(output_dir / "REPORT.md", result)
+    if not result.ok or report is None:
+        print_result(str(output_dir), result)
+        return 1
+    print(report_revision(report, records))
     return 0
 
 
@@ -1541,6 +1618,9 @@ def classify_output(output_dir: Path) -> str:
 
 
 def command_validate_all(output_root: Path, skip_legacy: bool) -> int:
+    if not output_root.is_dir():
+        print(f"ERROR output root not found: {output_root}")
+        return 1
     failed = False
     found = False
     for output_dir in sorted(path for path in output_root.iterdir() if path.is_dir()):
@@ -1560,6 +1640,14 @@ def command_validate_all(output_root: Path, skip_legacy: bool) -> int:
         failed = failed or not result.ok
     if not found and not skip_legacy:
         print(f"WARN no output directories found under {output_root}")
+    # A portfolio root (one with INDEX.md) also carries data/portfolio.json per v4 run
+    # and generated INDEX regions; standalone fixture roots have neither.
+    index_path = output_root / "INDEX.md"
+    if index_path.exists():
+        errors, warnings = validate_portfolio(output_root)
+        portfolio = ValidationResult(errors=list(errors), warnings=list(warnings))
+        print_result(f"{index_path} (portfolio)", portfolio)
+        failed = failed or not portfolio.ok
     return 1 if failed else 0
 
 
@@ -1572,6 +1660,11 @@ def build_parser() -> argparse.ArgumentParser:
     render_parser.add_argument("output_dir", type=Path)
     validate_parser = subparsers.add_parser("validate", help="validate one v4 output directory")
     validate_parser.add_argument("output_dir", type=Path)
+    revision_parser = subparsers.add_parser(
+        "revision",
+        help="print the REPORT.md + evidence revision an independent reader records after reviewing",
+    )
+    revision_parser.add_argument("output_dir", type=Path)
     all_parser = subparsers.add_parser("validate-all", help="validate all output directories")
     all_parser.add_argument("output_root", type=Path, nargs="?", default=Path("output"))
     all_parser.add_argument("--skip-legacy", action="store_true")
@@ -1595,6 +1688,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         return 0 if result.ok else 1
     if args.command == "validate-all":
         return command_validate_all(args.output_root, args.skip_legacy)
+    if args.command == "revision":
+        return command_revision(args.output_dir)
     if args.command == "pdf":
         return command_pdf(args.output_dir, args.browser)
     return 2

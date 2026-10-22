@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://app-idea.local/schemas/portfolio-entry.schema.json",
+  "title": "App Idea Research Portfolio Entry",
+  "description": "data/portfolio.json of one v4 run: portfolio lifecycle and human experiment handoff. It never changes the research status, scores, evidence grade or decision in data/assessment.json and never authorizes BUILD_SMALL. Cross-file rules are enforced by scripts/portfolio_tool.py: superseded_by names another existing v4 run directory under the output root without cycles; plan_path is an existing file inside the run directory; every result_evidence_ids entry is an observed record of the same idea in data/evidence.jsonl, and for state completed a first_party or experiment record with a nonblank source_ref or artifact_path.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["title", "lifecycle", "superseded_by", "reason", "handoff"],
+  "properties": {
+    "title": {"$ref": "#/$defs/nonblank"},
+    "lifecycle": {"enum": ["active", "archived", "superseded"]},
+    "superseded_by": {
+      "description": "Basename of the replacing run directory under the output root; never a path.",
+      "type": ["string", "null"],
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "reason": {"type": ["string", "null"]},
+    "handoff": {
+      "oneOf": [
+        {"type": "null"},
+        {"$ref": "#/$defs/handoff"}
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"lifecycle": {"const": "active"}}},
+      "then": {"properties": {"superseded_by": {"type": "null"}}}
+    },
+    {
+      "if": {"properties": {"lifecycle": {"const": "archived"}}},
+      "then": {
+        "properties": {
+          "superseded_by": {"type": "null"},
+          "reason": {"$ref": "#/$defs/nonblank"}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"lifecycle": {"const": "superseded"}}},
+      "then": {
+        "properties": {
+          "superseded_by": {"type": "string"},
+          "reason": {"$ref": "#/$defs/nonblank"}
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "nonblank": {"type": "string", "pattern": "\\S"},
+    "handoff": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["owner", "state", "prerequisites", "next_action", "plan_path", "result_evidence_ids"],
+      "properties": {
+        "owner": {
+          "description": "Human role named in the existing plan (an annotation such as ' (atanmadı)' may follow); never an invented identity.",
+          "$ref": "#/$defs/nonblank"
+        },
+        "state": {"enum": ["blocked", "ready", "in_progress", "completed", "not_planned"]},
+        "prerequisites": {"type": "array", "items": {"$ref": "#/$defs/nonblank"}},
+        "next_action": {"$ref": "#/$defs/nonblank"},
+        "plan_path": {
+          "description": "Plan file relative to the run directory, e.g. phases/06-prebuild-plan.md, or null when no plan exists.",
+          "type": ["string", "null"],
+          "pattern": "^(?!\\.{1,2}(?:/|$))[^/\\\\]+(?:/(?!\\.{1,2}(?:/|$))[^/\\\\]+)*$"
+        },
+        "result_evidence_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/nonblank"}
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"state": {"const": "blocked"}}},
+          "then": {"properties": {"prerequisites": {"minItems": 1}}}
+        },
+        {
+          "if": {"properties": {"state": {"const": "completed"}}},
+          "then": {"properties": {"result_evidence_ids": {"minItems": 1}}}
+        }
+      ]
+    }
+  }
+}

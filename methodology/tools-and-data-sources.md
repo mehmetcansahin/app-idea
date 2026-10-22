@@ -14,6 +14,10 @@
 
 Store verisi her zaman storefront/country, platform, app yasi ve erisim tarihiyle
 kaydedilir. Rating count pazar gate'i degildir.
+Magaza ve ASO kaynaklari yalniz `product_type=app` icin zorunludur.
+`web_saas` ve `service` icin fiyat/teklif, satis kanali, teslim ve musteri
+davranisi kaynaklari kullanilir; ilgisiz magaza gorevi `not_applicable` kaydedilir.
+
 
 ## Keyword / ASO
 
@@ -34,6 +38,8 @@ karsilastirma. Top-result rating profilinden difficulty uretmek inferred/weak'ti
 |---|---|---|
 | Reddit/forum/community | dil, workaround, migration nedeni | temsil gucu belirsiz |
 | App review | aktif kullanicinin urun deneyimi | self-selection, rating prompt bias |
+| G2 / Capterra / TrustRadius / Trustpilot | web/SaaS ve hizmet musterilerinin urun/teslim deneyimi | tesvik, musteri dogrulamasi ve ulke kaydedilir; rastgele orneklem degil |
+| Google Business Profile / hizmet dizinleri | yerel hizmet teslimi ve musteri yorumlari | isletme/listing, ulke, tarih ve orneklem paydasi kaydedilir |
 | Mom-Test interview | gecmis olay ve davranis | nicel oran degil |
 | Synthetic persona | hipotez/edge case uretimi | E0; kullanici kaniti degil |
 

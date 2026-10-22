@@ -7,6 +7,7 @@
   "target_segment": "US consumers",
   "target_geos": ["US"],
   "primary_archetype": "consumer_utility",
+  "product_type": "app",
   "risk_modifiers": [],
   "dimensions": {
     "problem_demand": {"low": 3, "base": 3, "high": 3, "claim_ids": ["claim-demand"]},
@@ -25,9 +26,9 @@
     {"code": "SAFETY_ETHICS_BLOCKED", "status": "clear", "evidence_ids": ["demand-metric"]}
   ],
   "riskiest_assumptions": [
-    {"claim_id": "claim-demand", "category": "value", "impact": 3, "uncertainty": 3, "claim_grade": "B", "product_specific_behavior": false, "disposition": "supported"},
-    {"claim_id": "claim-economics", "category": "business_viability", "impact": 3, "uncertainty": 2, "claim_grade": "B", "product_specific_behavior": false, "disposition": "supported"},
-    {"claim_id": "claim-wedge", "category": "usability", "impact": 2, "uncertainty": 3, "claim_grade": "B", "product_specific_behavior": false, "disposition": "partial"}
+    {"claim_id": "claim-demand", "category": "value", "impact": 3, "uncertainty": 3, "claim_grade": "B", "product_specific_evidence_ids": [], "disposition": "supported"},
+    {"claim_id": "claim-economics", "category": "business_viability", "impact": 3, "uncertainty": 2, "claim_grade": "B", "product_specific_evidence_ids": [], "disposition": "supported"},
+    {"claim_id": "claim-wedge", "category": "usability", "impact": 2, "uncertainty": 3, "claim_grade": "B", "product_specific_evidence_ids": [], "disposition": "partial"}
   ],
   "overall_evidence_grade": "B",
   "decision": "TEST_ONCELIKLI",

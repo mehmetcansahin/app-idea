@@ -54,11 +54,11 @@
         "synthetic"
       ]
     },
-    "source_title": {"type": "string", "minLength": 1},
+    "source_title": {"type": "string", "minLength": 1, "pattern": "\\S"},
     "source_url": {"type": ["string", "null"], "format": "uri"},
     "source_ref": {"type": ["string", "null"]},
     "artifact_path": {"type": ["string", "null"]},
-    "independence_root": {"type": "string", "minLength": 1},
+    "independence_root": {"type": "string", "minLength": 1, "pattern": "\\S"},
     "collected_at": {"type": "string", "format": "date"},
     "data_period": {"type": ["string", "null"]},
     "geo": {"type": ["string", "null"]},
@@ -67,7 +67,7 @@
     "status": {
       "enum": ["observed", "not_found_after_protocol", "structurally_unobservable", "not_applicable"]
     },
-    "observation": {"type": "string", "minLength": 1},
+    "observation": {"type": "string", "minLength": 1, "pattern": "\\S"},
     "value": {},
     "unit": {"type": ["string", "null"]},
     "evidence_level": {"enum": ["E0", "E1", "E2", "E3", "E4"]},
@@ -80,13 +80,17 @@
     "search_queries": {"type": "array", "items": {"type": "string"}},
     "attempted_sources": {"type": "array", "items": {"type": "string"}}
   },
-  "anyOf": [
-    {"properties": {"source_url": {"type": "string"}}},
-    {"properties": {"source_ref": {"type": "string"}}},
-    {"properties": {"artifact_path": {"type": "string"}}}
-  ],
   "allOf": [
     {
+      "description": "source_url, source_ref or artifact_path is required",
+      "anyOf": [
+        {"properties": {"source_url": {"type": "string", "pattern": "\\S"}}},
+        {"properties": {"source_ref": {"type": "string", "pattern": "\\S"}}},
+        {"properties": {"artifact_path": {"type": "string", "pattern": "\\S"}}}
+      ]
+    },
+    {
+      "description": "not_found_after_protocol requires searches and attempted sources",
       "if": {"properties": {"status": {"const": "not_found_after_protocol"}}},
       "then": {
         "properties": {
@@ -96,14 +100,17 @@
       }
     },
     {
+      "description": "web evidence requires a source_url",
       "if": {"properties": {"source_type": {"enum": ["official_primary", "marketplace_primary", "ad_library", "third_party_estimate", "community"]}}},
       "then": {"properties": {"source_url": {"type": "string"}}}
     },
     {
+      "description": "synthetic evidence must be E0",
       "if": {"properties": {"source_type": {"const": "synthetic"}}},
       "then": {"properties": {"evidence_level": {"const": "E0"}}}
     },
     {
+      "description": "ad_library evidence must be E1 or E2",
       "if": {"properties": {"source_type": {"const": "ad_library"}}},
       "then": {"properties": {"evidence_level": {"enum": ["E1", "E2"]}}}
     }
