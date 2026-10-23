@@ -74,39 +74,42 @@ FENCE_RE = re.compile(r"\s{0,3}(```|~~~)")
 SCOREBOARD = "scoreboard"
 HANDOFF = "handoff"
 REGIONS = (SCOREBOARD, HANDOFF)
-INDEX_TITLE = "# Arastirma Scoreboard"
-SCOREBOARD_HEADING = "## v4.0 Scoreboard"
-QUEUE_HEADING = "## Insan Deney Kuyrugu"
+INDEX_TITLE = "# Araştırma Panosu"
+SCOREBOARD_HEADING = "## v4.0 Araştırma Panosu"
+QUEUE_HEADING = "## İnsan Deneyleri Kuyruğu"
 GENERATED_NOTE = (
-    "<!-- scripts/portfolio_tool.py render bu blogu data/assessment.json ve "
-    "data/portfolio.json dosyalarindan uretir; elle duzenlemeyin. -->"
+    "<!-- scripts/portfolio_tool.py render bu bloğu data/assessment.json ve "
+    "data/portfolio.json dosyalarından üretir; elle düzenlemeyin. -->"
 )
 SCOREBOARD_NOTE = (
-    "> Sira analiz tarihine (yeniden eskiye), sonra dizin adina goredir; skora gore "
-    "siralanmaz. Firsat skorlari yalniz ayni arketip icinde karsilastirilir. Skor, "
-    "kanit, karar, asama ve `Arastirma Durumu` `data/assessment.json`'dan; `Konu`, "
-    "`Portfoy`, `Yerine Gecen`, `Portfoy Notu` ve `Deney Devri` `data/portfolio.json`'dan "
-    "gelir. Portfoy durumu arastirma durumunu degistirmez ve build izni vermez."
+    "> Kayıtlar analiz tarihine göre yeniden eskiye, aynı tarihte dizin adına göre "
+    "sıralanır; skora göre sıralanmaz. Fırsat skorları yalnız aynı arketip içinde "
+    "karşılaştırılır. Skor, kanıt, karar, aşama ve `Araştırma Durumu` "
+    "`data/assessment.json` dosyasından; `Konu`, `Portföy`, `Yerine Geçen`, "
+    "`Portföy Notu` ve `Deney Devri` `data/portfolio.json` dosyasından gelir. "
+    "Portföy durumu araştırma durumunu değiştirmez ve geliştirme izni vermez."
 )
 QUEUE_NOTE = (
-    "> Yalniz `active` kosularin tanimli handoff'lari listelenir; archived/superseded "
-    "kosularin deneyleri burada gorunmez. Kuyruk deneyin yapildigini gostermez: "
-    "`completed` yalniz gozlenmis first_party/experiment sonuc kayitlariyla gecerlidir. "
-    "Sira analiz tarihine (yeniden eskiye), sonra dizin adina goredir."
+    "> Yalnız `active` (aktif) kayıtların tanımlı deney devirleri listelenir; "
+    "`archived` (arşivlenmiş) ve `superseded` (yerini başka rapor almış) kayıtların "
+    "deneyleri burada görünmez. Kuyruk, deneyin yapıldığını göstermez: `completed` "
+    "(tamamlandı) durumu yalnız doğrudan gözlenmiş `first_party` (birinci taraf) veya "
+    "`experiment` (deney) sonuç kayıtlarıyla geçerlidir. Kayıtlar analiz tarihine göre "
+    "yeniden eskiye, aynı tarihte dizin adına göre sıralanır."
 )
 SCOREBOARD_COLUMNS = (
     "Tarih",
     "Konu",
     "Mod",
     "Arketip",
-    "Firsat Skoru",
-    "Kanit",
+    "Fırsat Skoru",
+    "Kanıt",
     "Karar",
-    "Asama",
-    "Arastirma Durumu",
-    "Portfoy",
-    "Yerine Gecen",
-    "Portfoy Notu",
+    "Aşama",
+    "Araştırma Durumu",
+    "Portföy",
+    "Yerine Geçen",
+    "Portföy Notu",
     "Deney Devri",
     "Metodoloji",
     "Rapor",
@@ -118,12 +121,12 @@ QUEUE_COLUMNS = (
     "Karar",
     "Deney Durumu",
     "Sahip",
-    "Onkosullar",
-    "Sonraki Adim",
+    "Ön koşullar",
+    "Sonraki Adım",
     "Plan",
-    "Sonuc Kanitlari",
+    "Sonuç Kanıtları",
 )
-NO_HANDOFF = "yok (sahip atanmamis)"
+NO_HANDOFF = "yok (sorumlu atanmadı)"
 
 
 @dataclass
@@ -520,7 +523,7 @@ def score_cell(opportunity: Optional[Dict[str, Any]]) -> str:
 def render_scoreboard(runs: Sequence[Run]) -> str:
     lines = [GENERATED_NOTE, "", SCOREBOARD_NOTE, ""]
     if not runs:
-        lines.append("_Henuz v4.0 kosusu yok._")
+        lines.append("_Henüz v4.0 araştırma kaydı yok._")
         return "\n".join(lines)
     titles = {run.name: run.entry["title"] for run in runs}
     lines.extend(table_head(SCOREBOARD_COLUMNS))
@@ -558,7 +561,7 @@ def render_queue(runs: Sequence[Run]) -> str:
     unassigned = [run for run in active if run.entry["handoff"] is None]
     lines = [GENERATED_NOTE, "", QUEUE_NOTE, ""]
     if not queued:
-        lines.append("_Aktif handoff yok._")
+        lines.append("_Aktif deney devri yok._")
     else:
         lines.extend(table_head(QUEUE_COLUMNS))
     for run in queued:
@@ -583,7 +586,7 @@ def render_queue(runs: Sequence[Run]) -> str:
         )
     if unassigned:
         names = ", ".join(link(run.entry["title"], f"{run.name}/REPORT.md") for run in unassigned)
-        lines.extend(["", f"Handoff'u olmayan aktif kosular (deney sahibi atanmamis): {names}"])
+        lines.extend(["", f"Deney devri tanımlanmamış aktif kayıtlar (deney sorumlusu atanmadı): {names}"])
     return "\n".join(lines)
 
 

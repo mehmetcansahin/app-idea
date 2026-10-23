@@ -860,11 +860,11 @@ def render_ledger(records: Sequence[Any]) -> str:
         rows, key=lambda item: (ledger_text(item.get("claim_id")), ledger_text(item.get("evidence_id")))
     )
     lines = [
-        "# Kanit Defteri",
+        "# Kanıt Defteri",
         "",
-        "> Bu dosya `data/evidence.jsonl` kaynagindan deterministik olarak uretilmistir.",
+        "> Bu dosya `data/evidence.jsonl` kaynağından aynı girdiye aynı çıktıyı verecek şekilde üretilmiştir.",
         "",
-        "| Evidence | Claim | Seviye | Yon | Gozlem | Kaynak | Baglam | Sinirlar |",
+        "| Kanıt kaydı | İddia | Seviye | Yön | Gözlem | Kaynak | Bağlam | Sınırlar |",
         "|---|---|---|---|---|---|---|---|",
     ]
     for record in ordered:

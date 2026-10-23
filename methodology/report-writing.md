@@ -116,49 +116,64 @@ iki duzeyli numara kullanilmaz.
 - Belgelenmis bir is akisi `> **Gerçek işleyiş örneği (kaynak).**` ile verilir.
 - Ornekler arastirilan kapsamla uyumlu olur.
 
-## 7. Dil Kurallari
+## 7. Dil Kuralları
 
-- Tam cumle kullanilir; kimin ne yaptigi, neyin olculdugu ve neden onemli oldugu
-  yazilir. Telgraf dili kullanilmaz:
+- Rapor ve rapordan üretilen çıktılar UTF-8 kodlamasıyla yazılır. Türkçe
+  sözcüklerde `ç, ğ, ı, İ, ö, ş, ü` kullanılır; `kanit`, `sonuc`, `kullanici`
+  gibi ASCII yazımlar raporun başlık, tablo, açıklama ve özetlerinde bırakılmaz.
+  Bozulmuş karakterler (`�`, `Ã`, `Ä±`, `ÅŸ` vb.) kaynak metinden kontrol
+  edilerek düzeltilir. Dosya yolu, URL, kimlik ve makine kodu değiştirilmez.
+- Tam cümle kullanılır; kimin ne yaptığı, neyin ölçüldüğü ve neden önemli olduğu
+  yazılır. Belirsiz özne, eksik yüklem ve sözcüğü sözcüğüne çeviriyle oluşan
+  anlatım bozuklukları giderilir. Telgraf dili kullanılmaz:
 
 | Kullanma | Kullan |
 |---|---|
-| Paid/affiliate doymus | Buyuk rakipler reklam ve satis ortakligi kanallarinda yogun bicimde aktif. |
-| Store vocabulary dar | App Store'da bu is icin arama onerisi ureten ifade cok az. |
-| Giris dalgasi 0 rating | Son 12 ayda cikan 16 uygulamanin 15'i 13 veya daha az degerlendirmede kaldi. |
-| CAC negatif | Musteriden beklenen gelir, musteriyi kazanmak icin yapilan harcamayi karsilamiyor. |
-| BELIRSIZ — park et | Gelistirmeye baslamayi onermiyoruz; cunku ... |
+| Paid/affiliate doymuş | Büyük rakipler reklam ve satış ortaklığı kanallarında yoğun biçimde aktif. |
+| Store vocabulary dar | App Store'da bu iş için arama önerisi üreten ifade çok az. |
+| Giriş dalgası 0 rating | Son 12 ayda çıkan 16 uygulamanın 15'i 13 veya daha az değerlendirmede kaldı. |
+| CAC negatif | Müşteriden beklenen gelir, müşteriyi kazanmak için yapılan harcamayı karşılamıyor. |
+| BELIRSIZ — park et | Geliştirmeye başlamayı önermiyoruz; çünkü ... |
 
-- Turkce karsiligi anlami tasiyan terim Turkcelestirilir. Gerekli teknik terim ilk
-  kullanildigi yerde aciklanir ve Ek A'ya yazilir:
+- Türkçe karşılığı anlamı taşıyan terim Türkçeleştirilir. Türkçe cümleye
+  açıklamasız İngilizce sözcükler eklenmez. Gerekli teknik terim ilk kullanıldığı
+  yerde açıklanır ve Ek A'ya yazılır. Ürün adları, API adları, gerçek arama
+  sorguları ve özgün alıntılar korunur; çeviri veya özet ayrıca etiketlenir:
 
-| Terim | Turkce karsilik / aciklama |
+| Terim | Türkçe karşılık / açıklama |
 |---|---|
-| wedge | ayirt edici avantaj: kullanicinin bizi secmesini saglayacak belirgin ustunluk |
-| CAC | musteri edinme maliyeti: odeme yapan bir musteriyi kazanmanin maliyeti |
-| LTV | bir musteriden beklenen toplam net gelir |
-| concierge | islemlerin ekip tarafindan elle yurutuldugu hizmet |
-| on-device | cihaz uzerinde calisma: islemin sirket sunucusu yerine kullanicinin cihazinda yapilmasi |
-| opt-out | kaldirma talebi |
-| data broker | veri simsari |
-| affiliate | satis ortakligi |
-| paywall | odeme ekrani |
-| retention / churn | elde tutma / aboneligi birakma |
+| wedge | ayırt edici avantaj: kullanıcının bizi seçmesini sağlayacak belirgin üstünlük |
+| CAC | müşteri edinme maliyeti: ödeme yapan bir müşteriyi kazanmanın maliyeti |
+| LTV | bir müşteriden beklenen toplam net gelir |
+| concierge | işlemlerin ekip tarafından elle yürütüldüğü hizmet |
+| on-device | cihaz üzerinde çalışma: işlemin şirket sunucusu yerine kullanıcının cihazında yapılması |
+| opt-out | kaldırma talebi |
+| data broker | veri simsarı |
+| affiliate | satış ortaklığı |
+| paywall | ödeme ekranı |
+| retention / churn | elde tutma / aboneliği bırakma |
 | fatal gate | durdurucu engel |
-| JTBD | kullanicinin yapmak istedigi is |
-| ASO | uygulama magazasi optimizasyonu |
-| IAP | uygulama ici satin alma |
-| benchmark | sektor ortalamasi |
-| SERP | arama sonuc sayfasi |
+| JTBD | kullanıcının yapmak istediği iş |
+| ASO | uygulama mağazası optimizasyonu |
+| IAP | uygulama içi satın alma |
+| benchmark | karşılaştırma ölçütü; bağlama göre sektör ortalaması veya karşılaştırmalı ölçüm |
+| SERP | arama sonuç sayfası |
 
-- Tablolar kisa olabilir ama okurun anlami tahmin etmesini gerektirmez:
-  "6/30" yerine "incelenen 30 reklamin 6'si".
-- Her oranda pay ve payda yazilir; orneklem rastgele degilse "orneklem ici" denir.
-- Sayi bicimi Turkcedir: `1.000`, `%2,7`, `95,88 $`.
-- Yazim TDK'ya uyar: yabanci cins isimlere kesme isareti konmaz (`spamin`),
-  `kendin yap` ayri yazilir. Ayni kavram rapor boyunca tek adla anilir.
-- Karar ve durum kodlari (`BELIRSIZ`, `DESK_RESEARCH_COMPLETE`) ilk gectigi yerde
-  sade karsiligiyla verilir.
+- Tablolar kısa olabilir ama okurun anlamı tahmin etmesini gerektirmez:
+  "6/30" yerine "incelenen 30 reklamın 6'sı".
+- Her oranda pay ve payda yazılır; örneklem rastgele değilse "örneklem içi" denir.
+- Sayı biçimi Türkçedir: `1.000`, `%2,7`, `95,88 $`.
+- Yazım TDK'ya uyar: yabancı cins isimlere kesme işareti konmaz (`spamin`),
+  `kendin yap` ayrı yazılır. Aynı kavram rapor boyunca tek adla anılır.
+- Karar ve durum kodları (`BELIRSIZ`, `DESK_RESEARCH_COMPLETE`) ilk geçtiği yerde
+  sade karşılığıyla verilir.
+- Dil düzeltmesi bulguyu değiştirmez: gözlem, şirket beyanı, varsayım ve yazar
+  yorumu arasındaki ayrım; belirsizlik, olumsuzluk, koşullar, sayılar ve karar
+  korunur. Kaynakta bulunmayan bir anlam eklenmez; belirsiz ifade kaynağından
+  çözülemiyorsa kesinleştirilmez.
+- Son okumada her cümle için "Kim, neyi, hangi koşulda yapıyor; bu bir gözlem mi,
+  yorum mu, plan mı?" soruları yanıtlanır. `REPORT.md`, üretilen özet, portföy
+  panosu ve varsa HTML/PDF kopyası aynı düzeltmeleri yansıtmalıdır.
 
 ## 8. Puan, Not ve Ekonomi Anlatimi
 

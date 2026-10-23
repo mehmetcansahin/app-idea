@@ -8,6 +8,8 @@ Tüm kaynak kayıtları: [kanıt defteri (data/evidence-ledger.md)](data/evidenc
 
 <!--
 Yazım sözleşmesi: methodology/report-writing.md. Bu yorum bloğunu rapora kopyalama.
+- Türkçe metin UTF-8 yazılır; ç, ğ, ı, İ, ö, ş, ü harfleri başlıklar, tablolar ve açıklamalarda korunur. URL, dosya yolu, kimlik, makine kodu ve özgün alıntılar dil düzeltmesiyle değiştirilmez.
+- Son okumada karakterler kadar anlam da denetlenir: özne ve yüklem açık olmalı; açıklamasız İngilizce-Türkçe karışımı, eksik cümle ve sözcüğü sözcüğüne çeviri bırakılmamalı. Gözlem, yorum, varsayım ve plan ayrımı ile bütün koşullar ve belirsizlikler korunmalı.
 - Her numaralı bölüm "Bu bölüm şu soruyu yanıtlıyor: ..." ile başlar ve
   "> **Bu bölümün sonucu.** Ne öğrendik: ... Neden önemli: ... Karara etkisi: ..." ile biter.
 - Bulgular rapor boyunca "Bulgu 1, 2, ..." diye numaralanır; her biri üç parçalıdır.
@@ -194,7 +196,7 @@ Bu bölüm şu soruyu yanıtlıyor: Önerdiğimiz ürün nasıl çalışacaktı 
 
 **Ne gözlemledik?** [...]
 
-| Hipotez ürünün özelliği | Bugün bunu sunan |
+| Önerilen ürünün özelliği | Bugün bunu sunan |
 |---|---|
 | [özellik] | [rakipler veya "kimse"] |
 
@@ -418,8 +420,8 @@ Bu bölüm şu soruları yanıtlıyor: Şimdi ne yapmalıyız, bu öneri hangi b
 | Geçme eşiği ve gerekçesi | [eşik; ekonomiye bağlantı] |
 | Koruma kuralları | [etik, ekonomi, kalite] |
 | Durdurma kuralı | [...] |
-| Geçerse | [karar] |
-| Kalırsa | [karar] |
+| Test başarılı olursa | [karar] |
+| Test başarısız olursa | [karar] |
 | Gizlilik ve iade | [...] |
 
 [Bu tablo testin planıdır. Test yürütülmeden sonucu, "tamamlandı" ifadesi veya varsayımsal bir sonuç yazılmaz; testin güncel durumu rapor dışında, portföy kaydında izlenir. Gerçek sonuç geldiğinde kanıt kaydı ve karar güncellenir, rapor yeniden incelenir.]

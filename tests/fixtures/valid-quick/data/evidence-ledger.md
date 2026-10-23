@@ -1,8 +1,8 @@
-# Kanit Defteri
+# Kanıt Defteri
 
-> Bu dosya `data/evidence.jsonl` kaynagindan deterministik olarak uretilmistir.
+> Bu dosya `data/evidence.jsonl` kaynağından aynı girdiye aynı çıktıyı verecek şekilde üretilmiştir.
 
-| Evidence | Claim | Seviye | Yon | Gozlem | Kaynak | Baglam | Sinirlar |
+| Kanıt kaydı | İddia | Seviye | Yön | Gözlem | Kaynak | Bağlam | Sınırlar |
 |---|---|---|---|---|---|---|---|
 | demand-behavior | claim-demand | E3 | supports | A relevant purchase behavior was observed. | [Observed purchase record](https://example.com/demand-behavior) | US/US/iOS | — |
 | demand-metric | claim-demand | E2 | supports | An official demand-supporting metric was observed. | [Official demand metric](https://example.com/demand-metric) | US/US/iOS | — |
